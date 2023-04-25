@@ -1,0 +1,76 @@
+name: Quality
+
+on: [pull_request, workflow_dispatch]
+
+jobs:
+  test:
+    name: 🧪 Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: '☁️ checkout repository'
+        uses: actions/checkout@v3
+
+      - name: ⚙️ Set Node.js 16.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+
+      - name: '📦 install dependencies'
+        run: yarn
+
+      - name: '🔍 run tests'
+        run: yarn test
+
+  format:
+    name: 🖌️ Format
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: '☁️ checkout repository'
+        uses: actions/checkout@v3
+
+      - name: ⚙️ Set Node.js 16.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+
+      - name: '📦 install dependencies'
+        run: yarn
+
+      - name: '🔍 check code formatting'
+        run: yarn format:check
+
+  lint:
+    name: 👀 Lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: '☁️ checkout repository'
+        uses: actions/checkout@v3
+
+      - name: ⚙️ Set Node.js 16.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+
+      - name: '📦 install dependencies'
+        run: yarn
+
+      - name: '🔍 lint code'
+        run: yarn lint
+
+  commitlint:
+    name: Commitlint
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      # Workaround from this isssue: https://github.com/wagoid/commitlint-github-action/issues/560#issuecomment-1277659864
+      - name: Remove tsconfig (workaround)
+        run: rm tsconfig.json
+
+      - uses: wagoid/commitlint-github-action@v5
+        with:
+          configFile: commitlint.config.js
