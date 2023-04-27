@@ -1,10 +1,7 @@
-import asyncio
 from tkinter import *
 from turtle import home
 from async_tkinter_loop import async_handler, async_mainloop
 from mavsdk import *
-from mavsdk import System
-from mavsdk.offboard import (OffboardError, PositionNedYaw)
 from mavsdk.mission import (MissionItem, MissionPlan)
 import time
 import webbrowser
@@ -100,7 +97,7 @@ async def goto_coordinates(drone,coordinates):
     await drone.action.arm()
     printPxh("-- Starting mission")
     await drone.mission.start_mission()
-    printPxh("-- Arrived at: " + str(lat)  + ", " + str(long))
+    printPxh("-- Mission done")
 
 
 def printPxh(msg=""):
