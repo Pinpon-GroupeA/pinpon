@@ -1,25 +1,19 @@
-import { Box, Heading, Text, VStack } from 'native-base';
-
+import DemandManagement from './CODIS/DemandManagement';
 import Providers from './Providers';
 
 export default function App() {
+  const adress = '15 Avenue des Champs Elysée, 35000 RENNES';
+  const type: string = 'SAP';
+  const date = '25/04/2023';
+  const demandList = [
+    { id: 1, hour: '1005', val: 'Alpha' },
+    { id: 2, hour: '1005', val: 'Beta' },
+    { id: 3, hour: '1005', val: 'Teta' },
+    { id: 4, hour: '1020', val: 'Omega' },
+  ];
   return (
     <Providers>
-      <HelloWorld />
+      <DemandManagement adress={adress} type={type} date={date} demandList={demandList} />
     </Providers>
-  );
-}
-
-// TODO - Remove this component and replace when we start building the app
-function HelloWorld() {
-  return (
-    <VStack flex="1" p="24px" alignItems="center" justifyContent="center">
-      <Box justifyContent="center" maxW="960" marginX="auto">
-        <Heading size="2xl" fontWeight="bold">
-          Hello World
-        </Heading>
-        <Text color="#38434D">This is the first page of your app.</Text>
-      </Box>
-    </VStack>
   );
 }
