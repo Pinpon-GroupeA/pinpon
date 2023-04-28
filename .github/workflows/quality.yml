@@ -66,6 +66,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       # Workaround from this isssue: https://github.com/wagoid/commitlint-github-action/issues/560#issuecomment-1277659864
       - name: Remove tsconfig (workaround)
