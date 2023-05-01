@@ -1,5 +1,5 @@
-import { Link } from 'expo-router';
+import InterventionList from '../components/intervention/InterventionList';
 
 export default function App() {
-  return <Link href="/intervention/1">Test tabs</Link>;
+  return <InterventionList />;
 }

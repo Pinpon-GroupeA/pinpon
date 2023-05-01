@@ -1,5 +1,5 @@
-import { Text } from 'native-base';
+import MapBackground from '../../../../../components/map/MapBackground';
 
 export default function Map() {
-  return <Text>Carte</Text>;
+  return <MapBackground />;
 }

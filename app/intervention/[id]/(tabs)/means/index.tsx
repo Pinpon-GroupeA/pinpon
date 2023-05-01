@@ -1,5 +1,5 @@
-import { Text } from 'native-base';
+import MeansTable from '../../../../../components/means-table/MeansTable';
 
 export default function Means() {
-  return <Text>Moyens</Text>;
+  return <MeansTable />;
 }
