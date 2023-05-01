@@ -26,7 +26,7 @@ export default function LoginForm() {
       await mutateAsync({ email, password });
       router.replace('/intervention');
     } catch (error) {
-      setError(error.message);
+      setError((error as Error).message);
     }
   }
 

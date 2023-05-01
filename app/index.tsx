@@ -1,5 +1,5 @@
-import { Text } from 'native-base';
+import { Link } from 'expo-router';
 
 export default function App() {
-  return <Text>Hello world!</Text>;
+  return <Link href="/intervention/1">Test tabs</Link>;
 }

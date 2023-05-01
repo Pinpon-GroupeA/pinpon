@@ -8,7 +8,7 @@ export const getUserType = async (email: string): Promise<UserType> => {
     throw new Error(error.message);
   }
 
-  return data?.at(0).role as UserType;
+  return data?.at(0)?.role as UserType;
 };
 
 export const getUser = async () => {
