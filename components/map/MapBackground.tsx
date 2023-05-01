@@ -4,7 +4,7 @@ import { StyleSheet } from 'react-native';
 import MapView from 'react-native-map-clustering';
 import { MAP_TYPES, UrlTile } from 'react-native-maps';
 
-function Map() {
+function MapBackground() {
   const initialRegion = {
     latitude: 48.115537335418445,
     longitude: -1.638870923241485,
@@ -34,4 +34,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Map;
+export default MapBackground;
