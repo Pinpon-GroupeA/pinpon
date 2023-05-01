@@ -1,3 +1,5 @@
+import { Coordinates, DangerCode } from './types';
+
 export type Mean = {
   id: string;
   label: string;
@@ -11,13 +13,4 @@ export type Mean = {
   dangerCode: DangerCode;
 };
 
-export type Coordinates = {
-  latitude: number;
-  longitude: number;
-};
-
 export type MeanType = 'VSAV' | 'FPT' | 'VLCG' | 'OTHER';
-
-export type DangerCode = 'INC' | 'SAP';
-
-export type RequestStatus = 'PENDING' | 'ACCEPTED' | 'REJECTED';
