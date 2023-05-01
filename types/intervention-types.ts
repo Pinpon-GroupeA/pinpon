@@ -5,7 +5,7 @@ export type Intervention = {
   date: string;
   isOngoing: boolean;
   dangerCode: DangerCode;
-  adress: string;
+  address: string;
   customerName: string;
   location: Coordinates;
 };

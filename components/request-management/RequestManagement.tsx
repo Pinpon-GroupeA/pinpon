@@ -20,7 +20,7 @@ export default function RequestManagement() {
     date: '2021-05-01',
     isOngoing: true,
     dangerCode: 'INC',
-    adress: '1 rue de la paix',
+    address: '1 rue de la paix',
     customerName: 'Jean Dupont',
     location: {
       latitude: 48.856614,
@@ -60,7 +60,7 @@ export default function RequestManagement() {
         <Box>
           <HStack space={[5, 40]} justifyContent="space-between">
             <VStack>
-              <Text>{intervention.adress}</Text>
+              <Text>{intervention.address}</Text>
             </VStack>
             <VStack>
               <Text bold textAlign="right" color={getDangerCodeColor(intervention.dangerCode)}>
