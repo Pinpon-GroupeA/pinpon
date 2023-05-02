@@ -1,4 +1,4 @@
-import { Coordinates, DangerCode } from './types';
+import { Coordinates, DangerCode } from './global-types';
 
 export type Mean = {
   id: string;

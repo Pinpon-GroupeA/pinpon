@@ -4,3 +4,8 @@ export type Coordinates = {
 };
 
 export type DangerCode = 'INC' | 'SAP';
+
+export type SizeType = {
+  width: number;
+  height: number;
+};

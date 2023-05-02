@@ -1,4 +1,4 @@
-import { Coordinates, DangerCode } from './types';
+import { DangerCode, Coordinates } from './global-types';
 
 export type Intervention = {
   id: string;

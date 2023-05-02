@@ -1,4 +1,4 @@
-import { DangerCode } from '../types/types';
+import { DangerCode } from '../types/global-types';
 
 export const getDangerCodeColor = (dangerCode: DangerCode) => {
   switch (dangerCode) {

@@ -1,13 +1,17 @@
-import { Stack } from 'expo-router';
-import { Box } from 'native-base';
+import { Box, HStack } from 'native-base';
 
-import MapBackground from '../../../../../components/map/MapBackground';
+import InterventionMap from '../../../../../components/map/InterventionMap';
+import SymbolList from '../../../../../components/map/SymbolList';
 
 export default function Map() {
   return (
-    <Box flex="1">
-      <Stack.Screen options={{ title: 'Carte' }} />
-      <MapBackground />
-    </Box>
+    <HStack h="100%">
+      <Box w="15%">
+        <SymbolList />
+      </Box>
+      <Box w="85%">
+        <InterventionMap />
+      </Box>
+    </HStack>
   );
 }

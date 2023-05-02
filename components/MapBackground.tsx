@@ -2,9 +2,14 @@ import { Box } from 'native-base';
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import MapView from 'react-native-map-clustering';
-import { MAP_TYPES, UrlTile } from 'react-native-maps';
+import { MAP_TYPES, UrlTile, MapPressEvent } from 'react-native-maps';
 
-function MapBackground() {
+type MapBackgroundProps = {
+  children: React.ReactNode;
+  handlePress?: (event: MapPressEvent) => void;
+};
+
+function MapBackground({ children, handlePress }: MapBackgroundProps) {
   const initialRegion = {
     latitude: 48.115537335418445,
     longitude: -1.638870923241485,
@@ -20,8 +25,10 @@ function MapBackground() {
         rotateEnabled={false}
         style={styles.map}
         showsUserLocation
+        onPress={handlePress}
       >
         <UrlTile urlTemplate="https://a.tile.openstreetmap.de/{z}/{x}/{y}.png" maximumZ={19} />
+        {children}
       </MapView>
     </Box>
   );
