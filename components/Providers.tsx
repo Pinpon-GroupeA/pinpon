@@ -3,8 +3,6 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { NativeBaseProvider } from 'native-base';
 import { ReactNode } from 'react';
 
-import UserProvider from './UserProvider';
-
 type ProvidersProps = {
   children: ReactNode;
 };
@@ -18,7 +16,7 @@ export default function Providers({ children }: ProvidersProps) {
   return (
     <QueryClientProvider client={queryClient}>
       <NativeBaseProvider>
-        <UserProvider>{children}</UserProvider>
+        {children}
         {/* <ReactQueryDevtools /> */}
       </NativeBaseProvider>
     </QueryClientProvider>
