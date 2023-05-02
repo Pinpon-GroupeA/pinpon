@@ -14,35 +14,12 @@ import { Intervention } from '../../types/intervention-types';
 import { Request } from '../../types/request-types';
 import { getDangerCodeColor } from '../../utils/danger-code';
 
-export default function RequestManagement() {
-  const intervention: Intervention = {
-    id: '1',
-    date: '2021-05-01',
-    isOngoing: true,
-    dangerCode: 'INC',
-    address: '1 rue de la paix',
-    customerName: 'Jean Dupont',
-    location: {
-      latitude: 48.856614,
-      longitude: 2.3522219,
-    },
-  };
+type RequestManagementProps = {
+  intervention: Intervention;
+  requests: Request[];
+};
 
-  const requests: Request[] = [
-    {
-      id: '1',
-      status: 'PENDING',
-      requestDate: '2021-05-01',
-      requestedMeanType: 'VSAV',
-    },
-    {
-      id: '2',
-      status: 'ACCEPTED',
-      requestDate: '2021-05-01',
-      requestedMeanType: 'FPT',
-    },
-  ];
-
+export default function RequestManagement({ intervention, requests }: RequestManagementProps) {
   const validateRequest = (id: string) => {
     console.log('validateRequest', id);
   };
