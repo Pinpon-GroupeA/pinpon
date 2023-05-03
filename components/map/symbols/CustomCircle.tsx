@@ -22,7 +22,6 @@ function CustomCircle({
         cx="50%"
         cy="50%"
         r="25%"
-        stroke={fill ? 'black' : color}
         strokeWidth="5"
         fill={fill ? color : 'none'}
         strokeDasharray={strokeStyle ? '8' : 'none'}

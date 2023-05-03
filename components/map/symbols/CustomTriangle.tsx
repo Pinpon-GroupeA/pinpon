@@ -1,33 +1,38 @@
 import React from 'react-native';
-import Svg, { Path } from 'react-native-svg';
+import Svg, { Polygon } from 'react-native-svg';
 
 import { SizeType } from '../../../types/global-types';
 
 type CustomTriangleProps = {
-    color: string;
-    strokeStyle?: boolean;
-    fill?: boolean;
-    size?: SizeType;
-  };
-  
-  
-function CustomTriangle({
-  color,
-  strokeStyle,
-  fill,
-  size = { height: 50, width: 50 },
-}: CustomTriangleProps) {
-    return (
-        <Svg height={size.height} width={size.width} viewBox={`0 0 ${size.width*2} ${size.height}`} fill="none">
-            <Path 
-                d="m-0.16599,103.49998l50.33299,-103.83264l50.33299,103.83264l-100.66599,0z" 
-                stroke={fill ? "black" : color}
-                strokeWidth="5"
-                fill={fill ? color : 'none'}
-                strokeDasharray={strokeStyle ? '5,5' : 'none'}
-            />
-        </Svg>
-    );
-  }
+  color?: string;
+  dashed?: boolean;
+  fill?: boolean;
+  size?: SizeType;
+};
 
-  export default CustomTriangle;
+function CustomTriangle({
+  color = 'black',
+  dashed,
+  fill,
+  size = { height: 30, width: 30 },
+}: CustomTriangleProps) {
+  return (
+    <Svg
+      height={size.height}
+      width={size.width}
+      viewBox={`0 0 ${size.width + 3} ${size.height + 3}`}
+      fill="none"
+    >
+      <Polygon
+        x={1.5}
+        points={`0,${size.height} ${size.width},${size.height} ${size.width / 2},0`}
+        stroke={fill ? 'black' : color}
+        strokeWidth={3}
+        fill={fill ? color : 'none'}
+        strokeDasharray={dashed ? '5,5' : 'none'}
+      />
+    </Svg>
+  );
+}
+
+export default CustomTriangle;

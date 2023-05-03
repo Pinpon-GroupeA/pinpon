@@ -4,9 +4,9 @@ import { useState } from 'react';
 import { MapPressEvent, Marker } from 'react-native-maps';
 
 import CustomCircle from './symbols/CustomCircle';
-import CustomRectangle from './symbols/CustomRectangle';
 import { useAppStore } from '../../stores/store';
-import { Coordinates } from '../../types/global-types';
+import { Coordinates, SymbolsType } from '../../types/global-types';
+import { selectRightSymbol } from '../../utils/symbols-utils';
 import MapBackground from '../MapBackground';
 
 function InterventionMap() {
@@ -20,9 +20,10 @@ function InterventionMap() {
 
   const selectedSymbol = useAppStore((state) => state.selectedSymbol);
   const setSelectedSymbol = useAppStore((state) => state.setSelectedSymbol);
+  const drawingsColor = useAppStore((state) => state.drawingsColor);
 
   const [markers, setMarkers] = useState<
-    { title: string; coordinates: Coordinates; symbol: string }[]
+    { coordinates: Coordinates; symbol: SymbolsType; color: string }[]
   >([]);
 
   const handlePress = (event: MapPressEvent) => {
@@ -31,7 +32,7 @@ function InterventionMap() {
     if (selectedSymbol) {
       setMarkers([
         ...markers,
-        { title: selectedSymbol, coordinates: { latitude, longitude }, symbol: selectedSymbol },
+        { coordinates: { latitude, longitude }, symbol: selectedSymbol, color: drawingsColor },
       ]);
       setSelectedSymbol(undefined);
     }
@@ -50,16 +51,12 @@ function InterventionMap() {
           }}
           title={item.fields.type}
         >
-          <CustomCircle color="#2D3ED3" fill />
+          <CustomCircle size={{ height: 30, width: 30 }} color="#2D3ED3" fill />
         </Marker>
       ))}
       {markers.map((marker, index) => (
-        <Marker key={index} coordinate={marker.coordinates} title={marker.title}>
-          {marker.symbol === 'test' ? (
-            <CustomRectangle color="#f00" strokeStyle />
-          ) : (
-            <CustomRectangle color="#2D3ED3" />
-          )}
+        <Marker key={index} coordinate={marker.coordinates} tappable={false}>
+          {selectRightSymbol(marker.symbol, marker.color)}
         </Marker>
       ))}
     </MapBackground>

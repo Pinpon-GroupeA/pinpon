@@ -5,15 +5,16 @@ import { useAppStore } from '../../stores/store';
 type CustomMarkerProps = {
   children: React.ReactNode;
   onPress: () => void;
+  type: string;
 };
 
-function PressableSymbol({ children, onPress }: CustomMarkerProps) {
+function PressableSymbol({ children, onPress, type }: CustomMarkerProps) {
   const selectedSymbol = useAppStore((state) => state.selectedSymbol);
 
   return (
     <Pressable
       padding={3}
-      bgColor={selectedSymbol === 'test' ? 'amber.300' : undefined}
+      bgColor={selectedSymbol === type ? 'gray.400' : undefined}
       alignItems="center"
       onPress={onPress}
     >

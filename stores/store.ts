@@ -7,6 +7,8 @@ type AppStoreType = {
   setRole: (role: UserType) => void;
   selectedSymbol?: string;
   setSelectedSymbol: (selectedSymbol?: string) => void;
+  drawingsColor: string;
+  setDrawingsColor: (drawingsDangerCode: string) => void;
 };
 
 export const useAppStore = create<AppStoreType>((set) => ({
@@ -14,4 +16,6 @@ export const useAppStore = create<AppStoreType>((set) => ({
   setRole: (role) => set({ role }),
   selectedSymbol: undefined,
   setSelectedSymbol: (selectedSymbol) => set({ selectedSymbol }),
+  drawingsColor: 'black',
+  setDrawingsColor: (drawingsDangerCode) => set({ drawingsColor: drawingsDangerCode }),
 }));

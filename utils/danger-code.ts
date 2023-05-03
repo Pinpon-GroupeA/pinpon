@@ -1,12 +1,20 @@
 import { DangerCode } from '../types/global-types';
 
 export const getDangerCodeColor = (dangerCode: DangerCode) => {
-  switch (dangerCode) {
-    case 'INC':
-      return 'red.500';
-    case 'SAP':
-      return 'green.500';
-    default:
-      return 'black.500';
+  const dangerCodeColor = dangerCodeColors.find(
+    (dangerCodeColor) => dangerCodeColor.dangerCode === dangerCode
+  );
+  if (!dangerCodeColor) {
+    return 'black.500';
   }
+  return dangerCodeColor.color;
 };
+
+export const dangerCodeColors: { dangerCode: DangerCode; color: string }[] = [
+  { dangerCode: 'INC', color: '#FF0000' },
+  { dangerCode: 'SAP', color: '#00EB17' },
+  { dangerCode: 'EAU', color: '#2D3ED3' },
+  { dangerCode: 'PART', color: '#FF8F28' },
+  { dangerCode: 'COM', color: '#A721E5' },
+  { dangerCode: 'OTHER', color: 'black' },
+];

@@ -26,6 +26,7 @@ function MapBackground({ children, handlePress }: MapBackgroundProps) {
         style={styles.map}
         showsUserLocation
         onPress={handlePress}
+        moveOnMarkerPress={false}
       >
         <UrlTile
           urlTemplate="https://a.tile.openstreetmap.de/{z}/{x}/{y}.png"
