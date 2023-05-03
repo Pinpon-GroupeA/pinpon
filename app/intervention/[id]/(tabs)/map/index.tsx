@@ -1,5 +1,4 @@
-import MapBackground from '../../../../../components/map/MapBackground';
-
 export default function Map() {
-  return <MapBackground />;
+  return null;
+  // return <MapBackground />;
 }

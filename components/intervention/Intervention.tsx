@@ -22,7 +22,7 @@ export default function Intervention({ intervention }: InterventionProps) {
   const router = useRouter();
 
   const formattedDate = Intl.DateTimeFormat('fr-FR', dateTimeFormattingOptions).format(
-    new Date(intervention.date)
+    new Date(intervention.start_date)
   );
   const showAddress = intervention.address && intervention.address.length > 0;
   const title = (
@@ -55,8 +55,8 @@ export default function Intervention({ intervention }: InterventionProps) {
         </Text>
       </Box>
       <Box alignItems="center">
-        <Text fontWeight="semibold" color={getDangerCodeColor(intervention.dangerCode)}>
-          {intervention.dangerCode}
+        <Text fontWeight="semibold" color={getDangerCodeColor(intervention.danger_code)}>
+          {intervention.danger_code}
         </Text>
         <Text>#{intervention.id}</Text>
       </Box>

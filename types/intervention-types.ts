@@ -1,11 +1,11 @@
-import { DangerCode, Coordinates } from './types';
+import { Coordinates, DangerCode } from './types';
 
 export type Intervention = {
   id: string;
-  date: string;
-  isOngoing: boolean;
-  dangerCode: DangerCode;
-  address: string;
-  customerName: string;
+  start_date: string;
+  is_ongoing: boolean;
+  danger_code: DangerCode;
+  address?: string;
+  customerName?: string;
   location: Coordinates;
 };
