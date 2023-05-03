@@ -18,7 +18,7 @@ function CustomTriangle({
   size = { height: 50, width: 50 },
 }: CustomTriangleProps) {
     return (
-        <Svg height={size.height} width={size.width} fill="none">
+        <Svg height={size.height} width={size.width} viewBox={`0 0 ${size.width*2} ${size.height}`} fill="none">
             <Path 
                 d="m-0.16599,103.49998l50.33299,-103.83264l50.33299,103.83264l-100.66599,0z" 
                 stroke={fill ? "black" : color}
