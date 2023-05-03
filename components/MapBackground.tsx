@@ -27,7 +27,11 @@ function MapBackground({ children, handlePress }: MapBackgroundProps) {
         showsUserLocation
         onPress={handlePress}
       >
-        <UrlTile urlTemplate="https://a.tile.openstreetmap.de/{z}/{x}/{y}.png" maximumZ={19} />
+        <UrlTile
+          urlTemplate="https://a.tile.openstreetmap.de/{z}/{x}/{y}.png"
+          maximumZ={19}
+          zIndex={-3}
+        />
         {children}
       </MapView>
     </Box>
