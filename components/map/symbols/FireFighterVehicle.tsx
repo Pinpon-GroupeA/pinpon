@@ -20,11 +20,11 @@ function CustomFireFighterVehicle({
   name,
 }: CustomFireFighterVehicleProps) {
     return (
-        <Svg height="100" width="100" fill="none">
+        <Svg height={size.height} width={size.width} fill="none">
             <Rect 
                 strokeWidth="5" 
-                height="50" 
-                width="95" 
+                height="50%"
+                width="95%" 
                 y="47.5" 
                 x="2.5" 
                 stroke={fill ? "black" : color}
@@ -35,4 +35,4 @@ function CustomFireFighterVehicle({
         </Svg>
     );
 }
-
+export default CustomFireFighterVehicle
