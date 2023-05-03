@@ -1,3 +1,4 @@
+import { SupabaseClient } from '@supabase/supabase-js';
 import {
   Box,
   Heading,
@@ -9,6 +10,7 @@ import {
   CheckIcon,
   CloseIcon,
 } from 'native-base';
+import { useState } from 'react';
 
 function getTypeColor(mytype: string) {
   switch (mytype) {
@@ -21,24 +23,49 @@ function getTypeColor(mytype: string) {
   }
 }
 
-function validDemand(id: number) {}
-
-function refuseDemand(id: number) {}
-
 type demandProps = {
   adress: string;
   type: string;
   date: string;
-  demandList: demand[];
-};
-type demand = {
-  id: number;
-  hour: string;
-  val: string;
+  demandList: any;
+  supabase: SupabaseClient;
 };
 
 export default function DemandManagement(props: demandProps) {
+  const [affectedId, setAffectedId] = useState<number>(-1);
   const typeColor = getTypeColor(props.type);
+
+  async function validDemand(supabase: SupabaseClient, demand: any) {
+    await supabase.from('Requests').update({ status: 'ACCEPTED' }).eq('id', demand.id);
+    /*await supabase
+      .from('Means')
+      .select('id')
+      .eq('is_available', true)
+      .eq('mean_type', demand.mean_type)
+      .then(({ data }) => {
+        if (data) {
+          setAffectedId(data[0].id);
+        }
+      });
+    if (affectedId > -1) {
+      await supabase.from('Interventionmeanslink').insert([
+        {
+          using_crm: true,
+          is_on_site: false,
+          request_date: demand.request_date,
+          interv_id: demand.interv_id,
+          interv_type: demand.interv_type,
+          mean_id: affectedId,
+        },
+      ]);
+    } else {
+      console.log('No available mean.');
+    }*/
+  }
+
+  async function refuseDemand(supabase: SupabaseClient, id: number) {
+    await supabase.from('Requests').update({ status: 'REFUSED' }).eq('id', id);
+  }
 
   return (
     <VStack flex="1" p="24px" alignItems="center" justifyContent="center">
@@ -61,19 +88,22 @@ export default function DemandManagement(props: demandProps) {
               </VStack>
             </HStack>
           </Box>
-          {props.demandList.map((mydemand) => (
+          {props.demandList.map((mydemand: any) => (
             <Box>
               <HStack justifyContent="space-between">
                 <VStack>
-                  <Text>{mydemand.val},</Text>
+                  <Text>{mydemand.mean_type},</Text>
 
-                  <Text>demandé à {mydemand.hour}</Text>
+                  <Text>
+                    demandé le {mydemand.request_date.split('T')[0].split('-').join('/')} à{' '}
+                    {mydemand.request_date.split('T')[1].split('+')[0].split(':').join('')}
+                  </Text>
                 </VStack>
                 <VStack>
                   <HStack justifyContent="space-between">
                     <VStack>
                       <IconButton
-                        onPress={(event) => validDemand(mydemand.id)}
+                        onPress={(event) => validDemand(props.supabase, mydemand)}
                         colorScheme="green"
                         borderRadius="full"
                         icon={<CheckIcon />}
@@ -81,7 +111,7 @@ export default function DemandManagement(props: demandProps) {
                     </VStack>
                     <VStack>
                       <IconButton
-                        onPress={(event) => refuseDemand(mydemand.id)}
+                        onPress={(event) => refuseDemand(props.supabase, mydemand.id)}
                         colorScheme="red"
                         borderRadius="full"
                         icon={<CloseIcon />}
