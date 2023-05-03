@@ -1,24 +1,31 @@
 import React from 'react-native';
 import Svg, { Circle } from 'react-native-svg';
 
-type Props = {
+import { SizeType } from '../../../types/global-types';
+
+type CustomCircleProps = {
   color: string;
   strokeStyle?: boolean;
   fill?: boolean;
-  radius?: number;
+  size?: SizeType;
 };
 
-function CustomCircle({ color, strokeStyle = false, fill = false, radius = 10 }: Props) {
+function CustomCircle({
+  color,
+  strokeStyle,
+  fill,
+  size = { height: 100, width: 100 },
+}: CustomCircleProps) {
   return (
-    <Svg height="100" width="100" fill="black">
+    <Svg height={size.height} width={size.width} fill="none">
       <Circle
-        cx="50"
-        cy="50"
-        r={radius}
-        stroke={color}
+        cx="50%"
+        cy="50%"
+        r="25%"
+        stroke={fill ? 'black' : color}
         strokeWidth="5"
         fill={fill ? color : 'none'}
-        strokeDasharray={strokeStyle ? '5,5' : 'none'}
+        strokeDasharray={strokeStyle ? '8' : 'none'}
       />
     </Svg>
   );

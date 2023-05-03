@@ -3,7 +3,7 @@ import Svg, { Rect } from 'react-native-svg';
 
 import { SizeType } from '../../../types/global-types';
 
-type CustmRectangleProps = {
+type CustomRectangleProps = {
   color: string;
   strokeStyle?: boolean;
   fill?: boolean;
@@ -15,7 +15,7 @@ function CustomRectangle({
   strokeStyle,
   fill,
   size = { height: 20, width: 20 },
-}: CustmRectangleProps) {
+}: CustomRectangleProps) {
   return (
     <Svg height={size.height} width={size.width} fill="none">
       <Rect
@@ -25,7 +25,7 @@ function CustomRectangle({
         x="0"
         strokeWidth="5"
         stroke={color}
-        strokeDasharray={strokeStyle ? 5 : undefined}
+        strokeDasharray={strokeStyle ? 5 : 'none'}
         fill={fill ? color : 'none'}
       />
     </Svg>
