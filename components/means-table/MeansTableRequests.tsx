@@ -1,10 +1,10 @@
-import { Entypo } from '@expo/vector-icons';
 import { Box, Heading, VStack, Divider, HStack, Text, ScrollView } from 'native-base';
 
-import { Mean } from '../../types/mean-types';
+import ConfirmationModalRequest from './ConfirmationModalRequest';
+import { Request } from '../../types/request-types';
 
 type MeansTableProps = {
-  means: Mean[];
+  means: Request[];
 };
 
 export default function MeansTableRequests({ means }: MeansTableProps) {
@@ -33,7 +33,7 @@ export default function MeansTableRequests({ means }: MeansTableProps) {
           <Text flex={1} bold fontSize="20px" />
         </HStack>
         <ScrollView h="50%">
-          {means?.map((mean: any, i) =>
+          {means?.map((mean: Request, i) =>
             mean.status === 'ACCEPTED' ? null : (
               <HStack
                 key={i}
@@ -51,7 +51,7 @@ export default function MeansTableRequests({ means }: MeansTableProps) {
                 </Text>
                 <Text flex={2}>{mean.status}</Text>
                 <Text flex={1}>
-                  {mean.status === 'PENDING' ? <Entypo name="cross" size={24} color="black" /> : ''}
+                  {mean.status === 'PENDING' ? <ConfirmationModalRequest id={mean.id} /> : ''}
                 </Text>
               </HStack>
             )

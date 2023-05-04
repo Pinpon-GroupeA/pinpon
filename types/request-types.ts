@@ -3,8 +3,8 @@ import { MeanType } from './mean-types';
 export type Request = {
   id: number;
   status: RequestStatus;
-  requestDate: string;
-  requestedMeanType: MeanType;
+  request_date: string;
+  mean_type: MeanType;
 };
 
-export type RequestStatus = 'PENDING' | 'ACCEPTED' | 'REJECTED';
+export type RequestStatus = 'PENDING' | 'ACCEPTED' | 'REFUSED';

@@ -7,10 +7,10 @@ import React, { useState } from 'react';
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 type ModalOpen = {
-  crm: Text;
-  sector: Text;
-  available: Text;
-  id: number;
+  crm: string;
+  sector: string;
+  available: string;
+  id: string;
 };
 
 export default function ConfirmationModal({ crm, sector, available, id }: ModalOpen) {
@@ -91,26 +91,26 @@ export default function ConfirmationModal({ crm, sector, available, id }: ModalO
   );
 }
 
-function getlocalTime(){
+function getlocalTime() {
   const tzoffset = new Date().getTimezoneOffset() * 60000;
   return new Date(Date.now() - tzoffset).toISOString().slice(0, -1);
 }
 
-async function sendCRM(id: number) {
+async function sendCRM(id: string) {
   await supabase
     .from('interventions_means_link')
     .update({ crm_arrival: getlocalTime() })
     .eq('id', id);
 }
 
-async function sendSector(id: number) {
+async function sendSector(id: string) {
   await supabase
     .from('interventions_means_link')
     .update({ sector_arrival: getlocalTime() })
     .eq('id', id);
 }
 
-async function sendAvailable(id: number) {
+async function sendAvailable(id: string) {
   await supabase
     .from('interventions_means_link')
     .update({ available_at: getlocalTime() })
