@@ -1,7 +1,7 @@
 import { Coordinates, DangerCode } from './types';
 
 export type Mean = {
-  id: string;
+  id: number;
   label: string;
   requestTime: string;
   schduledArrivalTime: string;
@@ -9,8 +9,15 @@ export type Mean = {
   onSiteArrivalTime: string;
   availableTime: string;
   location: Coordinates;
-  meanType: MeanType;
+  meanType: MeanTypeEnum;
   dangerCode: DangerCode;
 };
 
-export type MeanType = 'VSAV' | 'FPT' | 'VLCG' | 'OTHER';
+export type MeanTypeEnum = 'VSAV' | 'FPT' | 'VLCG' | 'OTHER';
+
+export type MeanType = {
+  id: number;
+  mean_type: MeanTypeEnum;
+  label: string;
+  firefighter_related: boolean;
+};

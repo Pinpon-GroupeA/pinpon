@@ -1,7 +1,7 @@
 import { Box, Divider, HStack, Text, VStack } from 'native-base';
 import React from 'react';
 
-import { Mean } from '../../types/mean-types';
+import { Mean } from '../../../types/mean-types';
 
 type MeansTableProps = {
   means: Mean[];

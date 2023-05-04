@@ -1,13 +1,12 @@
 import { Coordinates, DangerCode } from './types';
 
 export type Intervention = {
-  id: string;
-  created_at: string;
-  is_ongoing: boolean;
-  danger_code: DangerCode;
-  status_intervention: InterventionStatus;
-  address?: string;
-  customerName?: string;
+  id: number;
+  date: string;
+  isOngoing: boolean;
+  dangerCode: DangerCode;
+  address: string;
+  customerName: string;
   location: Coordinates;
 };
 
