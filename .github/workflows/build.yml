@@ -21,9 +21,15 @@ on:
           - development
           - preview
           - production
+      environment:
+        type: choice
+        description: Environment to use
+        options:
+          - production
 jobs:
   build:
     runs-on: ${{ github.event.inputs.os }}
+    environment: ${{ github.event.inputs.environment }}
     strategy:
       matrix:
         node: [16.x]
@@ -63,5 +69,7 @@ jobs:
       - name: 📱 Upload binary
         uses: actions/upload-artifact@v2
         with:
+          SUPABASE_URL: ${{ vars.SUPABASE_URL }}
+          SUPABASE_ANON_TOKEN: ${{ secrets.SUPABASE_ANON_KEY }}
           name: app-${{ github.event.inputs.platform }}
           path: app-build
