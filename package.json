@@ -9,8 +9,8 @@
     "web": "expo start --web",
     "lint": "eslint \"**/*.{ts,tsx,js,jsx}\"",
     "test": "jest --passWithNoTests",
-    "format:check": "prettier --check \"**/*.+(js|jsx|ts|tsx|json|css|md)\"",
-    "format:fix": "prettier --write \"**/*.+(js|jsx|ts|tsx|json|css|md)\""
+    "format:check": "prettier --check \"**/*.+(ts|tsx|json|css|md)\"",
+    "format:fix": "prettier --write \"**/*.+(ts|tsx|json|css|md)\""
   },
   "dependencies": {
     "@expo/config-plugins": "~6.0.0",

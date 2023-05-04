@@ -2,8 +2,8 @@ import { AntDesign } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { Box, Fab, FlatList, Heading, Icon, VStack } from 'native-base';
 
-import { Intervention as InterventionType } from '../../types/intervention-types';
 import Intervention from './Intervention';
+import { Intervention as InterventionType } from '../../types/intervention-types';
 
 type InterventionListProps = {
   interventions: InterventionType[];

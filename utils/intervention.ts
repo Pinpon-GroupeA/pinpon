@@ -1,5 +1,5 @@
-import { Intervention, InterventionStatus } from '../types/intervention-types';
 import { supabase } from './supabase';
+import { Intervention, InterventionStatus } from '../types/intervention-types';
 
 export type CreateInterventionData = Omit<Intervention, 'id' | 'created_at' | 'is_ongoing'>;
 
