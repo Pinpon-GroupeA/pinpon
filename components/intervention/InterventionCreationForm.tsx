@@ -1,17 +1,21 @@
 import { MaterialIcons } from '@expo/vector-icons';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { useRouter } from 'expo-router';
+import debounce from 'lodash.debounce';
 import { Button, FormControl, Heading, Icon, Input, Select, VStack } from 'native-base';
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 import { DangerCode } from '../../types/types';
+import { searchCoordinates } from '../../utils/geocoding';
 import { CreateInterventionData, createIntervention } from '../../utils/intervention';
 import ErrorModal from '../ErrorModal';
 
 type FormInputs = {
   dangerType: DangerCode;
-  address?: string;
+  street?: string;
+  postalCode: string;
+  city: string;
   longitude: number;
   latitude: number;
 };
@@ -21,15 +25,44 @@ export default function InterventionCreationForm() {
   const {
     control,
     handleSubmit,
+    getValues,
+    setValue,
+    reset,
     formState: { errors },
-  } = useForm<FormInputs>();
+  } = useForm<FormInputs>({
+    defaultValues: {
+      dangerType: undefined,
+      street: '',
+      latitude: NaN,
+      longitude: NaN,
+    },
+  });
   const [error, setError] = useState('');
 
-  const onSubmit = async ({ dangerType, address, latitude, longitude }: FormInputs) => {
+  const { refetch } = useQuery(['geocoding'], {
+    queryFn: () => {
+      const { street, postalCode, city } = getValues();
+
+      if (!street || !postalCode || !city)
+        return Promise.resolve({ latitude: NaN, longitude: NaN });
+
+      return searchCoordinates({ street, city, postalcode: postalCode });
+    },
+    enabled: false,
+  });
+
+  const onSubmit = async ({
+    dangerType,
+    street,
+    postalCode,
+    city,
+    latitude,
+    longitude,
+  }: FormInputs) => {
     try {
       await mutateAsync({
         danger_code: dangerType,
-        address,
+        address: `${street} ${postalCode} ${city}`,
         status_intervention: 'PENDING',
         location: {
           longitude,
@@ -46,7 +79,20 @@ export default function InterventionCreationForm() {
     // ToastAndroid.show('intervention créée', ToastAndroid.SHORT);
   };
 
-  const { mutateAsync } = useMutation({
+  const getAddressCoordinates = async () => {
+    const { data } = await refetch();
+
+    if (data?.latitude && data?.longitude) {
+      setValue('latitude', data.latitude);
+      setValue('longitude', data.longitude);
+    }
+  };
+
+  const debouncedGetAddressCoordinates = useCallback(debounce(getAddressCoordinates, 500), []);
+
+  useEffect(() => () => debouncedGetAddressCoordinates.cancel(), [getValues]);
+
+  const { mutateAsync, isLoading } = useMutation({
     mutationFn: (data: CreateInterventionData) => createIntervention(data),
   });
 
@@ -88,24 +134,79 @@ export default function InterventionCreationForm() {
         />
         <FormControl.ErrorMessage>{errors.dangerType?.message}</FormControl.ErrorMessage>
       </FormControl>
-      <FormControl isInvalid={'address' in errors}>
-        <FormControl.Label>Adresse</FormControl.Label>
+      <FormControl isInvalid={'street' in errors}>
+        <FormControl.Label>Rue</FormControl.Label>
         <Controller
           control={control}
-          name="address"
+          name="street"
           render={({ field: { onChange, onBlur } }) => (
-            <Input onBlur={onBlur} onChangeText={onChange} />
+            <Input
+              onBlur={onBlur}
+              onChangeText={(newValue) => {
+                onChange(newValue);
+
+                if (newValue && newValue !== '') {
+                  debouncedGetAddressCoordinates();
+                }
+              }}
+            />
           )}
         />
-        <FormControl.ErrorMessage>{errors.address?.message}</FormControl.ErrorMessage>
+        <FormControl.ErrorMessage>{errors.street?.message}</FormControl.ErrorMessage>
+      </FormControl>
+      <FormControl isRequired isInvalid={'postalCode' in errors}>
+        <FormControl.Label>Code postal</FormControl.Label>
+        <Controller
+          control={control}
+          name="postalCode"
+          render={({ field: { onChange, onBlur } }) => (
+            <Input
+              inputMode="numeric"
+              onBlur={onBlur}
+              onChangeText={(newValue) => {
+                onChange(newValue);
+
+                if (newValue && newValue !== '') {
+                  debouncedGetAddressCoordinates();
+                }
+              }}
+            />
+          )}
+        />
+        <FormControl.ErrorMessage>{errors.postalCode?.message}</FormControl.ErrorMessage>
+      </FormControl>
+      <FormControl isRequired isInvalid={'city' in errors}>
+        <FormControl.Label>Ville</FormControl.Label>
+        <Controller
+          control={control}
+          name="city"
+          render={({ field: { onChange, onBlur } }) => (
+            <Input
+              onBlur={onBlur}
+              onChangeText={(newValue) => {
+                onChange(newValue);
+
+                if (newValue && newValue !== '') {
+                  debouncedGetAddressCoordinates();
+                }
+              }}
+            />
+          )}
+        />
+        <FormControl.ErrorMessage>{errors.city?.message}</FormControl.ErrorMessage>
       </FormControl>
       <FormControl isRequired isInvalid={'latitude' in errors}>
-        <FormControl.Label>Lattitude</FormControl.Label>
+        <FormControl.Label>Latitude</FormControl.Label>
         <Controller
           control={control}
           name="latitude"
-          render={({ field: { onChange, onBlur } }) => (
-            <Input onBlur={onBlur} onChangeText={onChange} inputMode="numeric" />
+          render={({ field: { value, onChange, onBlur } }) => (
+            <Input
+              value={isNaN(value) ? '' : String(value)}
+              onBlur={onBlur}
+              onChangeText={onChange}
+              inputMode="numeric"
+            />
           )}
         />
         <FormControl.ErrorMessage>{errors.latitude?.message}</FormControl.ErrorMessage>
@@ -115,19 +216,28 @@ export default function InterventionCreationForm() {
         <Controller
           control={control}
           name="longitude"
-          render={({ field: { onChange, onBlur } }) => (
-            <Input onBlur={onBlur} onChangeText={onChange} inputMode="numeric" />
+          render={({ field: { value, onChange, onBlur } }) => (
+            <Input
+              value={isNaN(value) ? '' : String(value)}
+              onBlur={onBlur}
+              onChangeText={onChange}
+              inputMode="numeric"
+            />
           )}
         />
         <FormControl.ErrorMessage>{errors.longitude?.message}</FormControl.ErrorMessage>
       </FormControl>
+      <Button mt="6" disabled={isLoading} colorScheme="teal" onPress={handleSubmit(onSubmit)}>
+        Créer
+      </Button>
       <Button
         mt="2"
-        // disabled={isLoading}
+        disabled={isLoading}
         colorScheme="teal"
-        onPress={handleSubmit(onSubmit)}
+        variant="outline"
+        onPress={() => reset()}
       >
-        Créer
+        Réinitialiser
       </Button>
       <ErrorModal message={error} isOpen={error !== ''} onClose={() => setError('')} />
     </VStack>

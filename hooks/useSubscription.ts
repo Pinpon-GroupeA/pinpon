@@ -1,3 +1,4 @@
+import { RealtimePostgresChangesPayload } from '@supabase/supabase-js';
 import { useEffect } from 'react';
 
 import { supabase } from '../utils/supabase';
@@ -9,7 +10,11 @@ type UseSubscriptionConfig = {
 
 const useSubscription = (
   { table, channel }: UseSubscriptionConfig,
-  callback: (payload: any) => void
+  callback: (
+    payload: RealtimePostgresChangesPayload<{
+      [key: string]: any;
+    }>
+  ) => void
 ) => {
   useEffect(() => {
     const interventions = supabase
