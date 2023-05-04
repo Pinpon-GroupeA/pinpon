@@ -26,6 +26,7 @@ on:
         description: Environment to use
         options:
           - production
+          - qualification
 jobs:
   build:
     runs-on: ${{ github.event.inputs.os }}
