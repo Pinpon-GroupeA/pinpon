@@ -8,29 +8,79 @@ import { usePathname } from 'expo-router';
 import { location } from '../../types/types';
 import {Mean} from '../../types/mean-types'
 import { Intervention } from '../../types/intervention-types';
+import { Danger } from '../../types/danger-types';
+
+
+const DangerList: Danger[]= [];
+
 function MapBackground() {
   const [markers, setMarkers] = useState<{coordinates: location;}[]>([]);
   
   const MeanList= [];
-  const DangerList = [];
   console.log('Début')
   //MeansLoading();
  //DangerLoading();
-  const intervention  = InitialRegion();
+
+ /** FONCTION recherche de la région initial
+  * 
+
+ // const intervention  = InitialRegion();
   let longitude=0;
   let latitude = 0;
-  //Fonction mais dangeureux  ? Problème d'undefined, a corriger
-  intervention.then((data) => {latitude = data?.location.latitude;
-  longitude = data?.location.longitude});
+  //Fonctionne mais dangeureux  ? Problème d'undefined, a corriger
+//  intervention.then((data) => {latitude = data?.location.latitude;
+  //longitude = data?.location.longitude});
   const initialRegion = {
-    latitude: latitude,
-    longitude: longitude,
+    latitude: longitude,
+    longitude: latitude,
     latitudeDelta: 0.02,
     longitudeDelta: 0.01,
   };
+  */
+
+  const initialRegion = {
+    latitude: 0,
+    longitude: 0,
+    latitudeDelta: 0.02,
+    longitudeDelta: 0.01,
+  };
+  //FONCTION INSERT DANGER
+  /**const dangerTest:  Danger = {
+    location: {
+      latitude: 0,
+      longitude: 0
+    },
+    DangerType: 'INC',
+    InterventionId: 2
+  }
+  InsertDanger(dangerTest)
+  */
+
+
+ /** FONCTION UPDATE localisation moyen
+  * 
+  * const meanTest: Mean = {
+   id: '1',
+   label: '',
+   requestTime: '',
+   schduledArrivalTime: '',
+   CRMArrivalTime: '',
+   onSiteArrivalTime: '',
+   availableTime: '',
+   location: {
+     latitude: 3,
+     longitude: 3
+   },
+   meanType: 'VSAV',
+   dangerCode: 'INC'
+ }
+ UpdateMoyens(meanTest)
+ */
+ 
+
   const handlePress = (event: MapPressEvent) => {
     const { latitude, longitude } = event.nativeEvent.coordinate;
-    
+       
       setMarkers([
         ...markers,
         {coordinates: { latitude, longitude }},
@@ -101,6 +151,26 @@ async function DangerLoading() {
     console.log("6")
     console.log(data)
   }
+  // il faut ajouter les dangers à la dangerList
 }
 
+async function UpdateMoyens(Mean: Mean){
+  const {error} = await supabase.from(Tables.MEANS).update({location: Mean.location}).eq(Columns.ID,Mean.id)
+  if (error) {
+    console.log(error)
+
+  } else {
+    console.log("okokokokok")
+  }
+}
+async function InsertDanger(Danger: Danger) {
+  const {error} = await supabase.from(Tables.INTERVENTIONS_DANGER_LINK).insert({location: Danger.location, danger_code: Danger.DangerType,intervention_id: Danger.InterventionId});
+  
+  if (error) {
+    console.log(error)
+  } else {
+    DangerList.push(Danger)
+  }
+  console.log(DangerList)
+}
 export default MapBackground;
