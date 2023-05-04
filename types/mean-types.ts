@@ -19,9 +19,10 @@ export type Mean = {
   id: number;
   label: string;
   is_available: boolean;
-  mean_type: MeanType;
   location: Coordinates;
   firefighter_related: string;
+  mean_type: MeanTypeEnum;
+  danger_code: DangerCode;
 };
 
 export type OtherMean = {
@@ -32,6 +33,13 @@ export type OtherMean = {
   category: MeanCategory;
 };
 
-export type MeanType = 'VSAV' | 'FPT' | 'VLCG' | 'OTHER';
-
 export type MeanCategory = 'PS' | 'SD' | 'ZA';
+
+export type MeanTypeEnum = 'VSAV' | 'FPT' | 'VLCG' | 'OTHER';
+
+export type MeanType = {
+  id: number;
+  mean_type: MeanTypeEnum;
+  label: string;
+  firefighter_related: boolean;
+};
