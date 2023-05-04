@@ -36,8 +36,7 @@ export default function DemandManagement(props: demandProps) {
   const typeColor = getTypeColor(props.type);
 
   async function validDemand(supabase: SupabaseClient, demand: any) {
-    await supabase.from('Requests').update({ status: 'ACCEPTED' }).eq('id', demand.id);
-    /*await supabase
+    await supabase
       .from('Means')
       .select('id')
       .eq('is_available', true)
@@ -45,22 +44,35 @@ export default function DemandManagement(props: demandProps) {
       .then(({ data }) => {
         if (data) {
           setAffectedId(data[0].id);
+          console.log('début insertion de ', data[0].id);
+          supabase
+            .from('Interventionmeanslink')
+            .insert([
+              {
+                using_crm: true,
+                is_on_site: false,
+                request_date: demand.request_date,
+                interv_id: demand.id_inter,
+                mean_id: data[0].id,
+              },
+            ])
+            .then((response) => {
+              supabase
+                .from('Means')
+                .update({ is_available: false })
+                .eq('id', data[0].id)
+                .then((subresponse) => console.log('reservation : ', subresponse));
+              supabase
+                .from('Requests')
+                .update({ status: 'ACCEPTED' })
+                .eq('id', demand.id)
+                .then((subresponse) => console.log('validation : ', subresponse));
+              console.log('fin insertion : ', response);
+            });
+        } else {
+          console.log('No available mean.');
         }
       });
-    if (affectedId > -1) {
-      await supabase.from('Interventionmeanslink').insert([
-        {
-          using_crm: true,
-          is_on_site: false,
-          request_date: demand.request_date,
-          interv_id: demand.interv_id,
-          interv_type: demand.interv_type,
-          mean_id: affectedId,
-        },
-      ]);
-    } else {
-      console.log('No available mean.');
-    }*/
   }
 
   async function refuseDemand(supabase: SupabaseClient, id: number) {
