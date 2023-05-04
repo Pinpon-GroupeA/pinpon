@@ -30,6 +30,7 @@ export default function InterventionCreationForm() {
       await mutateAsync({
         danger_code: dangerType,
         address,
+        status_intervention: 'PENDING',
         location: {
           longitude,
           latitude,
@@ -42,7 +43,7 @@ export default function InterventionCreationForm() {
 
     router.push('/intervention');
 
-    // ToastAndroid.show('Intervention créée', ToastAndroid.SHORT);
+    // ToastAndroid.show('intervention créée', ToastAndroid.SHORT);
   };
 
   const { mutateAsync } = useMutation({
