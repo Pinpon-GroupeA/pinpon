@@ -1,8 +1,6 @@
-import { MaterialIcons } from '@expo/vector-icons';
-import { Box, Icon, IconButton, ScrollView } from 'native-base';
+import { Box, ScrollView, Text } from 'native-base';
 import React from 'react';
 
-import ColorSelection from './ColorSelection';
 import PressableSymbol from './PressableSymbol';
 import CustomInvertedTriangle from './symbols/CustomInvertedTriangle';
 import CustomStar from './symbols/CustomStar';
@@ -15,41 +13,38 @@ function SymbolList() {
   const setSelectedSymbol = useAppStore((state) => state.setSelectedSymbol);
   const drawingsColor = useAppStore((state) => state.drawingsColor);
 
-  const [openModal, setOpenModal] = React.useState<boolean>(false);
-
-  const handleSymbolPress = (symbolName: SymbolsType) => {
-    if (selectedSymbol === symbolName) {
+  const handleSymbolPress = (symbolType: SymbolsType) => {
+    if (selectedSymbol?.symboleType === symbolType) {
       setSelectedSymbol(undefined);
     } else {
-      setSelectedSymbol(symbolName);
+      setSelectedSymbol({ symboleType: symbolType });
     }
-  };
-
-  const handleColorSecletionButtonPress = () => {
-    setOpenModal(true);
   };
 
   return (
     <Box>
-      <ColorSelection isOpen={openModal} onClose={() => setOpenModal(false)} />
-      <IconButton
-        bgColor="#19837C"
-        margin={1}
-        icon={<Icon as={MaterialIcons} name="color-lens" size={5} color="black" />}
-        onPress={handleColorSecletionButtonPress}
-      />
+      <Text alignSelf="center">Autres moyens</Text>
       <ScrollView flexDirection="column">
         <PressableSymbol
           type="InvertedTriangle"
           onPress={() => handleSymbolPress('InvertedTriangle')}
+          darkBackground={selectedSymbol?.symboleType === 'InvertedTriangle'}
         >
-          <CustomInvertedTriangle color={drawingsColor} />
+          <CustomInvertedTriangle color={drawingsColor} size={{ height: 30, width: 30 }} />
         </PressableSymbol>
-        <PressableSymbol type="Triangle" onPress={() => handleSymbolPress('Triangle')}>
-          <CustomTriangle color={drawingsColor} />
+        <PressableSymbol
+          type="Triangle"
+          onPress={() => handleSymbolPress('Triangle')}
+          darkBackground={selectedSymbol?.symboleType === 'Triangle'}
+        >
+          <CustomTriangle color={drawingsColor} size={{ height: 30, width: 30 }} />
         </PressableSymbol>
-        <PressableSymbol type="Star" onPress={() => handleSymbolPress('Star')}>
-          <CustomStar color={drawingsColor} />
+        <PressableSymbol
+          type="Star"
+          onPress={() => handleSymbolPress('Star')}
+          darkBackground={selectedSymbol?.symboleType === 'Star'}
+        >
+          <CustomStar color={drawingsColor} size={{ height: 30, width: 30 }} />
         </PressableSymbol>
       </ScrollView>
     </Box>

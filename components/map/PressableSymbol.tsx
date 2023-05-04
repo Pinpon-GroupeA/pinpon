@@ -1,20 +1,17 @@
 import { Pressable } from 'native-base';
 
-import { useAppStore } from '../../stores/store';
-
 type CustomMarkerProps = {
   children: React.ReactNode;
   onPress: () => void;
   type: string;
+  darkBackground?: boolean;
 };
 
-function PressableSymbol({ children, onPress, type }: CustomMarkerProps) {
-  const selectedSymbol = useAppStore((state) => state.selectedSymbol);
-
+function PressableSymbol({ children, onPress, type, darkBackground }: CustomMarkerProps) {
   return (
     <Pressable
       padding={3}
-      bgColor={selectedSymbol === type ? 'gray.400' : undefined}
+      bgColor={darkBackground ? 'gray.400' : undefined}
       alignItems="center"
       onPress={onPress}
     >

@@ -1,7 +1,7 @@
 import { MeanType } from './mean-types';
 
 export type Request = {
-  id: string;
+  id: number;
   status: RequestStatus;
   requestDate: string;
   requestedMeanType: MeanType;

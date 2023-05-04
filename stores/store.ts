@@ -1,12 +1,18 @@
 import { create } from 'zustand';
 
+import { SymbolsType } from '../types/global-types';
 import { UserType } from '../types/user';
+
+type SelectedSymbol = {
+  symboleType: SymbolsType;
+  id?: number;
+};
 
 type AppStoreType = {
   role: UserType;
   setRole: (role: UserType) => void;
-  selectedSymbol?: string;
-  setSelectedSymbol: (selectedSymbol?: string) => void;
+  selectedSymbol?: SelectedSymbol;
+  setSelectedSymbol: (selectedSymbol?: SelectedSymbol) => void;
   drawingsColor: string;
   setDrawingsColor: (drawingsDangerCode: string) => void;
 };

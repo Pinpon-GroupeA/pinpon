@@ -13,8 +13,15 @@ export const getDangerCodeColor = (dangerCode: DangerCode) => {
 export const dangerCodeColors: { dangerCode: DangerCode; color: string }[] = [
   { dangerCode: 'INC', color: '#FF0000' },
   { dangerCode: 'SAP', color: '#00EB17' },
-  { dangerCode: 'EAU', color: '#2D3ED3' },
-  { dangerCode: 'PART', color: '#FF8F28' },
-  { dangerCode: 'COM', color: '#A721E5' },
   { dangerCode: 'OTHER', color: 'black' },
 ];
+
+export const findDangerCodeFromColor = (color: string) => {
+  const dangerCodeColor = dangerCodeColors.find(
+    (dangerCodeColor) => dangerCodeColor.color === color
+  );
+  if (!dangerCodeColor) {
+    return 'OTHER';
+  }
+  return dangerCodeColor.dangerCode;
+};

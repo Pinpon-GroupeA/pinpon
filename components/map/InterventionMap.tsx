@@ -1,15 +1,33 @@
 import { useQuery } from '@tanstack/react-query';
+import { useSearchParams } from 'expo-router';
 import { Text } from 'native-base';
-import { useState } from 'react';
 import { MapPressEvent, Marker } from 'react-native-maps';
 
 import CustomCircle from './symbols/CustomCircle';
+import FireFighterVehicle from './symbols/FireFighterVehicle';
 import { useAppStore } from '../../stores/store';
-import { Coordinates, SymbolsType } from '../../types/global-types';
-import { selectRightSymbol } from '../../utils/symbols-utils';
+import { Coordinates } from '../../types/global-types';
+import { InterventionMean, OtherMean } from '../../types/mean-types';
+import { findDangerCodeFromColor, getDangerCodeColor } from '../../utils/danger-code';
+import { castInterventionIdAsNumber } from '../../utils/intervention';
+import { createOtherMean, updateMeanDangerCode, updateMeanLocation } from '../../utils/means';
+import {
+  getOtherMeanFromSymbolTypeAndColorAndLocationAndInterventionId,
+  selectRightSymbol,
+} from '../../utils/symbols-utils';
 import MapBackground from '../MapBackground';
 
-function InterventionMap() {
+type InterventionMapProps = {
+  fireFighterMeans: InterventionMean[];
+  otherMeans: OtherMean[];
+  interventionLocation: Coordinates;
+};
+
+function InterventionMap({
+  fireFighterMeans,
+  otherMeans,
+  interventionLocation,
+}: InterventionMapProps) {
   const { error, data } = useQuery({
     queryKey: ['repoData'],
     queryFn: () =>
@@ -18,22 +36,35 @@ function InterventionMap() {
       ).then((res) => res.json()),
   });
 
+  const { id: interventionId } = useSearchParams();
+
   const selectedSymbol = useAppStore((state) => state.selectedSymbol);
   const setSelectedSymbol = useAppStore((state) => state.setSelectedSymbol);
   const drawingsColor = useAppStore((state) => state.drawingsColor);
-
-  const [markers, setMarkers] = useState<
-    { coordinates: Coordinates; symbol: SymbolsType; color: string }[]
-  >([]);
 
   const handlePress = (event: MapPressEvent) => {
     const { latitude, longitude } = event.nativeEvent.coordinate;
 
     if (selectedSymbol) {
-      setMarkers([
-        ...markers,
-        { coordinates: { latitude, longitude }, symbol: selectedSymbol, color: drawingsColor },
-      ]);
+      if (selectedSymbol.symboleType && selectedSymbol.symboleType !== 'FireFighterVehicle') {
+        createOtherMean(
+          getOtherMeanFromSymbolTypeAndColorAndLocationAndInterventionId(
+            selectedSymbol.symboleType,
+            drawingsColor,
+            {
+              latitude,
+              longitude,
+            },
+            castInterventionIdAsNumber(interventionId)
+          )
+        );
+      } else if (selectedSymbol.id) {
+        updateMeanLocation(selectedSymbol.id, {
+          latitude,
+          longitude,
+        });
+        updateMeanDangerCode(selectedSymbol.id, findDangerCodeFromColor(drawingsColor));
+      }
       setSelectedSymbol(undefined);
     }
   };
@@ -41,7 +72,7 @@ function InterventionMap() {
   if (error) return <Text>Error</Text>;
 
   return (
-    <MapBackground handlePress={handlePress}>
+    <MapBackground handlePress={handlePress} initialRegion={interventionLocation}>
       {data?.records.map((item: any) => (
         <Marker
           key={item.recordid}
@@ -54,9 +85,30 @@ function InterventionMap() {
           <CustomCircle size={{ height: 30, width: 30 }} color="#2D3ED3" fill />
         </Marker>
       ))}
-      {markers.map((marker, index) => (
-        <Marker key={index} coordinate={marker.coordinates} tappable={false}>
-          {selectRightSymbol(marker.symbol, marker.color)}
+      {fireFighterMeans.map((mean) => (
+        <Marker
+          key={mean.id}
+          coordinate={{
+            latitude: mean.means.location.latitude,
+            longitude: mean.means.location.longitude,
+          }}
+        >
+          <FireFighterVehicle
+            color={getDangerCodeColor(mean.danger_code)}
+            name={mean.means.label}
+            dashed={!mean.is_on_site}
+          />
+        </Marker>
+      ))}
+      {otherMeans.map((mean) => (
+        <Marker
+          key={mean.id}
+          coordinate={{
+            latitude: mean.location.latitude,
+            longitude: mean.location.longitude,
+          }}
+        >
+          {selectRightSymbol(mean.category, mean.danger_code)}
         </Marker>
       ))}
     </MapBackground>
