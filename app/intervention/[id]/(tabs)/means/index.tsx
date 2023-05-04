@@ -1,6 +1,7 @@
 import { SUPABASE_URL, SUPABASE_ANON_KEY } from '@env';
 import { createClient } from '@supabase/supabase-js';
 import { useQuery } from '@tanstack/react-query';
+import { useSearchParams } from 'expo-router';
 import { Spinner, VStack } from 'native-base';
 
 import MeansTable from '../../../../../components/means-table/MeansTable';
@@ -11,8 +12,9 @@ import { Mean } from '../../../../../types/mean-types';
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 export default function Means() {
+  const { id } = useSearchParams();
   const { data: request, isLoading } = useQuery<Mean[]>(['requests'], async (): Promise<Mean[]> => {
-    const { data, error } = await supabase.from('Requests').select('*');
+    const { data, error } = await supabase.from('Requests').select('*').eq('id_inter', id);
 
     if (error) {
       throw new Error(error.message);
@@ -22,7 +24,10 @@ export default function Means() {
   });
 
   const { data: dataInter } = useQuery<Mean[]>(['intervention'], async (): Promise<Mean[]> => {
-    const { data, error } = await supabase.from('interventions_means_link').select('*');
+    const { data, error } = await supabase
+      .from('interventions_means_link')
+      .select('*')
+      .eq('intervention_id', id);
 
     if (error) {
       throw new Error(error.message);
