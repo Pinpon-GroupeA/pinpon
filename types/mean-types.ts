@@ -1,4 +1,4 @@
-import { Coordinates, DangerCode } from './types';
+import { location, DangerCode } from './types';
 
 export type Mean = {
   id: string;
@@ -8,7 +8,7 @@ export type Mean = {
   CRMArrivalTime: string;
   onSiteArrivalTime: string;
   availableTime: string;
-  location: Coordinates;
+  location: location;
   meanType: MeanType;
   dangerCode: DangerCode;
 };

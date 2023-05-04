@@ -1,4 +1,4 @@
-import { DangerCode, Coordinates } from './types';
+import { DangerCode, location } from './types';
 
 export type Intervention = {
   id: string;
@@ -7,5 +7,5 @@ export type Intervention = {
   dangerCode: DangerCode;
   address: string;
   customerName: string;
-  location: Coordinates;
+  location: location;
 };
