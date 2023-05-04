@@ -16,6 +16,7 @@ export type InterventionMean = {
 };
 
 export type Mean = {
+  request_date: string | number | Date;
   id: number;
   label: string;
   is_available: boolean;
