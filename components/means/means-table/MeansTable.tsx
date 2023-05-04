@@ -10,18 +10,15 @@ type MeansTableProps = {
 };
 
 function getDate(date: string) {
-  // eslint-disable-next-line radix
-  let hour = parseInt(date.slice(11, 13), undefined);
-  // eslint-disable-next-line radix
-  let min = parseInt(date.slice(14, 16), undefined);
+  let hour = parseInt(date.slice(11, 13), 2);
+  let min = parseInt(date.slice(14, 16), 2);
   let hourS = '';
   let minS = '';
   min += 20;
   if (min > 59) {
     min = min - 60;
     hour++;
-    // eslint-disable-next-line eqeqeq
-    if (hour == 24) {
+    if (hour === 24) {
       hour = 0;
     }
   }
@@ -35,7 +32,6 @@ function getDate(date: string) {
   if (hour < 10) {
     hourS = '0' + hour.toString();
   } else {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     hourS = hour.toString();
   }
 
@@ -78,7 +74,7 @@ export default function MeansTable({ means }: MeansTableProps) {
           <Text flex={1} bold fontSize="20px" />
         </HStack>
         <ScrollView h="50%">
-          {means.map((mean, i) => (
+          {means.map((mean: Mean, i) => (
             <HStack
               key={i}
               divider={<Divider bg="black" />}
