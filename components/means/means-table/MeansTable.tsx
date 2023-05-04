@@ -1,4 +1,5 @@
-import { Box, Divider, HStack, Heading, Text, VStack } from 'native-base';
+import { Entypo } from '@expo/vector-icons';
+import { Box, Heading, Divider, HStack, Text, VStack, ScrollView } from 'native-base';
 import React from 'react';
 
 import { Mean } from '../../../types/mean-types';
@@ -7,13 +8,46 @@ type MeansTableProps = {
   means: Mean[];
 };
 
+function getDate(date: string) {
+  // eslint-disable-next-line radix
+  let hour = parseInt(date.slice(11, 13), undefined);
+  // eslint-disable-next-line radix
+  let min = parseInt(date.slice(14, 16), undefined);
+  let hourS = '';
+  let minS = '';
+  min += 20;
+  if (min > 59) {
+    min = min - 60;
+    hour++;
+    // eslint-disable-next-line eqeqeq
+    if (hour == 24) {
+      hour = 0;
+    }
+  }
+
+  if (min < 10) {
+    minS = '0' + min.toString();
+  } else {
+    minS = min.toString();
+  }
+
+  if (hour < 10) {
+    hourS = '0' + hour.toString();
+  } else {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    hourS = hour.toString();
+  }
+
+  return hourS + minS;
+}
+
 export default function MeansTable({ means }: MeansTableProps) {
   return (
-    <Box>
+    <Box h="50%">
       <Heading pt={3} pb={8} size="2xl" color="#19837C">
         Tableau des moyens
       </Heading>
-      <VStack divider={<Divider bg="black" />} w="100%" h="100%">
+      <VStack divider={<Divider bg="black" />} w="100%">
         <HStack
           textAlign="center"
           divider={<Divider bg="black" />}
@@ -39,23 +73,43 @@ export default function MeansTable({ means }: MeansTableProps) {
           <Text flex={2} bold fontSize="20px">
             Disponible à
           </Text>
+          <Text flex={1} bold fontSize="20px" />
         </HStack>
-        {means.map((mean, i) => (
-          <HStack
-            key={i}
-            divider={<Divider bg="black" />}
-            h="8"
-            alignItems="center"
-            textAlign="center"
-          >
-            <Text flex={2}>{mean.label}</Text>
-            <Text flex={2}>{mean.requestTime}</Text>
-            <Text flex={2}>{mean.schduledArrivalTime}</Text>
-            <Text flex={2}>{mean.CRMArrivalTime}</Text>
-            <Text flex={2}>{mean.onSiteArrivalTime}</Text>
-            <Text flex={2}>{mean.availableTime}</Text>
-          </HStack>
-        ))}
+        <ScrollView h="50%">
+          {means.map((mean, i) => (
+            <HStack
+              key={i}
+              divider={<Divider bg="black" />}
+              h="8"
+              alignItems="center"
+              textAlign="center"
+            >
+              <Text flex={2}>{mean.danger_code}</Text>
+              <Text flex={2}>
+                {mean.request_date.slice(11, 13) + mean.request_date.slice(14, 16)}
+              </Text>
+              <Text flex={2}>{getDate(mean.request_date)}</Text>
+              <Text flex={2}>
+                {mean.crm_arrival == null
+                  ? ''
+                  : mean.crm_arrival.slice(11, 13) + mean.crm_arrival.slice(11, 13)}
+              </Text>
+              <Text flex={2}>
+                {mean.sector_arrival == null
+                  ? ''
+                  : mean.sector_arrival.slice(11, 13) + mean.sector_arrival.slice(14, 16)}
+              </Text>
+              <Text flex={2}>
+                {mean.available_at == null
+                  ? ''
+                  : mean.available_at.slice(11, 13) + mean.available_at.slice(11, 13)}
+              </Text>
+              <Text flex={1}>
+                <Entypo name="pencil" size={24} color="black" />
+              </Text>
+            </HStack>
+          ))}
+        </ScrollView>
       </VStack>
     </Box>
   );

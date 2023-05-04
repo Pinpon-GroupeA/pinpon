@@ -1,5 +1,44 @@
-import MeansPage from '../../../../../components/means/mean-request/MeansPage';
+import { SUPABASE_URL, SUPABASE_ANON_KEY } from '@env';
+import { createClient } from '@supabase/supabase-js';
+import { useQuery } from '@tanstack/react-query';
+import { Spinner, VStack } from 'native-base';
+
+import MeansTable from '../../../../../components/means-table/MeansTable';
+// eslint-disable-next-line import/namespace
+import MeansTableRequests from '../../../../../components/means-table/MeansTableRequests';
+import { Mean } from '../../../../../types/mean-types';
+
+const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 export default function Means() {
-  return <MeansPage />;
+  const { data: request, isLoading } = useQuery<Mean[]>(['requests'], async (): Promise<Mean[]> => {
+    const { data, error } = await supabase.from('Requests').select('*');
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    return data as Mean[];
+  });
+
+  const { data: dataInter } = useQuery<Mean[]>(['intervention'], async (): Promise<Mean[]> => {
+    const { data, error } = await supabase.from('interventions_means_link').select('*');
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    return data as Mean[];
+  });
+
+  if (isLoading) {
+    return <Spinner />;
+  }
+
+  return (
+    <VStack>
+      <MeansTable means={dataInter || []} />
+      <MeansTableRequests means={request || []} />
+    </VStack>
+  );
 }
