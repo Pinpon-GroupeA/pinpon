@@ -1,52 +1,13 @@
-import { Entypo } from '@expo/vector-icons';
-import {
-  Box,
-  Heading,
-  VStack,
-  Divider,
-  HStack,
-  Text,
-  ScrollView,
-  Modal,
-  Button,
-  FormControl,
-  Input,
-} from 'native-base';
+import { Box, Heading, VStack, Divider, HStack, Text, ScrollView } from 'native-base';
 import React from 'react';
 
+import ConfirmationModal from './ConfirmationModal';
 import ConfirmationModal from './ConfirmationModal';
 import { Mean } from '../../types/mean-types';
 
 type MeansTableProps = {
   means: Mean[];
 };
-
-const [modalVisible, setModalVisible] = React.useState(false);
-
-function customModal() {
-  return;
-  <Modal.Content>
-    <Modal.CloseButton />
-    <Modal.Header>Forgot Password?</Modal.Header>
-    <Modal.Body>
-      Enter email address and we'll send a link to reset your password.
-      <FormControl mt="3">
-        <FormControl.Label>Email</FormControl.Label>
-        <Input />
-      </FormControl>
-    </Modal.Body>
-    <Modal.Footer>
-      <Button
-        flex="1"
-        onPress={() => {
-          setModalVisible(false);
-        }}
-      >
-        Proceed
-      </Button>
-    </Modal.Footer>
-  </Modal.Content>;
-}
 
 function getDate(date: string) {
   // eslint-disable-next-line radix
@@ -91,6 +52,7 @@ export default function MeansTable({ means }: MeansTableProps) {
         <HStack
           textAlign="center"
           divider={<Divider bg="black" />}
+          divider={<Divider bg="black" />}
           h="8"
           alignItems="center"
           textDecoration="bold"
@@ -120,6 +82,7 @@ export default function MeansTable({ means }: MeansTableProps) {
             <HStack
               key={i}
               divider={<Divider bg="black" />}
+              divider={<Divider bg="black" />}
               h="8"
               alignItems="center"
               textAlign="center"
@@ -144,28 +107,12 @@ export default function MeansTable({ means }: MeansTableProps) {
                   ? ''
                   : mean.available_at.slice(11, 13) + mean.available_at.slice(11, 13)}
               </Text>
-              <Text flex={1}>
-                <Modal
-                  isOpen={modalVisible}
-                  onClose={() => setModalVisible(false)}
-                  avoidKeyboard
-                  justifyContent="flex-end"
-                  bottom="4"
-                  size="lg"
-                >
-                  customModal()
-                </Modal>
-                <VStack space={8} alignItems="center">
-                  <Button
-                    w="104"
-                    onPress={() => {
-                      setModalVisible(!modalVisible);
-                    }}
-                  >
-                    <Entypo name="pencil" size={24} color="black" />
-                  </Button>
-                </VStack>
-              </Text>
+              <ConfirmationModal
+                id={mean.id}
+                crm={mean.crm_arrival}
+                sector={mean.sector_arrival}
+                available={mean.available_at}
+              />
             </HStack>
           ))}
         </ScrollView>
