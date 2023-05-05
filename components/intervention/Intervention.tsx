@@ -1,6 +1,7 @@
 import { useRouter } from 'expo-router';
 import { Badge, Box, HStack, Pressable, Text } from 'native-base';
 
+import { useAppStore } from '../../stores/store';
 import { Intervention as InterventionType } from '../../types/intervention-types';
 import { getDangerCodeColor } from '../../utils/danger-code';
 import { getStatusMessage as getBadgeMessage, getStatusBadgeColor } from '../../utils/intervention';
@@ -20,6 +21,8 @@ type InterventionProps = {
 };
 
 export default function Intervention({ intervention }: InterventionProps) {
+  const isCodis = useAppStore((state) => state.role) === 'CODIS';
+
   const router = useRouter();
 
   const formattedDate = Intl.DateTimeFormat('fr-FR', dateTimeFormattingOptions).format(
@@ -35,7 +38,11 @@ export default function Intervention({ intervention }: InterventionProps) {
   );
 
   const handleInterventionPress = () => {
-    router.push(`/intervention/${intervention.id}`);
+    if (isCodis) {
+      router.push(`/intervention/${intervention.id}/requests`);
+    } else {
+      router.push(`/intervention/${intervention.id}`);
+    }
   };
 
   return (

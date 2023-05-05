@@ -3,6 +3,7 @@ import { useRouter } from 'expo-router';
 import { Box, Fab, FlatList, Heading, Icon, VStack } from 'native-base';
 
 import Intervention from './Intervention';
+import { useAppStore } from '../../stores/store';
 import { Intervention as InterventionType } from '../../types/intervention-types';
 
 type InterventionListProps = {
@@ -15,7 +16,7 @@ const renderIntervention = ({ item }: { item: InterventionType }) => (
 
 export default function InterventionList({ interventions }: InterventionListProps) {
   const router = useRouter();
-  const isCodis = true; // TODO: get user type
+  const isCodis = useAppStore((state) => state.role) === 'CODIS';
 
   return (
     <>
@@ -33,6 +34,7 @@ export default function InterventionList({ interventions }: InterventionListProp
       {isCodis && (
         <Fab
           placement="bottom-right"
+          bgColor="#19837C"
           icon={<Icon color="white" as={AntDesign} name="plus" size="4" />}
           onPress={() => router.push('/intervention/create')}
           renderInPortal={false}

@@ -8,6 +8,7 @@ import { fetchInterventions } from '../../utils/intervention';
 
 export default function InterventionScreen() {
   const queryClient = useQueryClient();
+
   const { data: interventions } = useQuery<Intervention[]>(['interventions'], {
     queryFn: fetchInterventions,
   });
