@@ -1,7 +1,7 @@
-import { Box, Divider, HStack, Text, VStack } from 'native-base';
+import { Box, Divider, HStack, Heading, Text, VStack } from 'native-base';
 import React from 'react';
 
-import { Mean } from '../../types/mean-types';
+import { Mean } from '../../../types/mean-types';
 
 type MeansTableProps = {
   means: Mean[];
@@ -10,6 +10,9 @@ type MeansTableProps = {
 export default function MeansTable({ means }: MeansTableProps) {
   return (
     <Box>
+      <Heading pt={3} pb={8} size="2xl" color="#19837C">
+        Tableau des moyens
+      </Heading>
       <VStack divider={<Divider bg="black" />} w="100%" h="100%">
         <HStack
           textAlign="center"

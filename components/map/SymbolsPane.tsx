@@ -24,7 +24,7 @@ const SymbolsPane = ({ fireFighterMeans }: SymbolsPaneProps) => {
       <IconButton
         bgColor="#19837C"
         margin={1}
-        icon={<Icon as={MaterialIcons} name="color-lens" size={5} color="black" />}
+        icon={<Icon as={MaterialIcons} name="color-lens" size={5} color="white" />}
         onPress={handleColorSecletionButtonPress}
       />
       <Box flexDir="row">
