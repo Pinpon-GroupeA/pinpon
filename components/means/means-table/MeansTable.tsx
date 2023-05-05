@@ -2,8 +2,8 @@ import { Box, Heading, VStack, Divider, HStack, Text, ScrollView } from 'native-
 import React from 'react';
 
 import ConfirmationModal from './ConfirmationModal';
-import { InterventionMean } from '../../types/mean-types';
-import { addMinutes, getMilitaryTime } from '../../utils/date';
+import { InterventionMean } from '../../../types/mean-types';
+import { getMilitaryTime, addMinutes } from '../../../utils/date';
 
 type MeansTableProps = {
   means: InterventionMean[];

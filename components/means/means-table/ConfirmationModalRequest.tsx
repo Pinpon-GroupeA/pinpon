@@ -2,7 +2,7 @@ import { Entypo } from '@expo/vector-icons';
 import { Modal, Button, VStack, Box, Icon, Pressable } from 'native-base';
 import React, { useState } from 'react';
 
-import { deleteMeans } from '../../utils/means';
+import { deleteMeans } from '../../../utils/means';
 
 type ModalData = {
   id: number;

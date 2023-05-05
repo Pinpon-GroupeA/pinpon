@@ -1,4 +1,4 @@
-import { Coordinates } from '../types/types';
+import { Coordinates } from '../types/global-types';
 
 type NominatimResponseFormat = 'xml' | 'json' | 'jsonv2' | 'geojson' | 'geocodejson';
 

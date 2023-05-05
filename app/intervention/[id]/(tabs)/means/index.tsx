@@ -1,11 +1,13 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useSearchParams } from 'expo-router';
-import { VStack } from 'native-base';
 
-import MeansTable from '../../../../../components/means-table/MeansTable';
+import MeansPage from '../../../../../components/means/mean-request/MeansPage';
 import useSubscription from '../../../../../hooks/useSubscription';
 import { InterventionMean } from '../../../../../types/mean-types';
-import { fecthInterventionMeans, getInterventionMeanFromMean } from '../../../../../utils/means';
+import {
+  fecthInterventionMeans,
+  getInterventionMeanFromMean,
+} from '../../../../../utils/intervention-mean';
 import { Tables } from '../../../../../utils/supabase';
 
 export default function Means() {
@@ -62,9 +64,5 @@ export default function Means() {
     }
   );
 
-  return (
-    <VStack>
-      <MeansTable means={means || []} />
-    </VStack>
-  );
+  return <MeansPage means={means ?? []} />;
 }

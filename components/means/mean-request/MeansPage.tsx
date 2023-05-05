@@ -3,11 +3,15 @@ import { Box, Fab, Modal } from 'native-base';
 import { useState } from 'react';
 
 import ModalMeansRequest from './ModalMeansRequest';
-import { MeanType } from '../../../types/mean-types';
+import { InterventionMean, MeanType } from '../../../types/mean-types';
 import { fetchMeansTypes } from '../../../utils/means-type';
 import MeansTable from '../means-table/MeansTable';
 
-export default function MeansPage() {
+type MeansPageProps = {
+  means: InterventionMean[];
+};
+
+function MeansPage({ means }: MeansPageProps) {
   const [showModal, setShowModal] = useState(false);
 
   const { data: meanTypes } = useQuery<MeanType[]>(['meanTypes'], {
@@ -15,16 +19,16 @@ export default function MeansPage() {
   });
 
   return (
-    <Box>
-      <MeansTable means={[]} />
+    <Box flex="1">
+      <MeansTable means={means} />
       <Fab
         label="Demande de moyens"
         isLoading={meanTypes === undefined}
         isLoadingText="Récupération des moyens possibles..."
-        bottom={115}
         backgroundColor="#19837C"
         onPress={() => setShowModal(true)}
         renderInPortal={false}
+        placement="bottom-right"
       />
       <Modal isOpen={showModal} onClose={() => setShowModal(false)} size="md">
         <ModalMeansRequest meansType={meanTypes ?? []} setShowModal={setShowModal} />
@@ -32,3 +36,5 @@ export default function MeansPage() {
     </Box>
   );
 }
+
+export default MeansPage;
