@@ -1,6 +1,6 @@
 import { Tables, supabase } from './supabase';
 import { Coordinates } from '../types/global-types';
-import { MeanTypeEnum } from '../types/mean-types';
+import { Mean, MeanTypeEnum } from '../types/mean-types';
 
 export const fetchAvailableMeans = async (meanType: MeanTypeEnum) => {
   const { data, error } = await supabase
@@ -40,7 +40,7 @@ export const requestsRequest = async (id: Partial<URLSearchParams>): Promise<Req
   return data as Request[];
 };
 
-export const meansRequest = async (id: Partial<URLSearchParams>): Promise<Mean[]> => {
+export const meansRequest = async (id: string): Promise<Mean[]> => {
   const { data, error } = await supabase
     .from('interventions_means_link')
     .select('*')
