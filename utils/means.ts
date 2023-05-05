@@ -58,27 +58,6 @@ export const getlocalTime = (): string => {
   return new Date(Date.now() - tzoffset).toISOString().slice(0, -1);
 };
 
-export const sendCRM = async (id: number) => {
-  await supabase
-    .from(Tables.interventionMeansLink)
-    .update({ crm_arrival: getlocalTime() })
-    .eq('id', id);
-};
-
-export const sendSector = async (id: number) => {
-  await supabase
-    .from(Tables.interventionMeansLink)
-    .update({ sector_arrival: getlocalTime() })
-    .eq('id', id);
-};
-
-export const sendAvailable = async (id: number) => {
-  await supabase
-    .from(Tables.interventionMeansLink)
-    .update({ available_at: getlocalTime() })
-    .eq('id', id);
-};
-
 export const deleteMeans = async (id: number) => {
   await supabase.from(Tables.requests).delete().eq('id', id);
 };

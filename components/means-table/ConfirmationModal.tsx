@@ -1,9 +1,15 @@
 import { Entypo } from '@expo/vector-icons';
+import { useMutation } from '@tanstack/react-query';
 import { Modal, VStack, Text, HStack, Button, Icon, Pressable } from 'native-base';
 import React, { useState } from 'react';
 
 import { getMilitaryTime } from '../../utils/date';
-import { sendAvailable, sendCRM, sendSector } from '../../utils/means';
+import {
+  updateAvailableAtDate,
+  updateCrmArrivalDate,
+  updateIsOnSite,
+  updateSectorArrivalDate,
+} from '../../utils/intervention-means';
 
 type ModalOpen = {
   crm: string;
@@ -13,6 +19,22 @@ type ModalOpen = {
 };
 
 export default function ConfirmationModal({ crm, sector, available, id }: ModalOpen) {
+  const { mutateAsync: updateCrmDate } = useMutation({
+    mutationFn: () => updateCrmArrivalDate(id),
+  });
+
+  const { mutateAsync: updateSectorDate } = useMutation({
+    mutationFn: () => updateSectorArrivalDate(id),
+  });
+
+  const { mutateAsync: updateAvailableDate } = useMutation({
+    mutationFn: () => updateAvailableAtDate(id),
+  });
+
+  const { mutateAsync: setOnSite } = useMutation({
+    mutationFn: () => updateIsOnSite(id, true),
+  });
+
   const [modalVisible, setModalVisible] = useState(false);
   return (
     <>
@@ -29,7 +51,7 @@ export default function ConfirmationModal({ crm, sector, available, id }: ModalO
                 {crm === null ? (
                   <Button
                     onPress={() => {
-                      sendCRM(id);
+                      updateCrmDate();
                       setModalVisible(!modalVisible);
                     }}
                   >
@@ -48,7 +70,8 @@ export default function ConfirmationModal({ crm, sector, available, id }: ModalO
                 {sector === null ? (
                   <Button
                     onPress={() => {
-                      sendSector(id);
+                      updateSectorDate();
+                      setOnSite();
                       setModalVisible(!modalVisible);
                     }}
                   >
@@ -67,7 +90,7 @@ export default function ConfirmationModal({ crm, sector, available, id }: ModalO
                 {available === null ? (
                   <Button
                     onPress={() => {
-                      sendAvailable(id);
+                      updateAvailableDate();
                       setModalVisible(!modalVisible);
                     }}
                   >

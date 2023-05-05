@@ -55,15 +55,9 @@ export default function MeansTable({ means }: MeansTableProps) {
               <Text flex={2}>{mean.means.label}</Text>
               <Text flex={2}>{getMilitaryTime(mean.request_date)}</Text>
               <Text flex={2}>{addMinutes(mean.request_date, 20)}</Text>
-              <Text flex={2}>
-                {mean.crm_arrival == null ? '' : getMilitaryTime(mean.crm_arrival)}
-              </Text>
-              <Text flex={2}>
-                {mean.sector_arrival == null ? '' : getMilitaryTime(mean.sector_arrival)}
-              </Text>
-              <Text flex={2}>
-                {mean.available_at == null ? '' : getMilitaryTime(mean.available_at)}
-              </Text>
+              <Text flex={2}>{getMilitaryTime(mean.crm_arrival)}</Text>
+              <Text flex={2}>{getMilitaryTime(mean.sector_arrival)}</Text>
+              <Text flex={2}>{getMilitaryTime(mean.available_at)}</Text>
               <ConfirmationModal
                 id={mean.id}
                 crm={mean.crm_arrival}
