@@ -2,7 +2,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useRouter } from 'expo-router';
 import debounce from 'lodash.debounce';
-import { Button, FormControl, Heading, Icon, Input, Select, VStack } from 'native-base';
+import { Button, FormControl, Heading, Icon, Input, ScrollView, Select, VStack } from 'native-base';
 import { useCallback, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
@@ -108,137 +108,139 @@ export default function InterventionCreationForm() {
       >
         Création d'une intervention
       </Heading>
-      <FormControl isRequired isInvalid={'language' in errors}>
-        <FormControl.Label>Type de danger</FormControl.Label>
-        <Controller
-          control={control}
-          render={({ field: { onChange, value } }) => (
-            <Select
-              placeholder="Choisir un type de danger"
-              selectedValue={value}
-              onValueChange={(itemValue: string) => {
-                onChange(itemValue);
-              }}
-              _selectedItem={{
-                bg: 'teal.500',
-              }}
-              dropdownOpenIcon={<Icon as={MaterialIcons} name="arrow-drop-up" size={6} />}
-              dropdownCloseIcon={<Icon as={MaterialIcons} name="arrow-drop-down" size={6} />}
-            >
-              <Select.Item label="Incendie" value="INC" />
-              <Select.Item label="Secours à personne" value="SAP" />
-            </Select>
-          )}
-          name="dangerType"
-          rules={{ required: 'Field is required' }}
-        />
-        <FormControl.ErrorMessage>{errors.dangerType?.message}</FormControl.ErrorMessage>
-      </FormControl>
-      <FormControl isInvalid={'street' in errors}>
-        <FormControl.Label>Rue</FormControl.Label>
-        <Controller
-          control={control}
-          name="street"
-          render={({ field: { onChange, onBlur } }) => (
-            <Input
-              onBlur={onBlur}
-              onChangeText={(newValue) => {
-                onChange(newValue);
+      <ScrollView h="420px">
+        <FormControl isRequired isInvalid={'language' in errors}>
+          <FormControl.Label>Type de danger</FormControl.Label>
+          <Controller
+            control={control}
+            render={({ field: { onChange, value } }) => (
+              <Select
+                placeholder="Choisir un type de danger"
+                selectedValue={value}
+                onValueChange={(itemValue: string) => {
+                  onChange(itemValue);
+                }}
+                _selectedItem={{
+                  bg: 'teal.500',
+                }}
+                dropdownOpenIcon={<Icon as={MaterialIcons} name="arrow-drop-up" size={6} />}
+                dropdownCloseIcon={<Icon as={MaterialIcons} name="arrow-drop-down" size={6} />}
+              >
+                <Select.Item label="Incendie" value="INC" />
+                <Select.Item label="Secours à personne" value="SAP" />
+              </Select>
+            )}
+            name="dangerType"
+            rules={{ required: 'Field is required' }}
+          />
+          <FormControl.ErrorMessage>{errors.dangerType?.message}</FormControl.ErrorMessage>
+        </FormControl>
+        <FormControl isInvalid={'street' in errors}>
+          <FormControl.Label>Rue</FormControl.Label>
+          <Controller
+            control={control}
+            name="street"
+            render={({ field: { onChange, onBlur } }) => (
+              <Input
+                onBlur={onBlur}
+                onChangeText={(newValue) => {
+                  onChange(newValue);
 
-                if (newValue && newValue !== '') {
-                  debouncedGetAddressCoordinates();
-                }
-              }}
-            />
-          )}
-        />
-        <FormControl.ErrorMessage>{errors.street?.message}</FormControl.ErrorMessage>
-      </FormControl>
-      <FormControl isRequired isInvalid={'postalCode' in errors}>
-        <FormControl.Label>Code postal</FormControl.Label>
-        <Controller
-          control={control}
-          name="postalCode"
-          render={({ field: { onChange, onBlur } }) => (
-            <Input
-              inputMode="numeric"
-              onBlur={onBlur}
-              onChangeText={(newValue) => {
-                onChange(newValue);
+                  if (newValue && newValue !== '') {
+                    debouncedGetAddressCoordinates();
+                  }
+                }}
+              />
+            )}
+          />
+          <FormControl.ErrorMessage>{errors.street?.message}</FormControl.ErrorMessage>
+        </FormControl>
+        <FormControl isRequired isInvalid={'postalCode' in errors}>
+          <FormControl.Label>Code postal</FormControl.Label>
+          <Controller
+            control={control}
+            name="postalCode"
+            render={({ field: { onChange, onBlur } }) => (
+              <Input
+                inputMode="numeric"
+                onBlur={onBlur}
+                onChangeText={(newValue) => {
+                  onChange(newValue);
 
-                if (newValue && newValue !== '') {
-                  debouncedGetAddressCoordinates();
-                }
-              }}
-            />
-          )}
-        />
-        <FormControl.ErrorMessage>{errors.postalCode?.message}</FormControl.ErrorMessage>
-      </FormControl>
-      <FormControl isRequired isInvalid={'city' in errors}>
-        <FormControl.Label>Ville</FormControl.Label>
-        <Controller
-          control={control}
-          name="city"
-          render={({ field: { onChange, onBlur } }) => (
-            <Input
-              onBlur={onBlur}
-              onChangeText={(newValue) => {
-                onChange(newValue);
+                  if (newValue && newValue !== '') {
+                    debouncedGetAddressCoordinates();
+                  }
+                }}
+              />
+            )}
+          />
+          <FormControl.ErrorMessage>{errors.postalCode?.message}</FormControl.ErrorMessage>
+        </FormControl>
+        <FormControl isRequired isInvalid={'city' in errors}>
+          <FormControl.Label>Ville</FormControl.Label>
+          <Controller
+            control={control}
+            name="city"
+            render={({ field: { onChange, onBlur } }) => (
+              <Input
+                onBlur={onBlur}
+                onChangeText={(newValue) => {
+                  onChange(newValue);
 
-                if (newValue && newValue !== '') {
-                  debouncedGetAddressCoordinates();
-                }
-              }}
-            />
-          )}
-        />
-        <FormControl.ErrorMessage>{errors.city?.message}</FormControl.ErrorMessage>
-      </FormControl>
-      <FormControl isRequired isInvalid={'latitude' in errors}>
-        <FormControl.Label>Latitude</FormControl.Label>
-        <Controller
-          control={control}
-          name="latitude"
-          render={({ field: { value, onChange, onBlur } }) => (
-            <Input
-              value={isNaN(value) ? '' : String(value)}
-              onBlur={onBlur}
-              onChangeText={onChange}
-              inputMode="numeric"
-            />
-          )}
-        />
-        <FormControl.ErrorMessage>{errors.latitude?.message}</FormControl.ErrorMessage>
-      </FormControl>
-      <FormControl isRequired isInvalid={'longitude' in errors}>
-        <FormControl.Label>Longitude</FormControl.Label>
-        <Controller
-          control={control}
-          name="longitude"
-          render={({ field: { value, onChange, onBlur } }) => (
-            <Input
-              value={isNaN(value) ? '' : String(value)}
-              onBlur={onBlur}
-              onChangeText={onChange}
-              inputMode="numeric"
-            />
-          )}
-        />
-        <FormControl.ErrorMessage>{errors.longitude?.message}</FormControl.ErrorMessage>
-      </FormControl>
-      <Button mt="6" disabled={isLoading} colorScheme="teal" onPress={handleSubmit(onSubmit)}>
-        Créer
-      </Button>
-      <Button
-        mt="2"
-        disabled={isLoading}
-        colorScheme="teal"
-        variant="outline"
-        onPress={() => reset()}
-      >
-        Réinitialiser
-      </Button>
+                  if (newValue && newValue !== '') {
+                    debouncedGetAddressCoordinates();
+                  }
+                }}
+              />
+            )}
+          />
+          <FormControl.ErrorMessage>{errors.city?.message}</FormControl.ErrorMessage>
+        </FormControl>
+        <FormControl isRequired isInvalid={'latitude' in errors}>
+          <FormControl.Label>Latitude</FormControl.Label>
+          <Controller
+            control={control}
+            name="latitude"
+            render={({ field: { value, onChange, onBlur } }) => (
+              <Input
+                value={isNaN(value) ? '' : String(value)}
+                onBlur={onBlur}
+                onChangeText={onChange}
+                inputMode="numeric"
+              />
+            )}
+          />
+          <FormControl.ErrorMessage>{errors.latitude?.message}</FormControl.ErrorMessage>
+        </FormControl>
+        <FormControl isRequired isInvalid={'longitude' in errors}>
+          <FormControl.Label>Longitude</FormControl.Label>
+          <Controller
+            control={control}
+            name="longitude"
+            render={({ field: { value, onChange, onBlur } }) => (
+              <Input
+                value={isNaN(value) ? '' : String(value)}
+                onBlur={onBlur}
+                onChangeText={onChange}
+                inputMode="numeric"
+              />
+            )}
+          />
+          <FormControl.ErrorMessage>{errors.longitude?.message}</FormControl.ErrorMessage>
+        </FormControl>
+        <Button mt="6" disabled={isLoading} colorScheme="teal" onPress={handleSubmit(onSubmit)}>
+          Créer
+        </Button>
+        <Button
+          mt="2"
+          disabled={isLoading}
+          colorScheme="teal"
+          variant="outline"
+          onPress={() => reset()}
+        >
+          Réinitialiser
+        </Button>
+      </ScrollView>
       <ErrorModal message={error} isOpen={error !== ''} onClose={() => setError('')} />
     </VStack>
   );
