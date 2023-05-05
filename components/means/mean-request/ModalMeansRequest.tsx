@@ -25,12 +25,10 @@ export default function ModalMeansRequest({ meansType }: ModalMeansRequestProps)
 
   async function handleSend() {
     setIsSendingRequests(true);
-    console.log('envoyer');
 
     const currentTime = new Date();
     currentTime.setHours(currentTime.getHours() + 2);
 
-    console.log(isSendingRequests);
     values.map(async (val, i) => {
       for (let j = 0; j < val; j++) {
         const request: CreateRequestData = {
@@ -50,7 +48,6 @@ export default function ModalMeansRequest({ meansType }: ModalMeansRequestProps)
             );
           },
         });
-        console.log('envoi terminé');
       }
     });
   }
