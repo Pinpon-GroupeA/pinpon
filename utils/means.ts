@@ -1,8 +1,8 @@
 import { Tables, supabase } from './supabase';
 import { Coordinates } from '../types/global-types';
-import { MeanType } from '../types/mean-types';
+import { MeanTypeEnum } from '../types/mean-types';
 
-export const fetchAvailableMeans = async (meanType: MeanType) => {
+export const fetchAvailableMeans = async (meanType: MeanTypeEnum) => {
   const { data, error } = await supabase
     .from(Tables.means)
     .select('id')
@@ -13,7 +13,7 @@ export const fetchAvailableMeans = async (meanType: MeanType) => {
     throw error;
   }
 
-  return data;
+  return data as { id: number }[];
 };
 
 export const updateMeanLocation = async (meanId: number, location: Coordinates) => {

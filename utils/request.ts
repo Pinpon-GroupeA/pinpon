@@ -1,8 +1,11 @@
 import { supabase } from './supabase';
 import { Request } from '../types/request-types';
 
-export const fetchPendingRequests = async () => {
-  const { data, error } = await supabase.from('requests').select().eq('status', 'EN_ATTENTE');
+export const fetchRequestsOfIntervention = async (interventionId?: string | string[]) => {
+  const { data, error } = await supabase
+    .from('requests')
+    .select()
+    .eq('intervention_id', interventionId);
 
   if (error) {
     throw error;
