@@ -24,7 +24,7 @@ export default function InterventionList({ interventions }: InterventionListProp
         data={interventions}
         renderItem={renderIntervention}
         ItemSeparatorComponent={() => <Box style={{ height: 10 }} />}
-        keyExtractor={(intervention) => intervention.id}
+        keyExtractor={(intervention) => String(intervention.id)}
         ListEmptyComponent={() => (
           <VStack flex="1" p="24px" alignItems="center" justifyContent="center">
             <Heading>Pas d'interventions trouvées</Heading>
