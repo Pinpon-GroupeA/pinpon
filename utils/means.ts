@@ -1,6 +1,7 @@
 import { Tables, supabase } from './supabase';
 import { Coordinates, DangerCode } from '../types/global-types';
 import { InterventionMean, Mean, OtherMean } from '../types/mean-types';
+import { Request } from '../types/request-types';
 
 export const fecthInterventionMeans = async (interventionId?: string | string[]) => {
   if (!interventionId) {
@@ -90,7 +91,7 @@ export const getInterventionMeanFromMean = async (interventionMean: Intervention
   return interventionMean as InterventionMean;
 };
 
-export const requestsRequest = async (id: string): Promise<Request[]> => {
+export const requestsRequest = async (id: number): Promise<Request[]> => {
   const { data, error } = await supabase.from('Requests').select('*').eq('id_inter', id);
   if (error) {
     throw new Error(error.message);
@@ -98,7 +99,7 @@ export const requestsRequest = async (id: string): Promise<Request[]> => {
   return data as Request[];
 };
 
-export const meansRequest = async (id: string): Promise<Mean[]> => {
+export const meansRequest = async (id: number): Promise<Mean[]> => {
   const { data, error } = await supabase
     .from('interventions_means_link')
     .select('*')
@@ -116,28 +117,28 @@ export const getlocalTime = (): string => {
   return new Date(Date.now() - tzoffset).toISOString().slice(0, -1);
 };
 
-export const sendCRM = async (id: string) => {
+export const sendCRM = async (id: number) => {
   await supabase
     .from('interventions_means_link')
     .update({ crm_arrival: getlocalTime() })
     .eq('id', id);
 };
 
-export const sendSector = async (id: string) => {
+export const sendSector = async (id: number) => {
   await supabase
     .from('interventions_means_link')
     .update({ sector_arrival: getlocalTime() })
     .eq('id', id);
 };
 
-export const sendAvailable = async (id: string) => {
+export const sendAvailable = async (id: number) => {
   await supabase
     .from('interventions_means_link')
     .update({ available_at: getlocalTime() })
     .eq('id', id);
 };
 
-export const deleteMeans = async (id: string) => {
+export const deleteMeans = async (id: number) => {
   await supabase.from('Requests').delete().eq('id', id);
 };
 

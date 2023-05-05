@@ -8,7 +8,7 @@ type ModalOpen = {
   crm: string;
   sector: string;
   available: string;
-  id: string;
+  id: number;
 };
 
 export default function ConfirmationModal({ crm, sector, available, id }: ModalOpen) {

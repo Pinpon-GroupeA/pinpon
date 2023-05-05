@@ -2,7 +2,6 @@ import { Box, Heading, VStack, Divider, HStack, Text, ScrollView } from 'native-
 import React from 'react';
 
 import ConfirmationModal from './ConfirmationModal';
-import ConfirmationModal from './ConfirmationModal';
 import { Mean } from '../../types/mean-types';
 import { getDate, getMilitaryTime } from '../../utils/means';
 
@@ -19,7 +18,6 @@ export default function MeansTable({ means }: MeansTableProps) {
       <VStack divider={<Divider bg="black" />} w="100%">
         <HStack
           textAlign="center"
-          divider={<Divider bg="black" />}
           divider={<Divider bg="black" />}
           h="8"
           alignItems="center"
@@ -49,7 +47,6 @@ export default function MeansTable({ means }: MeansTableProps) {
           {means.map((mean: Mean, i) => (
             <HStack
               key={mean.id}
-              divider={<Divider bg="black" />}
               divider={<Divider bg="black" />}
               h="8"
               alignItems="center"

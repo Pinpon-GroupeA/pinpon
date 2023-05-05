@@ -16,7 +16,7 @@ export type InterventionMean = {
 };
 
 export type Mean = {
-  id: string;
+  id: number;
   label: string;
   request_date: string;
   schduledArrivalTime: string;
@@ -26,6 +26,14 @@ export type Mean = {
   location: Coordinates;
   mean_type: MeanType;
   danger_code: DangerCode;
+};
+
+export type OtherMean = {
+  id: number;
+  danger_code: DangerCode;
+  intervention_id: number;
+  location: Coordinates;
+  category: MeanCategory;
 };
 
 export type MeanType = 'VSAV' | 'FPT' | 'VLCG' | 'OTHER';
