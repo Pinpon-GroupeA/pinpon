@@ -62,7 +62,7 @@ export default function Intervention({ intervention }: InterventionProps) {
           {formattedDate}
         </Text>
       </Box>
-      <HStack space="md" alignItems="center">
+      <HStack space="6" alignItems="center">
         <Badge variant="solid" colorScheme={getStatusBadgeColor(intervention.status_intervention)}>
           {getBadgeMessage(intervention.status_intervention)}
         </Badge>
