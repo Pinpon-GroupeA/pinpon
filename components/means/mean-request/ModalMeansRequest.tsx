@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { useSearchParams } from 'expo-router';
 import { VStack, Button, FormControl, Text, Modal, useToast } from 'native-base';
 import React, { useState } from 'react';
