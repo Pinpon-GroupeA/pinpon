@@ -2,11 +2,11 @@ import { Box, Heading, VStack, Divider, HStack, Text, ScrollView } from 'native-
 import React from 'react';
 
 import ConfirmationModal from './ConfirmationModal';
-import { Mean } from '../../types/mean-types';
+import { InterventionMean } from '../../types/mean-types';
 import { getDate, getMilitaryTime } from '../../utils/means';
 
 type MeansTableProps = {
-  means: Mean[];
+  means: InterventionMean[];
 };
 
 export default function MeansTable({ means }: MeansTableProps) {
@@ -44,7 +44,7 @@ export default function MeansTable({ means }: MeansTableProps) {
           <Text flex={1} bold fontSize="20px" />
         </HStack>
         <ScrollView h="50%">
-          {means.map((mean: Mean, i) => (
+          {means.map((mean: InterventionMean, i) => (
             <HStack
               key={mean.id}
               divider={<Divider bg="black" />}
@@ -52,7 +52,7 @@ export default function MeansTable({ means }: MeansTableProps) {
               alignItems="center"
               textAlign="center"
             >
-              <Text flex={2}>{mean.danger_code}</Text>
+              <Text flex={2}>{mean.means.label}</Text>
               <Text flex={2}>{getMilitaryTime(mean.request_date)}</Text>
               <Text flex={2}>{getDate(mean.request_date)}</Text>
               <Text flex={2}>

@@ -83,7 +83,7 @@ export default function ConfirmationModal({ crm, sector, available, id }: ModalO
         </Modal.Content>
       </Modal>
       <Pressable flex={1} onPress={() => setModalVisible(true)}>
-        <Icon as={Entypo} name="pencil" size={24} color="black" />
+        <Icon as={Entypo} name="pencil" size={6} color="black" />
       </Pressable>
     </>
   );

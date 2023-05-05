@@ -36,7 +36,7 @@ export default function ConfirmationModalRequest({ id }: ModalData) {
         </Modal.Content>
       </Modal>
       <Pressable flex={1} onPress={() => setModalVisible(true)}>
-        <Icon as={Entypo} name="cross" size={24} color="black" />
+        <Icon as={Entypo} name="cross" size={8} color="black" />
       </Pressable>
     </>
   );
