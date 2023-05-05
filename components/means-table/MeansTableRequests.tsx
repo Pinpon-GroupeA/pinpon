@@ -35,22 +35,22 @@ export default function MeansTableRequests({ means }: MeansTableProps) {
         </HStack>
         <ScrollView h="50%">
           {means?.map((mean: Request, i) =>
-            mean.status === 'ACCEPTED' ? null : (
+            mean.status === 'ACCEPTEE' ? null : (
               <HStack
                 key={mean.id}
                 h="8"
                 divider={<Divider bg="black" />}
                 alignItems="center"
                 textAlign="center"
-                bgColor={mean.status === 'REFUSED' ? 'gray.400' : ''}
+                bgColor={mean.status === 'REFUSEE' ? 'gray.400' : ''}
               >
                 <Text flex={2}>{mean.mean_type}</Text>
                 <Text flex={2}>
-                  {mean.request_date === null ? '' : getMilitaryTime(mean.request_date)}
+                  {mean.request_time === null ? '' : getMilitaryTime(mean.request_time)}
                 </Text>
                 <Text flex={2}>{mean.status}</Text>
                 <Text flex={1}>
-                  {mean.status === 'PENDING' ? <ConfirmationModalRequest id={mean.id} /> : ''}
+                  {mean.status === 'EN_ATTENTE' ? <ConfirmationModalRequest id={mean.id} /> : ''}
                 </Text>
               </HStack>
             )

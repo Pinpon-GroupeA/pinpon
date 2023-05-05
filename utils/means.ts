@@ -1,4 +1,4 @@
-import { Tables, supabase } from './supabase';
+import { InterventionMeansLinkColumns, Tables, supabase } from './supabase';
 import { Coordinates } from '../types/global-types';
 import { Mean, MeanTypeEnum } from '../types/mean-types';
 
@@ -42,14 +42,14 @@ export const requestsRequest = async (id: Partial<URLSearchParams>): Promise<Req
 
 export const meansRequest = async (id: number): Promise<Mean[]> => {
   const { data, error } = await supabase
-    .from('interventions_means_link')
+    .from(Tables.interventionMeansLink)
     .select('*')
-    .eq('intervention_id', id);
+    .eq(InterventionMeansLinkColumns.interventionId, id);
 
   if (error) {
     throw new Error(error.message);
   }
-
+  console.log(data);
   return data as Mean[];
 };
 
@@ -60,30 +60,33 @@ export const getlocalTime = (): string => {
 
 export const sendCRM = async (id: number) => {
   await supabase
-    .from('interventions_means_link')
+    .from(Tables.interventionMeansLink)
     .update({ crm_arrival: getlocalTime() })
     .eq('id', id);
 };
 
 export const sendSector = async (id: number) => {
   await supabase
-    .from('interventions_means_link')
+    .from(Tables.interventionMeansLink)
     .update({ sector_arrival: getlocalTime() })
     .eq('id', id);
 };
 
 export const sendAvailable = async (id: number) => {
   await supabase
-    .from('interventions_means_link')
+    .from(Tables.interventionMeansLink)
     .update({ available_at: getlocalTime() })
     .eq('id', id);
 };
 
 export const deleteMeans = async (id: number) => {
-  await supabase.from('Requests').delete().eq('id', id);
+  await supabase.from(Tables.requests).delete().eq('id', id);
 };
 
 export const getMilitaryTime = (date: string) => {
+  if (date === undefined) {
+    return '';
+  }
   return date.slice(11, 13) + date.slice(14, 16);
 };
 

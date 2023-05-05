@@ -1,49 +1,23 @@
 import { useQuery } from '@tanstack/react-query';
 import { useSearchParams } from 'expo-router';
-import { Spinner, VStack } from 'native-base';
+import { VStack } from 'native-base';
 
 import MeansTable from '../../../../../components/means-table/MeansTable';
 import MeansTableRequests from '../../../../../components/means-table/MeansTableRequests';
-import { Mean } from '../../../../../types/mean-types';
-import { Request } from '../../../../../types/request-types';
-import { meansRequest, requestsRequest } from '../../../../../utils/means';
+import { fecthInterventionMeans, requestsRequest } from '../../../../../utils/means';
 
 export default function Means() {
-  const id: number = parseInt(useSearchParams().toString(), 2);
-  const { data: requests, isLoading } = useQuery<Request[]>(
-    ['requests', id],
-    async (): Promise<Request[]> => {
-      if (id) {
-        const _id: number = Array.isArray(id) ? id.at(0) : id;
+  const { id: interventionId } = useSearchParams();
 
-        if (!_id) {
-          return [];
-        }
-
-        return requestsRequest(_id);
-      }
-
-      return [];
-    }
-  );
-
-  const { data: dataInter } = useQuery<Mean[]>(['intervention'], async (): Promise<Mean[]> => {
-    if (id) {
-      const _id = Array.isArray(id) ? id.at(0) : id;
-
-      if (!_id) {
-        return [];
-      }
-
-      return meansRequest(_id);
-    }
-
-    return [];
+  const { data: requests } = useQuery({
+    queryKey: ['requests'],
+    queryFn: () => requestsRequest(interventionId),
   });
 
-  if (isLoading) {
-    return <Spinner />;
-  }
+  const { data: dataInter } = useQuery({
+    queryKey: ['dataInter'],
+    queryFn: () => fecthInterventionMeans(interventionId),
+  });
 
   return (
     <VStack>
