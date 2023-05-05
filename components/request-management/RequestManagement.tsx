@@ -1,3 +1,4 @@
+import { useMutation } from '@tanstack/react-query';
 import {
   Box,
   Heading,
@@ -11,7 +12,9 @@ import {
 } from 'native-base';
 
 import { Request } from '../../types/request-types';
-import { supabase } from '../../utils/supabase';
+import { InterventionMeanCreateType, createInterventionMean } from '../../utils/intervention-mean';
+import { fetchAvailableMeans, updateMeanStatus } from '../../utils/means';
+import { deleteRequest } from '../../utils/request';
 
 type RequestManagementProps = {
   address?: string;
@@ -21,32 +24,39 @@ type RequestManagementProps = {
 };
 
 export default function RequestManagement({ address, date, requests }: RequestManagementProps) {
+  const { mutateAsync: createInterventionMeanMutation } = useMutation({
+    mutationFn: (data: InterventionMeanCreateType) => createInterventionMean(data),
+  });
+
+  const { mutateAsync: updateMeanStatusMutation } = useMutation({
+    mutationFn: (data: { meanId: number; is_available: boolean }) =>
+      updateMeanStatus(data.meanId, data.is_available),
+  });
+
+  const { mutateAsync: deleteRequestMutation } = useMutation({
+    mutationFn: (id: number) => deleteRequest(id),
+  });
+
   const validateRequest = async (request: Request) => {
-    const { data } = await supabase
-      .from('means')
-      .select('id')
-      .eq('is_available', true)
-      .eq('mean_type', request.mean_type);
+    const availableMeans = await fetchAvailableMeans(request.mean_type);
 
-    if (data) {
-      await supabase.from('interventions_means_link').insert([
-        {
-          using_crm: false,
-          is_on_site: false,
-          request_date: request.request_time,
-          intervention_id: request.intervention_id,
-          mean_id: data[0].id,
-        },
-      ]);
+    if (availableMeans) {
+      await createInterventionMeanMutation({
+        is_on_site: false,
+        using_crm: false,
+        request_date: request.request_time,
+        intervention_id: request.intervention_id,
+        mean_id: availableMeans[0].id,
+      });
 
-      await supabase.from('means').update({ is_available: false }).eq('id', data[0].id);
-      await supabase.from('requests').update({ status: 'ACCEPTEE' }).eq('id', request.id);
+      await updateMeanStatusMutation({ meanId: availableMeans[0].id, is_available: false });
+      await deleteRequestMutation(request.id);
     }
   };
 
-  async function refuseDemand(id: number) {
-    await supabase.from('Requests').update({ status: 'REFUSEE' }).eq('id', id);
-  }
+  const refuseDemand = async (id: number) => {
+    await deleteRequestMutation(id);
+  };
 
   return (
     <VStack flex="1" p="24px" alignItems="center" justifyContent="center">

@@ -10,3 +10,11 @@ export const fetchPendingRequests = async () => {
 
   return data as Request[];
 };
+
+export const deleteRequest = async (requestId: number) => {
+  const { error } = await supabase.from('requests').delete().eq('id', requestId);
+
+  if (error) {
+    throw error;
+  }
+};

@@ -8,13 +8,15 @@ import useSubscription from '../../../../../hooks/useSubscription';
 import { InterventionMean, OtherMean } from '../../../../../types/mean-types';
 import { fetchInterventionLocation } from '../../../../../utils/intervention';
 import {
+  fetchInterventionDangers,
+  getOtherMeansPlaced,
+} from '../../../../../utils/intervention-dangers';
+import {
   fecthInterventionMeans,
-  fetchOtherMeans,
-  getInterventionMeanFromMean,
   getFireFighterMeansNotPlaced,
   getFireFightersMeansPlaced,
-  getOtherMeansPlaced,
-} from '../../../../../utils/means';
+  getInterventionMeanFromMean,
+} from '../../../../../utils/intervention-mean';
 import { Tables } from '../../../../../utils/supabase';
 
 export default function Map() {
@@ -34,7 +36,7 @@ export default function Map() {
 
   const { data: otherMeans } = useQuery({
     queryKey: ['otherMeans'],
-    queryFn: () => fetchOtherMeans(interventionId),
+    queryFn: () => fetchInterventionDangers(interventionId),
   });
 
   const onFireFighterMeanInsert = async (interventionMean: InterventionMean) => {
