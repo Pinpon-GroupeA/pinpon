@@ -32,7 +32,6 @@ export default function ModalMeansRequest({ meansType, setShowModal }: ModalMean
       for (let j = 0; j < val; j++) {
         const request: CreateRequestData = {
           intervention_id: interventionId === undefined ? 0 : +interventionId,
-          status: 'EN_ATTENTE',
           request_time: new Date().toISOString(),
           mean_type: meansType[i].mean_type,
         };
