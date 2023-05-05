@@ -39,6 +39,21 @@ export const fetchInterventionLocation = async (interventionId?: string | string
   return data[0]?.location as Coordinates;
 };
 
+export const fetchInterventionAddressDangerCodeAndDate = async (
+  interventionId?: string | string[]
+) => {
+  const { data, error } = await supabase
+    .from('interventions')
+    .select('address, danger_code, created_at')
+    .eq('id', interventionId);
+
+  if (error) {
+    throw error;
+  }
+
+  return data[0] as { address: string; danger_code: string; created_at: string };
+};
+
 export const getStatusMessage = (status: InterventionStatus) => {
   switch (status) {
     case 'PENDING':
