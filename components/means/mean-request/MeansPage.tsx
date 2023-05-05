@@ -75,7 +75,7 @@ export default function MeansPage() {
         renderInPortal={false}
       />
       <Modal isOpen={showModal} onClose={() => setShowModal(false)} size="md">
-        <ModalMeansRequest meansType={meanTypes ?? []} />
+        <ModalMeansRequest meansType={meanTypes ?? []} setShowModal={setShowModal} />
       </Modal>
     </Box>
   );

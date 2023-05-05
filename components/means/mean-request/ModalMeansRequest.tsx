@@ -6,18 +6,20 @@ import React, { useState } from 'react';
 import MeanRequestItem from './MeanRequestItem';
 import { MeanType } from '../../../types/mean-types';
 import { CreateRequestData, createRequest } from '../../../utils/requests-type';
-import AlertMeansRequestsSuccess from '../../Alert';
+import Alert from '../../Alert';
 
 type ModalMeansRequestProps = {
   meansType: MeanType[];
+  setShowModal: (showModal: boolean) => void;
 };
 
-export default function ModalMeansRequest({ meansType }: ModalMeansRequestProps) {
+export default function ModalMeansRequest({ meansType, setShowModal }: ModalMeansRequestProps) {
   const [values, setValues] = React.useState<number[]>(new Array(meansType.length).fill(0));
   const [isSendingRequests, setIsSendingRequests] = useState(false);
   const { id: interventionId } = useSearchParams();
 
   const toast = useToast();
+  const isSendingPossible = meansType.length === 0 || values.reduce((acc, i) => acc + i, 0) === 0;
 
   const { mutateAsync } = useMutation({
     mutationFn: (data: CreateRequestData) => createRequest(data),
@@ -26,25 +28,27 @@ export default function ModalMeansRequest({ meansType }: ModalMeansRequestProps)
   async function handleSend() {
     setIsSendingRequests(true);
 
-    const currentTime = new Date();
-    currentTime.setHours(currentTime.getHours() + 2);
-
     values.map(async (val, i) => {
       for (let j = 0; j < val; j++) {
         const request: CreateRequestData = {
           intervention_id: interventionId === undefined ? 0 : +interventionId,
           status: 'EN_ATTENTE',
-          request_time: currentTime.toISOString(),
+          request_time: new Date().toISOString(),
           mean_type: meansType[i].mean_type,
         };
         await mutateAsync(request);
       }
       if (i === values.length - 1) {
         setIsSendingRequests(false);
+        setShowModal(false);
         toast.show({
           render: () => {
             return (
-              <AlertMeansRequestsSuccess textContent="Demande de moyens envoyée avec succès." />
+              <Alert
+                variant="subtle"
+                status="success"
+                textContent="Demande de moyens envoyée avec succès."
+              />
             );
           },
         });
@@ -90,7 +94,7 @@ export default function ModalMeansRequest({ meansType }: ModalMeansRequestProps)
           isLoadingText="Envoi en cours..."
           onPress={handleSend}
           bgColor="#19837C"
-          isDisabled={meansType.length === 0}
+          isDisabled={isSendingPossible}
         >
           Envoyer
         </Button>
