@@ -82,39 +82,3 @@ export const sendAvailable = async (id: number) => {
 export const deleteMeans = async (id: number) => {
   await supabase.from(Tables.requests).delete().eq('id', id);
 };
-
-export const getMilitaryTime = (date: string) => {
-  if (date === undefined) {
-    return '';
-  }
-  return date.slice(11, 13) + date.slice(14, 16);
-};
-
-export const getDate = (date: string) => {
-  let hour = parseInt(date.slice(11, 13), 2);
-  let min = parseInt(date.slice(14, 16), 2);
-  let hourS = '';
-  let minS = '';
-  min += 20;
-  if (min > 59) {
-    min = min - 60;
-    hour++;
-    if (hour === 24) {
-      hour = 0;
-    }
-  }
-
-  if (min < 10) {
-    minS = '0' + min.toString();
-  } else {
-    minS = min.toString();
-  }
-
-  if (hour < 10) {
-    hourS = '0' + hour.toString();
-  } else {
-    hourS = hour.toString();
-  }
-
-  return hourS + minS;
-};

@@ -2,7 +2,8 @@ import { Entypo } from '@expo/vector-icons';
 import { Modal, VStack, Text, HStack, Button, Icon, Pressable } from 'native-base';
 import React, { useState } from 'react';
 
-import { getMilitaryTime, sendAvailable, sendCRM, sendSector } from '../../utils/means';
+import { getMilitaryTime } from '../../utils/date';
+import { sendAvailable, sendCRM, sendSector } from '../../utils/means';
 
 type ModalOpen = {
   crm: string;

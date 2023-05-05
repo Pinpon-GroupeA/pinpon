@@ -3,7 +3,7 @@ import React from 'react';
 
 import ConfirmationModal from './ConfirmationModal';
 import { InterventionMean } from '../../types/mean-types';
-import { getDate, getMilitaryTime } from '../../utils/means';
+import { addMinutes, getMilitaryTime } from '../../utils/date';
 
 type MeansTableProps = {
   means: InterventionMean[];
@@ -11,7 +11,7 @@ type MeansTableProps = {
 
 export default function MeansTable({ means }: MeansTableProps) {
   return (
-    <Box h="50%">
+    <Box>
       <Heading pt={3} pb={8} size="2xl" color="#19837C">
         Tableau des moyens
       </Heading>
@@ -43,7 +43,7 @@ export default function MeansTable({ means }: MeansTableProps) {
           </Text>
           <Text flex={1} bold fontSize="20px" />
         </HStack>
-        <ScrollView h="50%">
+        <ScrollView>
           {means.map((mean: InterventionMean, i) => (
             <HStack
               key={mean.id}
@@ -54,7 +54,7 @@ export default function MeansTable({ means }: MeansTableProps) {
             >
               <Text flex={2}>{mean.means.label}</Text>
               <Text flex={2}>{getMilitaryTime(mean.request_date)}</Text>
-              <Text flex={2}>{getDate(mean.request_date)}</Text>
+              <Text flex={2}>{addMinutes(mean.request_date, 20)}</Text>
               <Text flex={2}>
                 {mean.crm_arrival == null ? '' : getMilitaryTime(mean.crm_arrival)}
               </Text>
