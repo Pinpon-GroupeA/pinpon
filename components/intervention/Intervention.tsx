@@ -41,7 +41,7 @@ export default function Intervention({ intervention }: InterventionProps) {
     if (isCodis) {
       router.push(`/intervention/${intervention.id}/requests`);
     } else {
-      router.push(`/intervention/${intervention.id}`);
+      router.push(`/intervention/${intervention.id}/map`);
     }
   };
 

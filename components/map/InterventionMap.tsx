@@ -10,7 +10,9 @@ import { Coordinates } from '../../types/global-types';
 import { InterventionMean, OtherMean } from '../../types/mean-types';
 import { findDangerCodeFromColor, getDangerCodeColor } from '../../utils/danger-code';
 import { castInterventionIdAsNumber } from '../../utils/intervention';
-import { createOtherMean, updateMeanDangerCode, updateMeanLocation } from '../../utils/means';
+import { createOtherMean } from '../../utils/intervention-dangers';
+import { updateInterventionMeanDangerCode } from '../../utils/intervention-mean';
+import { updateMeanLocation } from '../../utils/means';
 import {
   getOtherMeanFromSymbolTypeAndColorAndLocationAndInterventionId,
   selectRightSymbol,
@@ -63,7 +65,7 @@ function InterventionMap({
           latitude,
           longitude,
         });
-        updateMeanDangerCode(selectedSymbol.id, findDangerCodeFromColor(drawingsColor));
+        updateInterventionMeanDangerCode(selectedSymbol.id, findDangerCodeFromColor(drawingsColor));
       }
       setSelectedSymbol(undefined);
     }

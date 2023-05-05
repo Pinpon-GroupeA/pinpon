@@ -6,7 +6,7 @@ import { Button, FormControl, Heading, Icon, Input, ScrollView, Select, VStack }
 import { useCallback, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
-import { DangerCode } from '../../types/types';
+import { DangerCode } from '../../types/global-types';
 import { searchCoordinates } from '../../utils/geocoding';
 import { CreateInterventionData, createIntervention } from '../../utils/intervention';
 import ErrorModal from '../ErrorModal';

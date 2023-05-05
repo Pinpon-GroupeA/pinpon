@@ -6,7 +6,7 @@ export type InterventionMean = {
   mean_id: number;
   means: Mean;
   request_date: string;
-  acheduled_arrival: string;
+  scheduled_arrival: string;
   crm_arrival: string;
   sector_arrival: string;
   available_at: string;
