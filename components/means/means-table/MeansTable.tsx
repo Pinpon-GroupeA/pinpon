@@ -4,39 +4,11 @@ import React from 'react';
 import ConfirmationModal from './ConfirmationModal';
 import ConfirmationModal from './ConfirmationModal';
 import { Mean } from '../../types/mean-types';
+import { getDate, getMilitaryTime } from '../../utils/means';
 
 type MeansTableProps = {
   means: Mean[];
 };
-
-function getDate(date: string) {
-  let hour = parseInt(date.slice(11, 13), 2);
-  let min = parseInt(date.slice(14, 16), 2);
-  let hourS = '';
-  let minS = '';
-  min += 20;
-  if (min > 59) {
-    min = min - 60;
-    hour++;
-    if (hour === 24) {
-      hour = 0;
-    }
-  }
-
-  if (min < 10) {
-    minS = '0' + min.toString();
-  } else {
-    minS = min.toString();
-  }
-
-  if (hour < 10) {
-    hourS = '0' + hour.toString();
-  } else {
-    hourS = hour.toString();
-  }
-
-  return hourS + minS;
-}
 
 export default function MeansTable({ means }: MeansTableProps) {
   return (
@@ -76,7 +48,7 @@ export default function MeansTable({ means }: MeansTableProps) {
         <ScrollView h="50%">
           {means.map((mean: Mean, i) => (
             <HStack
-              key={i}
+              key={mean.id}
               divider={<Divider bg="black" />}
               divider={<Divider bg="black" />}
               h="8"
@@ -84,24 +56,16 @@ export default function MeansTable({ means }: MeansTableProps) {
               textAlign="center"
             >
               <Text flex={2}>{mean.danger_code}</Text>
-              <Text flex={2}>
-                {mean.request_date.slice(11, 13) + mean.request_date.slice(14, 16)}
-              </Text>
+              <Text flex={2}>{getMilitaryTime(mean.request_date)}</Text>
               <Text flex={2}>{getDate(mean.request_date)}</Text>
               <Text flex={2}>
-                {mean.crm_arrival == null
-                  ? ''
-                  : mean.crm_arrival.slice(11, 13) + mean.crm_arrival.slice(11, 13)}
+                {mean.crm_arrival == null ? '' : getMilitaryTime(mean.crm_arrival)}
               </Text>
               <Text flex={2}>
-                {mean.sector_arrival == null
-                  ? ''
-                  : mean.sector_arrival.slice(11, 13) + mean.sector_arrival.slice(14, 16)}
+                {mean.sector_arrival == null ? '' : getMilitaryTime(mean.sector_arrival)}
               </Text>
               <Text flex={2}>
-                {mean.available_at == null
-                  ? ''
-                  : mean.available_at.slice(11, 13) + mean.available_at.slice(11, 13)}
+                {mean.available_at == null ? '' : getMilitaryTime(mean.available_at)}
               </Text>
               <ConfirmationModal
                 id={mean.id}

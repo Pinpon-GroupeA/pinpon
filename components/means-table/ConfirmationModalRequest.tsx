@@ -1,10 +1,8 @@
-import { SUPABASE_URL, SUPABASE_ANON_KEY } from '@env';
 import { Entypo } from '@expo/vector-icons';
-import { createClient } from '@supabase/supabase-js';
-import { Modal, Button, Text, VStack, Box } from 'native-base';
+import { Modal, Button, VStack, Box, Icon, Pressable } from 'native-base';
 import React, { useState } from 'react';
 
-const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+import { deleteMeans } from '../../utils/means';
 
 type ModalData = {
   id: string;
@@ -37,13 +35,9 @@ export default function ConfirmationModalRequest({ id }: ModalData) {
           </Modal.Body>
         </Modal.Content>
       </Modal>
-      <Text flex={1} onPress={() => setModalVisible(true)}>
-        <Entypo name="cross" size={24} color="black" />
-      </Text>
+      <Pressable flex={1} onPress={() => setModalVisible(true)}>
+        <Icon as={Entypo} name="cross" size={24} color="black" />
+      </Pressable>
     </>
   );
-}
-
-async function deleteMeans(id: string) {
-  await supabase.from('Requests').delete().eq('id', id);
 }
