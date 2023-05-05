@@ -25,7 +25,7 @@ function getTypeColor(mytype: string) {
 
 type demandProps = {
   adress: string;
-  type: string;
+  danger_code: string;
   date: string;
   demandList: any;
   supabase: SupabaseClient;
@@ -33,11 +33,11 @@ type demandProps = {
 
 export default function DemandManagement(props: demandProps) {
   const [affectedId, setAffectedId] = useState<number>(-1);
-  const typeColor = getTypeColor(props.type);
+  const typeColor = getTypeColor(props.danger_code);
 
   async function validDemand(supabase: SupabaseClient, demand: any) {
     await supabase
-      .from('Means')
+      .from('means')
       .select('id')
       .eq('is_available', true)
       .eq('mean_type', demand.mean_type)
@@ -46,25 +46,26 @@ export default function DemandManagement(props: demandProps) {
           setAffectedId(data[0].id);
           console.log('début insertion de ', data[0].id);
           supabase
-            .from('Interventionmeanslink')
+            .from('interventions_means_link')
             .insert([
               {
-                using_crm: true,
+                using_crm: false,
                 is_on_site: false,
-                request_date: demand.request_date,
-                interv_id: demand.id_inter,
+                request_date: demand.request_time,
+                intervention_id: demand.intervention_id,
                 mean_id: data[0].id,
+                danger_code: props.danger_code,
               },
             ])
             .then((response) => {
               supabase
-                .from('Means')
+                .from('means')
                 .update({ is_available: false })
                 .eq('id', data[0].id)
                 .then((subresponse) => console.log('reservation : ', subresponse));
               supabase
-                .from('Requests')
-                .update({ status: 'ACCEPTED' })
+                .from('requests')
+                .update({ status: 'ACCEPTEE' })
                 .eq('id', demand.id)
                 .then((subresponse) => console.log('validation : ', subresponse));
               console.log('fin insertion : ', response);
@@ -76,7 +77,7 @@ export default function DemandManagement(props: demandProps) {
   }
 
   async function refuseDemand(supabase: SupabaseClient, id: number) {
-    await supabase.from('Requests').update({ status: 'REFUSED' }).eq('id', id);
+    await supabase.from('Requests').update({ status: 'REFUSEE' }).eq('id', id);
   }
 
   return (
@@ -94,7 +95,7 @@ export default function DemandManagement(props: demandProps) {
               </VStack>
               <VStack>
                 <Text bold textAlign="right" color={typeColor}>
-                  {props.type}
+                  {props.danger_code}
                 </Text>
                 <Text textAlign="right">{props.date}</Text>
               </VStack>
@@ -107,8 +108,8 @@ export default function DemandManagement(props: demandProps) {
                   <Text>{mydemand.mean_type},</Text>
 
                   <Text>
-                    demandé le {mydemand.request_date.split('T')[0].split('-').join('/')} à{' '}
-                    {mydemand.request_date.split('T')[1].split('+')[0].split(':').join('')}
+                    demandé le {mydemand.request_time.split('T')[0].split('-').join('/')} à{' '}
+                    {mydemand.request_time.split('T')[1].split('+')[0].split(':').join('')}
                   </Text>
                 </VStack>
                 <VStack>
