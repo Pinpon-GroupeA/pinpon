@@ -14,7 +14,6 @@ export default function InterventionDetailsLayout() {
     <Tabs
       screenOptions={{
         headerShown: false,
-        // tabBarLabelPosition: 'below-icon',
       }}
     >
       <Tabs.Screen
@@ -36,13 +35,6 @@ export default function InterventionDetailsLayout() {
         options={{
           title: 'Drone',
           tabBarIcon: ({ color }) => <TabBarIcon name="plane" color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="video"
-        options={{
-          title: 'Vidéo',
-          tabBarIcon: ({ color }) => <TabBarIcon name="film" color={color} />,
         }}
       />
     </Tabs>

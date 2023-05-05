@@ -1,8 +1,10 @@
 import { useRouter } from 'expo-router';
-import { Box, Pressable, Text } from 'native-base';
+import { Badge, Box, HStack, Pressable, Text } from 'native-base';
 
+import { useAppStore } from '../../stores/store';
 import { Intervention as InterventionType } from '../../types/intervention-types';
 import { getDangerCodeColor } from '../../utils/danger-code';
+import { getStatusMessage as getBadgeMessage, getStatusBadgeColor } from '../../utils/intervention';
 
 const dateTimeFormattingOptions: Intl.DateTimeFormatOptions = {
   year: 'numeric',
@@ -19,10 +21,12 @@ type InterventionProps = {
 };
 
 export default function Intervention({ intervention }: InterventionProps) {
+  const isCodis = useAppStore((state) => state.role) === 'CODIS';
+
   const router = useRouter();
 
   const formattedDate = Intl.DateTimeFormat('fr-FR', dateTimeFormattingOptions).format(
-    new Date(intervention.date)
+    new Date(intervention.created_at)
   );
   const showAddress = intervention.address && intervention.address.length > 0;
   const title = (
@@ -34,7 +38,11 @@ export default function Intervention({ intervention }: InterventionProps) {
   );
 
   const handleInterventionPress = () => {
-    router.push(`/intervention/${intervention.id}`);
+    if (isCodis) {
+      router.push(`/intervention/${intervention.id}/requests`);
+    } else {
+      router.push(`/intervention/${intervention.id}`);
+    }
   };
 
   return (
@@ -54,12 +62,17 @@ export default function Intervention({ intervention }: InterventionProps) {
           {formattedDate}
         </Text>
       </Box>
-      <Box alignItems="center">
-        <Text fontWeight="semibold" color={getDangerCodeColor(intervention.dangerCode)}>
-          {intervention.dangerCode}
-        </Text>
-        <Text>#{intervention.id}</Text>
-      </Box>
+      <HStack space="md" alignItems="center">
+        <Badge variant="solid" colorScheme={getStatusBadgeColor(intervention.status_intervention)}>
+          {getBadgeMessage(intervention.status_intervention)}
+        </Badge>
+        <Box alignItems="center">
+          <Text fontWeight="semibold" color={getDangerCodeColor(intervention.danger_code)}>
+            {intervention.danger_code}
+          </Text>
+          <Text>#{intervention.id}</Text>
+        </Box>
+      </HStack>
     </Pressable>
   );
 }

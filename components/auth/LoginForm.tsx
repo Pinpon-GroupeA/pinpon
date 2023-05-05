@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 import useLogin from '../../hooks/useLogin';
+import { useAppStore } from '../../stores/store';
+import { UserType } from '../../types/user';
 import ErrorModal from '../ErrorModal';
 
 type FormInputs = {
@@ -20,10 +22,12 @@ export default function LoginForm() {
   const [error, setError] = useState('');
   const router = useRouter();
   const { mutateAsync, isLoading } = useLogin();
+  const setUserType = useAppStore((state) => state.setRole);
 
-  async function signInWithEmail(email: string, password: string) {
+  async function signInWithEmail(email: string, password: string, type: UserType) {
     try {
       await mutateAsync({ email, password });
+      setUserType(type);
       router.replace('/intervention');
     } catch (error) {
       setError((error as Error).message);
@@ -82,9 +86,19 @@ export default function LoginForm() {
             mt="2"
             disabled={isLoading}
             colorScheme="teal"
-            onPress={handleSubmit(({ email, password }) => signInWithEmail(email, password))}
+            onPress={handleSubmit(({ email, password }) =>
+              signInWithEmail(email, password, 'CODIS')
+            )}
           >
-            Connexion
+            Connexion CODIS
+          </Button>
+          <Button
+            mt="2"
+            disabled={isLoading}
+            colorScheme="teal"
+            onPress={handleSubmit(({ email, password }) => signInWithEmail(email, password, 'COS'))}
+          >
+            Connexion COS
           </Button>
         </VStack>
       </Box>

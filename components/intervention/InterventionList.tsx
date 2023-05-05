@@ -1,7 +1,9 @@
 import { AntDesign } from '@expo/vector-icons';
-import { Box, Fab, FlatList, Icon } from 'native-base';
+import { useRouter } from 'expo-router';
+import { Box, Fab, FlatList, Heading, Icon, VStack } from 'native-base';
 
 import Intervention from './Intervention';
+import { useAppStore } from '../../stores/store';
 import { Intervention as InterventionType } from '../../types/intervention-types';
 
 type InterventionListProps = {
@@ -13,7 +15,8 @@ const renderIntervention = ({ item }: { item: InterventionType }) => (
 );
 
 export default function InterventionList({ interventions }: InterventionListProps) {
-  const isCodis = true;
+  const router = useRouter();
+  const isCodis = useAppStore((state) => state.role) === 'CODIS';
 
   return (
     <>
@@ -22,11 +25,18 @@ export default function InterventionList({ interventions }: InterventionListProp
         renderItem={renderIntervention}
         ItemSeparatorComponent={() => <Box style={{ height: 10 }} />}
         keyExtractor={(intervention) => intervention.id}
+        ListEmptyComponent={() => (
+          <VStack flex="1" p="24px" alignItems="center" justifyContent="center">
+            <Heading>Pas d'interventions trouvées</Heading>
+          </VStack>
+        )}
       />
       {isCodis && (
         <Fab
           placement="bottom-right"
+          bgColor="#19837C"
           icon={<Icon color="white" as={AntDesign} name="plus" size="4" />}
+          onPress={() => router.push('/intervention/create')}
           renderInPortal={false}
         />
       )}
