@@ -40,7 +40,7 @@ export const requestsRequest = async (id: Partial<URLSearchParams>): Promise<Req
   return data as Request[];
 };
 
-export const meansRequest = async (id: string): Promise<Mean[]> => {
+export const meansRequest = async (id: number): Promise<Mean[]> => {
   const { data, error } = await supabase
     .from('interventions_means_link')
     .select('*')
@@ -58,28 +58,28 @@ export const getlocalTime = (): string => {
   return new Date(Date.now() - tzoffset).toISOString().slice(0, -1);
 };
 
-export const sendCRM = async (id: string) => {
+export const sendCRM = async (id: number) => {
   await supabase
     .from('interventions_means_link')
     .update({ crm_arrival: getlocalTime() })
     .eq('id', id);
 };
 
-export const sendSector = async (id: string) => {
+export const sendSector = async (id: number) => {
   await supabase
     .from('interventions_means_link')
     .update({ sector_arrival: getlocalTime() })
     .eq('id', id);
 };
 
-export const sendAvailable = async (id: string) => {
+export const sendAvailable = async (id: number) => {
   await supabase
     .from('interventions_means_link')
     .update({ available_at: getlocalTime() })
     .eq('id', id);
 };
 
-export const deleteMeans = async (id: string) => {
+export const deleteMeans = async (id: number) => {
   await supabase.from('Requests').delete().eq('id', id);
 };
 

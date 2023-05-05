@@ -9,12 +9,12 @@ import { Request } from '../../../../../types/request-types';
 import { meansRequest, requestsRequest } from '../../../../../utils/means';
 
 export default function Means() {
-  const { id } = useSearchParams();
+  const id: number = parseInt(useSearchParams().toString(), 2);
   const { data: requests, isLoading } = useQuery<Request[]>(
     ['requests', id],
     async (): Promise<Request[]> => {
       if (id) {
-        const _id = Array.isArray(id) ? id.at(0) : id;
+        const _id: number = Array.isArray(id) ? id.at(0) : id;
 
         if (!_id) {
           return [];

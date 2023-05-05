@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import { deleteMeans } from '../../utils/means';
 
 type ModalData = {
-  id: string;
+  id: number;
 };
 
 export default function ConfirmationModalRequest({ id }: ModalData) {

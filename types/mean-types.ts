@@ -16,7 +16,7 @@ export type InterventionMean = {
 };
 
 export type Mean = {
-  id: string;
+  id: number;
   label: string;
   is_available: boolean;
   location: Coordinates;
@@ -28,6 +28,9 @@ export type Mean = {
 export type OtherMean = {
   id: number;
   danger_code: DangerCode;
+  intervention_id: number;
+  location: Coordinates;
+  category: MeanCategory;
 };
 
 export type MeanCategory = 'PS' | 'SD' | 'ZA';
