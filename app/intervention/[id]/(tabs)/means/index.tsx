@@ -9,16 +9,36 @@ import { Request } from '../../../../../types/request-types';
 import { meansRequest, requestsRequest } from '../../../../../utils/means';
 
 export default function Means() {
-  const id = useSearchParams();
+  const { id } = useSearchParams();
   const { data: requests, isLoading } = useQuery<Request[]>(
-    ['requests'],
+    ['requests', id],
     async (): Promise<Request[]> => {
-      return requestsRequest(id);
+      if (id) {
+        const _id = Array.isArray(id) ? id.at(0) : id;
+
+        if (!_id) {
+          return [];
+        }
+
+        return requestsRequest(_id);
+      }
+
+      return [];
     }
   );
 
   const { data: dataInter } = useQuery<Mean[]>(['intervention'], async (): Promise<Mean[]> => {
-    return meansRequest(id);
+    if (id) {
+      const _id = Array.isArray(id) ? id.at(0) : id;
+
+      if (!_id) {
+        return [];
+      }
+
+      return meansRequest(_id);
+    }
+
+    return [];
   });
 
   if (isLoading) {

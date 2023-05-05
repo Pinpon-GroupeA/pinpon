@@ -90,7 +90,7 @@ export const getInterventionMeanFromMean = async (interventionMean: Intervention
   return interventionMean as InterventionMean;
 };
 
-export const requestsRequest = async (id: Partial<URLSearchParams>): Promise<Request[]> => {
+export const requestsRequest = async (id: string): Promise<Request[]> => {
   const { data, error } = await supabase.from('Requests').select('*').eq('id_inter', id);
   if (error) {
     throw new Error(error.message);
@@ -98,7 +98,7 @@ export const requestsRequest = async (id: Partial<URLSearchParams>): Promise<Req
   return data as Request[];
 };
 
-export const meansRequest = async (id: Partial<URLSearchParams>): Promise<Mean[]> => {
+export const meansRequest = async (id: string): Promise<Mean[]> => {
   const { data, error } = await supabase
     .from('interventions_means_link')
     .select('*')
