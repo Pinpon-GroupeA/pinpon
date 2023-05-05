@@ -108,7 +108,7 @@ export default function InterventionCreationForm() {
       >
         Création d'une intervention
       </Heading>
-      <ScrollView h="420px">
+      <ScrollView mb="5%">
         <FormControl isRequired isInvalid={'language' in errors}>
           <FormControl.Label>Type de danger</FormControl.Label>
           <Controller
