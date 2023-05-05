@@ -1,10 +1,8 @@
-import { SUPABASE_URL, SUPABASE_ANON_KEY } from '@env';
 import { Entypo } from '@expo/vector-icons';
-import { createClient } from '@supabase/supabase-js';
-import { Modal, VStack, Text, HStack, Button } from 'native-base';
+import { Modal, VStack, Text, HStack, Button, Icon, Pressable } from 'native-base';
 import React, { useState } from 'react';
 
-const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+import { getMilitaryTime, sendAvailable, sendCRM, sendSector } from '../../utils/means';
 
 type ModalOpen = {
   crm: string;
@@ -38,7 +36,7 @@ export default function ConfirmationModal({ crm, sector, available, id }: ModalO
                   </Button>
                 ) : (
                   <Button disabled bgColor="gray.400">
-                    arrivé au CRM à {crm.slice(11, 13) + crm.slice(14, 16)}
+                    arrivé au CRM à {getMilitaryTime(crm)}
                   </Button>
                 )}
               </HStack>
@@ -57,7 +55,7 @@ export default function ConfirmationModal({ crm, sector, available, id }: ModalO
                   </Button>
                 ) : (
                   <Button disabled bgColor="gray.400">
-                    Sur le secteur à {sector.slice(11, 13) + sector.slice(14, 16)}
+                    Sur le secteur à {getMilitaryTime(sector)}
                   </Button>
                 )}
               </HStack>
@@ -76,7 +74,7 @@ export default function ConfirmationModal({ crm, sector, available, id }: ModalO
                   </Button>
                 ) : (
                   <Button disabled bgColor="gray.400">
-                    Disponible à {available.slice(11, 13) + available.slice(14, 16)}
+                    Disponible à {getMilitaryTime(available)}
                   </Button>
                 )}
               </HStack>
@@ -84,35 +82,9 @@ export default function ConfirmationModal({ crm, sector, available, id }: ModalO
           </Modal.Body>
         </Modal.Content>
       </Modal>
-      <Text flex={1} onPress={() => setModalVisible(true)}>
-        <Entypo name="pencil" size={24} color="black" />
-      </Text>
+      <Pressable flex={1} onPress={() => setModalVisible(true)}>
+        <Icon as={Entypo} name="pencil" size={24} color="black" />
+      </Pressable>
     </>
   );
-}
-
-function getlocalTime() {
-  const tzoffset = new Date().getTimezoneOffset() * 60000;
-  return new Date(Date.now() - tzoffset).toISOString().slice(0, -1);
-}
-
-async function sendCRM(id: string) {
-  await supabase
-    .from('interventions_means_link')
-    .update({ crm_arrival: getlocalTime() })
-    .eq('id', id);
-}
-
-async function sendSector(id: string) {
-  await supabase
-    .from('interventions_means_link')
-    .update({ sector_arrival: getlocalTime() })
-    .eq('id', id);
-}
-
-async function sendAvailable(id: string) {
-  await supabase
-    .from('interventions_means_link')
-    .update({ available_at: getlocalTime() })
-    .eq('id', id);
 }

@@ -2,6 +2,7 @@ import { Box, Heading, VStack, Divider, HStack, Text, ScrollView } from 'native-
 
 import ConfirmationModalRequest from './ConfirmationModalRequest';
 import { Request } from '../../types/request-types';
+import { getMilitaryTime } from '../../utils/means';
 
 type MeansTableProps = {
   means: Request[];
@@ -36,7 +37,7 @@ export default function MeansTableRequests({ means }: MeansTableProps) {
           {means?.map((mean: Request, i) =>
             mean.status === 'ACCEPTED' ? null : (
               <HStack
-                key={i}
+                key={mean.id}
                 h="8"
                 divider={<Divider bg="black" />}
                 alignItems="center"
@@ -45,9 +46,7 @@ export default function MeansTableRequests({ means }: MeansTableProps) {
               >
                 <Text flex={2}>{mean.mean_type}</Text>
                 <Text flex={2}>
-                  {mean.request_date === null
-                    ? ''
-                    : mean.request_date.slice(11, 13) + mean.request_date.slice(14, 16)}
+                  {mean.request_date === null ? '' : getMilitaryTime(mean.request_date)}
                 </Text>
                 <Text flex={2}>{mean.status}</Text>
                 <Text flex={1}>
