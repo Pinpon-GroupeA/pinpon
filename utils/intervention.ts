@@ -1,4 +1,5 @@
 import { supabase } from './supabase';
+import { Coordinates } from '../types/global-types';
 import { Intervention, InterventionStatus } from '../types/intervention-types';
 
 export type CreateInterventionData = Omit<Intervention, 'id' | 'created_at' | 'is_ongoing'>;
@@ -25,6 +26,19 @@ export const fetchInterventions = async (): Promise<Intervention[]> => {
   return data as Intervention[];
 };
 
+export const fetchInterventionLocation = async (interventionId?: string | string[]) => {
+  const { data, error } = await supabase
+    .from('interventions')
+    .select('location')
+    .eq('id', interventionId);
+
+  if (error) {
+    throw error;
+  }
+
+  return data[0]?.location as Coordinates;
+};
+
 export const getStatusMessage = (status: InterventionStatus) => {
   switch (status) {
     case 'PENDING':
@@ -45,4 +59,12 @@ export const getStatusBadgeColor = (status: InterventionStatus) => {
     case 'OVER':
       return 'success';
   }
+};
+
+export const castInterventionIdAsNumber = (interventionId?: string | string[]) => {
+  if (!interventionId) {
+    return 0;
+  }
+
+  return parseInt(interventionId as string, 10);
 };

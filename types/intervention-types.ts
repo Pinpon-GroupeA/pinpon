@@ -1,7 +1,7 @@
-import { Coordinates, DangerCode } from './types';
+import { DangerCode, Coordinates } from './global-types';
 
 export type Intervention = {
-  id: string;
+  id: number;
   created_at: string;
   is_ongoing: boolean;
   danger_code: DangerCode;
