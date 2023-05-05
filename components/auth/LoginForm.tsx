@@ -66,7 +66,13 @@ export default function LoginForm() {
               control={control}
               name="email"
               render={({ field: { onChange, onBlur } }) => (
-                <Input onBlur={onBlur} onChangeText={onChange} />
+                <Input
+                  variant="filledr"
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  bgColor="white"
+                  _focus={{ borderColor: '#19837C' }}
+                />
               )}
             />
             <FormControl.ErrorMessage>{errors.email?.message}</FormControl.ErrorMessage>
@@ -77,7 +83,14 @@ export default function LoginForm() {
               control={control}
               name="password"
               render={({ field: { onChange, onBlur } }) => (
-                <Input type="password" onBlur={onBlur} onChangeText={onChange} />
+                <Input
+                  variant="filled"
+                  type="password"
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  bgColor="white"
+                  _focus={{ borderColor: '#19837C' }}
+                />
               )}
             />
             <FormControl.ErrorMessage>{errors.password?.message}</FormControl.ErrorMessage>
