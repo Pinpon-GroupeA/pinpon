@@ -50,7 +50,7 @@ export default function ModalMeansRequest({ meansType }: ModalMeansRequestProps)
             );
           },
         });
-        console.log('envoie terminé');
+        console.log('envoi terminé');
       }
     });
   }
@@ -90,7 +90,7 @@ export default function ModalMeansRequest({ meansType }: ModalMeansRequestProps)
         <Button
           flex="1"
           isLoading={isSendingRequests}
-          isLoadingText="Envoie en cours..."
+          isLoadingText="Envoi en cours..."
           onPress={handleSend}
           bgColor="#19837C"
           isDisabled={meansType.length === 0}
