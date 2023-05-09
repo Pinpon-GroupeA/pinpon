@@ -1,7 +1,7 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useSearchParams } from 'expo-router';
-import { Box, Fab, Icon, Text } from 'native-base';
+import { Box, Fab, Icon, Modal, Text } from 'native-base';
 import { useState } from 'react';
 import { MapPressEvent, Marker, Polyline } from 'react-native-maps';
 
@@ -9,7 +9,7 @@ import CustomCircle from './symbols/CustomCircle';
 import FireFighterVehicle from './symbols/FireFighterVehicle';
 import { useAppStore } from '../../stores/store';
 import { Coordinates } from '../../types/global-types';
-import { InterventionMean, OtherMean } from '../../types/mean-types';
+import { InterventionMean, MeanModalProps, OtherMean } from '../../types/mean-types';
 import { findDangerCodeFromColor, getDangerCodeColor } from '../../utils/danger-code';
 import { castInterventionIdAsNumber } from '../../utils/intervention';
 import { createOtherMean, deleteOtherMean } from '../../utils/intervention-dangers';
@@ -21,6 +21,7 @@ import {
   selectRightSymbol,
 } from '../../utils/symbols-utils';
 import MapBackground from '../MapBackground';
+import ConfirmationModal from '../means/means-table/ConfirmationModal';
 
 type InterventionMapProps = {
   fireFighterMeans: InterventionMean[];
@@ -53,6 +54,7 @@ function InterventionMap({
 
   const [newPolyline, setNewPolyline] = useState<Coordinates[]>([]);
   const [polylineDrawMode, setPolylineDrawMode] = useState(false);
+  const [modalContent, setModalContent] = useState<MeanModalProps | null>(null);
 
   const handlePress = (event: MapPressEvent) => {
     const { latitude, longitude } = event.nativeEvent.coordinate;
@@ -104,6 +106,15 @@ function InterventionMap({
     setNewPolyline([]);
   };
 
+  const handleFireFighterVehiclePress = (mean: InterventionMean) => {
+    setModalContent({
+      id: mean.id,
+      crmArrival: mean.crm_arrival,
+      sectorArrival: mean.sector_arrival,
+      availableAt: mean.available_at,
+    });
+  };
+
   if (error) return <Text>Error</Text>;
 
   return (
@@ -129,7 +140,7 @@ function InterventionMap({
               longitude: mean.means.location.longitude,
             }}
             title="Modifier moyen"
-            onCalloutPress={() => console.log('test')}
+            onCalloutPress={() => handleFireFighterVehiclePress(mean)}
           >
             <FireFighterVehicle
               color={getDangerCodeColor(mean.danger_code)}
@@ -174,6 +185,16 @@ function InterventionMap({
         }
         onPress={savePolyline}
       />
+      {modalContent && (
+        <Modal isOpen={modalContent !== null} onClose={() => setModalContent(null)} size="md">
+          <ConfirmationModal
+            id={modalContent.id}
+            crmArrival={modalContent.crmArrival}
+            sectorArrival={modalContent.sectorArrival}
+            availableAt={modalContent.availableAt}
+          />
+        </Modal>
+      )}
     </Box>
   );
 }

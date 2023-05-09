@@ -44,3 +44,10 @@ export type MeanType = {
   label: string;
   firefighter_related: boolean;
 };
+
+export type MeanModalProps = {
+  id: number;
+  crmArrival: string | null;
+  sectorArrival: string | null;
+  availableAt: string | null;
+};
