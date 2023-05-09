@@ -71,7 +71,7 @@ export default function RequestManagement({ address, date, requests }: RequestMa
                 <Text>{address}</Text>
               </VStack>
               <VStack>
-                <Text textAlign="right">{date}</Text>
+                <Text textAlign="right">{new Date(date?.toString()).toLocaleString()}</Text>
               </VStack>
             </HStack>
           </Box>
@@ -81,10 +81,7 @@ export default function RequestManagement({ address, date, requests }: RequestMa
                 <VStack>
                   <Text>{request.mean_type},</Text>
 
-                  <Text>
-                    demandé le {request.request_time.split('T')[0].split('-').join('/')} à{' '}
-                    {request.request_time.split('T')[1].split('+')[0].split(':').join('')}
-                  </Text>
+                  <Text>{new Date(request.request_time).toLocaleString()}</Text>
                 </VStack>
                 <VStack>
                   <HStack justifyContent="space-between">
