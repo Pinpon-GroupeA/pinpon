@@ -61,3 +61,17 @@ export const getOtherMeanFromSymbolTypeAndColorAndLocationAndInterventionId = (
     category: meanCategory,
   } as OtherMean;
 };
+
+export const getOtherMeanPolylineFromColorAndIterventionIdAndPoints = (
+  color: string,
+  interventionId: number,
+  points: Coordinates[]
+) => {
+  const dangerCode = findDangerCodeFromColor(color);
+  return {
+    intervention_id: interventionId,
+    danger_code: dangerCode,
+    category: 'PL',
+    points,
+  } as OtherMean;
+};

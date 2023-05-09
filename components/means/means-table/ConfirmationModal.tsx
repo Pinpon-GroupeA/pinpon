@@ -5,11 +5,11 @@ import React, { useState } from 'react';
 
 import { getMilitaryTime } from '../../../utils/date';
 import {
-  updateAvailableAtDate,
   updateCrmArrivalDate,
-  updateIsOnSite,
   updateSectorArrivalDate,
-} from '../../../utils/intervention-means';
+  updateAvailableAtDate,
+  updateIsOnSite,
+} from '../../../utils/intervention-mean';
 
 type ModalOpen = {
   crm: string;

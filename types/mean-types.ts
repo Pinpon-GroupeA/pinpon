@@ -31,9 +31,10 @@ export type OtherMean = {
   intervention_id: number;
   location: Coordinates;
   category: MeanCategory;
+  points: Coordinates[];
 };
 
-export type MeanCategory = 'PS' | 'SD' | 'ZA';
+export type MeanCategory = 'PS' | 'SD' | 'ZA' | 'PL';
 
 export type MeanTypeEnum = 'VSAV' | 'FPT' | 'VLCG' | 'OTHER';
 

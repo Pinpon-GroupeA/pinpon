@@ -1,7 +1,9 @@
-import { useQuery } from '@tanstack/react-query';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { useSearchParams } from 'expo-router';
-import { Text } from 'native-base';
-import { MapPressEvent, Marker } from 'react-native-maps';
+import { Box, Fab, Icon, Text } from 'native-base';
+import { useState } from 'react';
+import { MapPressEvent, Marker, Polyline } from 'react-native-maps';
 
 import CustomCircle from './symbols/CustomCircle';
 import FireFighterVehicle from './symbols/FireFighterVehicle';
@@ -10,11 +12,12 @@ import { Coordinates } from '../../types/global-types';
 import { InterventionMean, OtherMean } from '../../types/mean-types';
 import { findDangerCodeFromColor, getDangerCodeColor } from '../../utils/danger-code';
 import { castInterventionIdAsNumber } from '../../utils/intervention';
-import { createOtherMean } from '../../utils/intervention-dangers';
+import { createOtherMean, deleteOtherMean } from '../../utils/intervention-dangers';
 import { updateInterventionMeanDangerCode } from '../../utils/intervention-mean';
 import { updateMeanLocation } from '../../utils/means';
 import {
   getOtherMeanFromSymbolTypeAndColorAndLocationAndInterventionId,
+  getOtherMeanPolylineFromColorAndIterventionIdAndPoints,
   selectRightSymbol,
 } from '../../utils/symbols-utils';
 import MapBackground from '../MapBackground';
@@ -22,12 +25,14 @@ import MapBackground from '../MapBackground';
 type InterventionMapProps = {
   fireFighterMeans: InterventionMean[];
   otherMeans: OtherMean[];
+  currentPolylines: OtherMean[];
   interventionLocation: Coordinates;
 };
 
 function InterventionMap({
   fireFighterMeans,
   otherMeans,
+  currentPolylines,
   interventionLocation,
 }: InterventionMapProps) {
   const { error, data } = useQuery({
@@ -40,12 +45,22 @@ function InterventionMap({
 
   const { id: interventionId } = useSearchParams();
 
-  const selectedSymbol = useAppStore((state) => state.selectedSymbol);
-  const setSelectedSymbol = useAppStore((state) => state.setSelectedSymbol);
-  const drawingsColor = useAppStore((state) => state.drawingsColor);
+  const { mutateAsync: deleteOtherMeanMutation } = useMutation({
+    mutationFn: (otherMeanId: number) => deleteOtherMean(otherMeanId),
+  });
+
+  const { selectedSymbol, setSelectedSymbol, drawingsColor } = useAppStore((state) => state);
+
+  const [newPolyline, setNewPolyline] = useState<Coordinates[]>([]);
+  const [polylineDrawMode, setPolylineDrawMode] = useState(false);
 
   const handlePress = (event: MapPressEvent) => {
     const { latitude, longitude } = event.nativeEvent.coordinate;
+
+    if (polylineDrawMode) {
+      setNewPolyline((prev) => [...prev, { latitude, longitude }]);
+      return;
+    }
 
     if (selectedSymbol) {
       if (selectedSymbol.symboleType && selectedSymbol.symboleType !== 'FireFighterVehicle') {
@@ -71,49 +86,95 @@ function InterventionMap({
     }
   };
 
+  const savePolyline = () => {
+    if (!polylineDrawMode) {
+      setPolylineDrawMode(true);
+      return;
+    }
+    setPolylineDrawMode(false);
+
+    const interventionDanger = getOtherMeanPolylineFromColorAndIterventionIdAndPoints(
+      drawingsColor,
+      castInterventionIdAsNumber(interventionId),
+      newPolyline
+    );
+
+    createOtherMean(interventionDanger);
+
+    setNewPolyline([]);
+  };
+
   if (error) return <Text>Error</Text>;
 
   return (
-    <MapBackground handlePress={handlePress} initialRegion={interventionLocation}>
-      {data?.records.map((item: any) => (
-        <Marker
-          key={item.recordid}
-          coordinate={{
-            latitude: item.fields.geo_point_2d[0],
-            longitude: item.fields.geo_point_2d[1],
-          }}
-          title={item.fields.type}
-        >
-          <CustomCircle size={{ height: 30, width: 30 }} color="#2D3ED3" fill />
-        </Marker>
-      ))}
-      {fireFighterMeans.map((mean) => (
-        <Marker
-          key={mean.id}
-          coordinate={{
-            latitude: mean.means.location.latitude,
-            longitude: mean.means.location.longitude,
-          }}
-        >
-          <FireFighterVehicle
-            color={getDangerCodeColor(mean.danger_code)}
-            name={mean.means.label}
-            dashed={!mean.is_on_site}
+    <Box flex={1}>
+      <MapBackground handlePress={handlePress} initialRegion={interventionLocation}>
+        {data?.records.map((item: any) => (
+          <Marker
+            key={item.recordid}
+            coordinate={{
+              latitude: item.fields.geo_point_2d[0],
+              longitude: item.fields.geo_point_2d[1],
+            }}
+            title={item.fields.type}
+          >
+            <CustomCircle size={{ height: 30, width: 30 }} color="#2D3ED3" fill />
+          </Marker>
+        ))}
+        {fireFighterMeans.map((mean) => (
+          <Marker
+            key={mean.id}
+            coordinate={{
+              latitude: mean.means.location.latitude,
+              longitude: mean.means.location.longitude,
+            }}
+            title="Modifier moyen"
+            onCalloutPress={() => console.log('test')}
+          >
+            <FireFighterVehicle
+              color={getDangerCodeColor(mean.danger_code)}
+              name={mean.means.label}
+              dashed={!mean.is_on_site}
+            />
+          </Marker>
+        ))}
+        {otherMeans.map((mean) => (
+          <Marker
+            key={mean.id}
+            coordinate={{
+              latitude: mean.location.latitude,
+              longitude: mean.location.longitude,
+            }}
+            title="X"
+            onCalloutPress={() => deleteOtherMeanMutation(mean.id)}
+          >
+            {selectRightSymbol(mean.category, mean.danger_code)}
+          </Marker>
+        ))}
+        <Polyline coordinates={newPolyline} strokeColor={drawingsColor} strokeWidth={3} />
+        {currentPolylines.map((mean) => (
+          <Polyline
+            key={mean.id}
+            coordinates={mean.points}
+            strokeColor={getDangerCodeColor(mean.danger_code)}
+            strokeWidth={3}
           />
-        </Marker>
-      ))}
-      {otherMeans.map((mean) => (
-        <Marker
-          key={mean.id}
-          coordinate={{
-            latitude: mean.location.latitude,
-            longitude: mean.location.longitude,
-          }}
-        >
-          {selectRightSymbol(mean.category, mean.danger_code)}
-        </Marker>
-      ))}
-    </MapBackground>
+        ))}
+      </MapBackground>
+      <Fab
+        renderInPortal={false}
+        placement="bottom-right"
+        backgroundColor={polylineDrawMode ? 'white' : '#19837C'}
+        icon={
+          polylineDrawMode ? (
+            <Icon as={MaterialCommunityIcons} name="stop" size={6} color="black" />
+          ) : (
+            <Icon as={MaterialCommunityIcons} name="draw" size={6} color="white" />
+          )
+        }
+        onPress={savePolyline}
+      />
+    </Box>
   );
 }
 

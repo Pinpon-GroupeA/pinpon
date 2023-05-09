@@ -26,6 +26,14 @@ export const createOtherMean = async (otherMean: OtherMean) => {
   }
 };
 
+export const deleteOtherMean = async (otherMeanId: number) => {
+  const { error } = await supabase.from(Tables.otherMeans).delete().eq('id', otherMeanId);
+
+  if (error) {
+    throw error;
+  }
+};
+
 export const getOtherMeansPlaced = (otherMeans: OtherMean[]) => {
   return otherMeans.filter((otherMean) => otherMean.location);
 };
