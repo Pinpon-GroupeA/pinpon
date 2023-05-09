@@ -54,17 +54,17 @@ export default function MeansTable({ means }: MeansTableProps) {
             >
               <Text flex={2}>{mean.means.label}</Text>
               <Text flex={2}>
-                {getMilitaryTime(new Date(mean.request_date).toLocaleTimeString())}
+                {getMilitaryTime(mean.request_date ? new Date(mean.request_date) : undefined)}
               </Text>
               <Text flex={2}>{addMinutes(mean.request_date, 20)}</Text>
               <Text flex={2}>
-                {getMilitaryTime(new Date(mean.crm_arrival).toLocaleTimeString())}
+                {getMilitaryTime(mean.crm_arrival ? new Date(mean.crm_arrival) : undefined)}
               </Text>
               <Text flex={2}>
-                {getMilitaryTime(new Date(mean.sector_arrival).toLocaleTimeString())}
+                {getMilitaryTime(mean.sector_arrival ? new Date(mean.sector_arrival) : undefined)}
               </Text>
               <Text flex={2}>
-                {getMilitaryTime(new Date(mean.available_at).toLocaleTimeString())}
+                {getMilitaryTime(mean.available_at ? new Date(mean.available_at) : undefined)}
               </Text>
               <ConfirmationModal
                 id={mean.id}

@@ -59,7 +59,7 @@ export default function ConfirmationModal({ crm, sector, available, id }: ModalO
                   </Button>
                 ) : (
                   <Button disabled bgColor="gray.400">
-                    arrivé au CRM à {getMilitaryTime(crm)}
+                    arrivé au CRM à {getMilitaryTime(new Date(crm))}
                   </Button>
                 )}
               </HStack>
@@ -79,7 +79,7 @@ export default function ConfirmationModal({ crm, sector, available, id }: ModalO
                   </Button>
                 ) : (
                   <Button disabled bgColor="gray.400">
-                    Sur le secteur à {getMilitaryTime(sector)}
+                    Sur le secteur à {getMilitaryTime(new Date(sector))}
                   </Button>
                 )}
               </HStack>
@@ -98,7 +98,7 @@ export default function ConfirmationModal({ crm, sector, available, id }: ModalO
                   </Button>
                 ) : (
                   <Button disabled bgColor="gray.400">
-                    Disponible à {getMilitaryTime(available)}
+                    Disponible à {getMilitaryTime(new Date(available))}
                   </Button>
                 )}
               </HStack>

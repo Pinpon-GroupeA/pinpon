@@ -12,6 +12,7 @@ import {
 } from 'native-base';
 
 import { Request } from '../../types/request-types';
+import { dateTimeFormattingOptions } from '../../utils/date';
 import { InterventionMeanCreateType, createInterventionMean } from '../../utils/intervention-mean';
 import { fetchAvailableMeans, updateMeanStatus } from '../../utils/means';
 import { deleteRequest } from '../../utils/request';
@@ -71,7 +72,11 @@ export default function RequestManagement({ address, date, requests }: RequestMa
                 <Text>{address}</Text>
               </VStack>
               <VStack>
-                <Text textAlign="right">{new Date(date?.toString()).toLocaleString()}</Text>
+                <Text textAlign="right">
+                  {date
+                    ? Intl.DateTimeFormat('fr-FR', dateTimeFormattingOptions).format(new Date(date))
+                    : ''}
+                </Text>
               </VStack>
             </HStack>
           </Box>
@@ -81,13 +86,17 @@ export default function RequestManagement({ address, date, requests }: RequestMa
                 <VStack>
                   <Text>{request.mean_type},</Text>
 
-                  <Text>{new Date(request.request_time).toLocaleString()}</Text>
+                  <Text>
+                    {Intl.DateTimeFormat('fr-FR', dateTimeFormattingOptions).format(
+                      new Date(request.request_time)
+                    )}
+                  </Text>
                 </VStack>
                 <VStack>
                   <HStack justifyContent="space-between">
                     <VStack>
                       <IconButton
-                        onPress={(event) => validateRequest(request)}
+                        onPress={() => validateRequest(request)}
                         colorScheme="green"
                         borderRadius="full"
                         icon={<CheckIcon />}
@@ -95,7 +104,7 @@ export default function RequestManagement({ address, date, requests }: RequestMa
                     </VStack>
                     <VStack>
                       <IconButton
-                        onPress={(event) => refuseDemand(request.id)}
+                        onPress={() => refuseDemand(request.id)}
                         colorScheme="red"
                         borderRadius="full"
                         icon={<CloseIcon />}

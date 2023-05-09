@@ -1,12 +1,25 @@
 export const addMinutes = (date: string, minutes: number) => {
   const newDate = new Date(date);
   newDate.setMinutes(newDate.getMinutes() + minutes);
-  return getMilitaryTime(newDate.toLocaleTimeString());
+  return getMilitaryTime(newDate);
 };
 
-export const getMilitaryTime = (date?: string) => {
+export const getMilitaryTime = (date?: Date) => {
+  console.log(date);
   if (!date) {
     return '';
   }
-  return date.slice(0, 2) + date.slice(3, 5);
+  return (
+    date.getHours().toString().padStart(2, '0') + date.getMinutes().toString().padStart(2, '0')
+  );
+};
+
+export const dateTimeFormattingOptions: Intl.DateTimeFormatOptions = {
+  year: 'numeric',
+  month: 'numeric',
+  day: 'numeric',
+  hour: 'numeric',
+  minute: 'numeric',
+  second: 'numeric',
+  hour12: false,
 };
