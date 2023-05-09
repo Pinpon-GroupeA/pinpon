@@ -1,17 +1,7 @@
 import { Entypo } from '@expo/vector-icons';
-import {
-  Box,
-  Heading,
-  VStack,
-  Divider,
-  HStack,
-  Text,
-  ScrollView,
-  IconButton,
-  Icon,
-  Modal,
-} from 'native-base';
+import { Box, Heading, ScrollView, IconButton, Icon, Modal } from 'native-base';
 import React, { useState } from 'react';
+import { Table, Row } from 'react-native-table-component';
 
 import ConfirmationModal from './ConfirmationModal';
 import ConfirmationModalRequest from './ConfirmationModalRequest';
@@ -26,96 +16,87 @@ type MeansTableProps = {
 
 export default function MeansTable({ means, requests }: MeansTableProps) {
   const [modalContent, setModalContent] = useState<MeanModalContent | null>(null);
+  const tableHead = [
+    'Moyen',
+    'Demandé à',
+    'Arrivée prévue à',
+    'Au CRM à',
+    'Sur site à',
+    'Disponible à',
+    'Action',
+  ];
 
   return (
-    <Box>
-      <Heading pt={3} pb={8} size="2xl" color="#19837C">
+    <Box marginX={3}>
+      <Heading pt={3} pb={5} size="xl" color="#19837C">
         Tableau des moyens
       </Heading>
-      <VStack divider={<Divider bg="black" />} w="100%">
-        <HStack
-          textAlign="center"
-          divider={<Divider bg="black" />}
-          h="8"
-          alignItems="center"
-          textDecoration="bold"
-        >
-          <Text flex={2} bold fontSize="20px">
-            Moyen
-          </Text>
-          <Text flex={2} bold fontSize="20px">
-            Demandé à
-          </Text>
-          <Text flex={2} bold fontSize="20px">
-            Arrivée prévue à
-          </Text>
-          <Text flex={2} bold fontSize="20px">
-            Au CRM à
-          </Text>
-          <Text flex={2} bold fontSize="20px">
-            Sur site à
-          </Text>
-          <Text flex={2} bold fontSize="20px">
-            Disponible à
-          </Text>
-          <Text flex={1} bold fontSize="20px" />
-        </HStack>
+
+      <Box marginX={3} paddingBottom={300}>
+        <Table borderStyle={{ borderWidth: 2, borderColor: '#F2F2F2' }}>
+          <Row
+            data={tableHead}
+            flexArr={[1, 1, 1, 1, 1, 1, 0.5]}
+            textStyle={{ fontWeight: 'bold', textAlign: 'center', fontSize: 17 }}
+            style={{ backgroundColor: '#19837C30' }}
+          />
+        </Table>
         <ScrollView>
-          {means.map((mean: InterventionMean, i) => (
-            <HStack
-              key={mean.id}
-              divider={<Divider bg="black" />}
-              h="8"
-              alignItems="center"
-              textAlign="center"
-            >
-              <Text flex={2}>{mean.means.label}</Text>
-              <Text flex={2}>
-                {getMilitaryTime(mean.request_date ? new Date(mean.request_date) : undefined)}
-              </Text>
-              <Text flex={2}>{addMinutes(mean.request_date, 20)}</Text>
-              <Text flex={2}>
-                {getMilitaryTime(mean.crm_arrival ? new Date(mean.crm_arrival) : undefined)}
-              </Text>
-              <Text flex={2}>
-                {getMilitaryTime(mean.sector_arrival ? new Date(mean.sector_arrival) : undefined)}
-              </Text>
-              <Text flex={2}>
-                {getMilitaryTime(mean.available_at ? new Date(mean.available_at) : undefined)}
-              </Text>
-              <IconButton
-                icon={<Icon as={Entypo} name="pencil" color="black" />}
-                onPress={() =>
-                  setModalContent({
-                    id: mean.id,
-                    crmArrival: mean.crm_arrival,
-                    sectorArrival: mean.sector_arrival,
-                    availableAt: mean.available_at,
-                  })
-                }
+          <Table>
+            {means.map((mean, index) => (
+              <Row
+                key={index}
+                data={[
+                  mean.means.label,
+                  getMilitaryTime(mean.request_date ? new Date(mean.request_date) : undefined),
+                  addMinutes(mean.request_date, 20),
+                  getMilitaryTime(mean.crm_arrival ? new Date(mean.crm_arrival) : undefined),
+                  getMilitaryTime(mean.sector_arrival ? new Date(mean.sector_arrival) : undefined),
+                  getMilitaryTime(mean.available_at ? new Date(mean.available_at) : undefined),
+                  <IconButton
+                    icon={<Icon as={Entypo} name="pencil" color="black" />}
+                    onPress={() =>
+                      setModalContent({
+                        id: mean.id,
+                        crmArrival: mean.crm_arrival,
+                        sectorArrival: mean.sector_arrival,
+                        availableAt: mean.available_at,
+                      })
+                    }
+                  />,
+                ]}
+                flexArr={[1, 1, 1, 1, 1, 1, 0.5]}
+                textStyle={{ textAlign: 'center', fontSize: 16 }}
+                style={[
+                  { padding: 1 },
+                  index % 2 ? { backgroundColor: 'white' } : { backgroundColor: '#0000' },
+                ]}
               />
-            </HStack>
-          ))}
-          {requests.map((request: Request, i) => (
-            <HStack
-              key={request.id}
-              divider={<Divider bg="black" />}
-              h="8"
-              alignItems="center"
-              textAlign="center"
-              bgColor="gray.200"
-            >
-              <Text flex={2}>{request.mean_type}</Text>
-              <Text flex={2}>{getMilitaryTime(new Date(request.request_time))}</Text>
-              <Box flex={2} />
-              <Box flex={2} />
-              <Box flex={2} />
-              <Box flex={2} />
-              <ConfirmationModalRequest id={request.id} />
-            </HStack>
-          ))}
+            ))}
+
+            {requests.map((request, index) => (
+              <Row
+                key={index}
+                data={[
+                  request.mean_type,
+                  getMilitaryTime(new Date(request.request_time)),
+                  '',
+                  '',
+                  '',
+                  '',
+                  <ConfirmationModalRequest id={request.id} />,
+                ]}
+                flexArr={[1, 1, 1, 1, 1, 1, 0.5]}
+                textStyle={{ textAlign: 'center', fontSize: 16 }}
+                style={[
+                  { padding: 1 },
+                  index % 2 ? { backgroundColor: 'white' } : { backgroundColor: '#0000' },
+                ]}
+              />
+            ))}
+          </Table>
         </ScrollView>
-      </VStack>
+      </Box>
       {modalContent && (
         <Modal isOpen={modalContent !== null} onClose={() => setModalContent(null)} size="md">
           <ConfirmationModal content={modalContent} closeModal={() => setModalContent(null)} />
