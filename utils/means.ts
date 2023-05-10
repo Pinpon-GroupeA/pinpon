@@ -49,7 +49,7 @@ export const meansRequest = async (id: number): Promise<Mean[]> => {
   if (error) {
     throw new Error(error.message);
   }
-  console.log(data);
+
   return data as Mean[];
 };
 

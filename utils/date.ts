@@ -5,7 +5,6 @@ export const addMinutes = (date: string, minutes: number) => {
 };
 
 export const getMilitaryTime = (date?: Date) => {
-  console.log(date);
   if (!date) {
     return '';
   }

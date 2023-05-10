@@ -87,7 +87,7 @@ export default function MeansTable({ means, requests }: MeansTableProps) {
               bgColor="gray.200"
             >
               <Text flex={2}>{request.mean_type}</Text>
-              <Text flex={2}>{getMilitaryTime(request.request_time)}</Text>
+              <Text flex={2}>{getMilitaryTime(new Date(request.request_time))}</Text>
               <Box flex={2} />
               <Box flex={2} />
               <Box flex={2} />
