@@ -10,7 +10,7 @@ import CustomCircle from './symbols/CustomCircle';
 import FireFighterVehicle from './symbols/FireFighterVehicle';
 import { useAppStore } from '../../stores/store';
 import { Coordinates } from '../../types/global-types';
-import { InterventionMean, MeanModalProps, OtherMean } from '../../types/mean-types';
+import { InterventionMean, MeanModalContent, OtherMean } from '../../types/mean-types';
 import { findDangerCodeFromColor, getDangerCodeColor } from '../../utils/danger-code';
 import { castInterventionIdAsNumber } from '../../utils/intervention';
 import { createOtherMean, deleteOtherMean } from '../../utils/intervention-dangers';
@@ -55,7 +55,7 @@ function InterventionMap({
 
   const [newPolyline, setNewPolyline] = useState<Coordinates[]>([]);
   const [polylineDrawMode, setPolylineDrawMode] = useState(false);
-  const [modalContent, setModalContent] = useState<MeanModalProps | null>(null);
+  const [modalContent, setModalContent] = useState<MeanModalContent | null>(null);
   const [pressedPolylineId, setPressedPolylineId] = useState<number | null>(null);
 
   const handlePress = (event: MapPressEvent) => {
@@ -191,12 +191,7 @@ function InterventionMap({
       />
       {modalContent && (
         <Modal isOpen={modalContent !== null} onClose={() => setModalContent(null)} size="md">
-          <ConfirmationModal
-            id={modalContent.id}
-            crmArrival={modalContent.crmArrival}
-            sectorArrival={modalContent.sectorArrival}
-            availableAt={modalContent.availableAt}
-          />
+          <ConfirmationModal content={modalContent} closeModal={() => setModalContent(null)} />
         </Modal>
       )}
       <PolylineDeletionAlert

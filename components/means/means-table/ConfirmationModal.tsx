@@ -1,8 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { Modal, VStack, Text, HStack, Button } from 'native-base';
-import React, { useState } from 'react';
 
-import { MeanModalProps } from '../../../types/mean-types';
+import { MeanModalContent } from '../../../types/mean-types';
 import { getMilitaryTime } from '../../../utils/date';
 import {
   updateCrmArrivalDate,
@@ -11,12 +10,14 @@ import {
   updateIsOnSite,
 } from '../../../utils/intervention-mean';
 
-export default function ConfirmationModal({
-  id,
-  crmArrival,
-  sectorArrival,
-  availableAt,
-}: MeanModalProps) {
+type ConfirmationModalProps = {
+  content: MeanModalContent;
+  closeModal: () => void;
+};
+
+export default function ConfirmationModal({ content, closeModal }: ConfirmationModalProps) {
+  const { id, crmArrival, sectorArrival, availableAt } = content;
+
   const { mutateAsync: updateCrmDate } = useMutation({
     mutationFn: () => updateCrmArrivalDate(id),
   });
@@ -33,7 +34,6 @@ export default function ConfirmationModal({
     mutationFn: () => updateIsOnSite(id, true),
   });
 
-  const [modalVisible, setModalVisible] = useState(false);
   return (
     <Modal.Content>
       <Modal.CloseButton />
@@ -48,7 +48,7 @@ export default function ConfirmationModal({
               <Button
                 onPress={() => {
                   updateCrmDate();
-                  setModalVisible(!modalVisible);
+                  closeModal();
                 }}
               >
                 arrivé au CRM
@@ -68,7 +68,7 @@ export default function ConfirmationModal({
                 onPress={() => {
                   updateSectorDate();
                   setOnSite();
-                  setModalVisible(!modalVisible);
+                  closeModal();
                 }}
               >
                 Sur le secteur
@@ -87,7 +87,7 @@ export default function ConfirmationModal({
               <Button
                 onPress={() => {
                   updateAvailableDate();
-                  setModalVisible(!modalVisible);
+                  closeModal();
                 }}
               >
                 Disponible

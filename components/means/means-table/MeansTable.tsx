@@ -15,7 +15,7 @@ import React, { useState } from 'react';
 
 import ConfirmationModal from './ConfirmationModal';
 import ConfirmationModalRequest from './ConfirmationModalRequest';
-import { InterventionMean, MeanModalProps } from '../../../types/mean-types';
+import { InterventionMean, MeanModalContent } from '../../../types/mean-types';
 import { Request } from '../../../types/request-types';
 import { getMilitaryTime, addMinutes } from '../../../utils/date';
 
@@ -25,7 +25,7 @@ type MeansTableProps = {
 };
 
 export default function MeansTable({ means, requests }: MeansTableProps) {
-  const [modalContent, setModalContent] = useState<MeanModalProps | null>(null);
+  const [modalContent, setModalContent] = useState<MeanModalContent | null>(null);
 
   return (
     <Box>
@@ -118,12 +118,7 @@ export default function MeansTable({ means, requests }: MeansTableProps) {
       </VStack>
       {modalContent && (
         <Modal isOpen={modalContent !== null} onClose={() => setModalContent(null)} size="md">
-          <ConfirmationModal
-            id={modalContent.id}
-            crmArrival={modalContent.crmArrival}
-            sectorArrival={modalContent.sectorArrival}
-            availableAt={modalContent.availableAt}
-          />
+          <ConfirmationModal content={modalContent} closeModal={() => setModalContent(null)} />
         </Modal>
       )}
     </Box>
