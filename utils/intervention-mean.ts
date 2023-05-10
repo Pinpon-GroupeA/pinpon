@@ -57,7 +57,7 @@ export const getFireFightersMeansPlaced = (interventionMeans: InterventionMean[]
   return interventionMeans.filter((interventionMean) => interventionMean.means.location);
 };
 
-export const getInterventionMeanFromMean = async (interventionMean: InterventionMean) => {
+export const getMeansOfInterventionMean = async (interventionMean: InterventionMean) => {
   const { data, error } = await supabase
     .from(Tables.means)
     .select('*')

@@ -80,10 +80,10 @@ export default function MeansTable({ means, requests }: MeansTableProps) {
             >
               <Text flex={2}>{request.mean_type}</Text>
               <Text flex={2}>{getMilitaryTime(request.request_time)}</Text>
-              <Text flex={2} />
-              <Text flex={2} />
-              <Text flex={2} />
-              <Text flex={2} />
+              <Box flex={2} />
+              <Box flex={2} />
+              <Box flex={2} />
+              <Box flex={2} />
               <ConfirmationModalRequest id={request.id} />
             </HStack>
           ))}
