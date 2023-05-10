@@ -2,14 +2,17 @@ import { Box, Heading, VStack, Divider, HStack, Text, ScrollView } from 'native-
 import React from 'react';
 
 import ConfirmationModal from './ConfirmationModal';
+import ConfirmationModalRequest from './ConfirmationModalRequest';
 import { InterventionMean } from '../../../types/mean-types';
+import { Request } from '../../../types/request-types';
 import { getMilitaryTime, addMinutes } from '../../../utils/date';
 
 type MeansTableProps = {
   means: InterventionMean[];
+  requests: Request[];
 };
 
-export default function MeansTable({ means }: MeansTableProps) {
+export default function MeansTable({ means, requests }: MeansTableProps) {
   return (
     <Box>
       <Heading pt={3} pb={8} size="2xl" color="#19837C">
@@ -64,6 +67,24 @@ export default function MeansTable({ means }: MeansTableProps) {
                 sector={mean.sector_arrival}
                 available={mean.available_at}
               />
+            </HStack>
+          ))}
+          {requests.map((request: Request, i) => (
+            <HStack
+              key={request.id}
+              divider={<Divider bg="black" />}
+              h="8"
+              alignItems="center"
+              textAlign="center"
+              bgColor="gray.200"
+            >
+              <Text flex={2}>{request.mean_type}</Text>
+              <Text flex={2}>{getMilitaryTime(request.request_time)}</Text>
+              <Box flex={2} />
+              <Box flex={2} />
+              <Box flex={2} />
+              <Box flex={2} />
+              <ConfirmationModalRequest id={request.id} />
             </HStack>
           ))}
         </ScrollView>

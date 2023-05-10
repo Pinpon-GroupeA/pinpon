@@ -1,9 +1,9 @@
-import { supabase } from './supabase';
+import { Tables, supabase } from './supabase';
 import { Request } from '../types/request-types';
 
 export const fetchRequestsOfIntervention = async (interventionId?: string | string[]) => {
   const { data, error } = await supabase
-    .from('requests')
+    .from(Tables.requests)
     .select()
     .eq('intervention_id', interventionId);
 

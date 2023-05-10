@@ -4,14 +4,16 @@ import { useState } from 'react';
 
 import ModalMeansRequest from './ModalMeansRequest';
 import { InterventionMean, MeanType } from '../../../types/mean-types';
+import { Request } from '../../../types/request-types';
 import { fetchMeansTypes } from '../../../utils/means-type';
 import MeansTable from '../means-table/MeansTable';
 
 type MeansPageProps = {
   means: InterventionMean[];
+  requests: Request[];
 };
 
-function MeansPage({ means }: MeansPageProps) {
+function MeansPage({ means, requests }: MeansPageProps) {
   const [showModal, setShowModal] = useState(false);
 
   const { data: meanTypes } = useQuery<MeanType[]>(['meanTypes'], {
@@ -20,7 +22,7 @@ function MeansPage({ means }: MeansPageProps) {
 
   return (
     <Box flex="1">
-      <MeansTable means={means} />
+      <MeansTable means={means} requests={requests} />
       <Fab
         label="Demande de moyens"
         isLoading={meanTypes === undefined}

@@ -4,10 +4,12 @@ import { useSearchParams } from 'expo-router';
 import MeansPage from '../../../../../components/means/mean-request/MeansPage';
 import useSubscription from '../../../../../hooks/useSubscription';
 import { InterventionMean } from '../../../../../types/mean-types';
+import { Request } from '../../../../../types/request-types';
 import {
   fecthInterventionMeans,
-  getInterventionMeanFromMean,
+  getMeansOfInterventionMean,
 } from '../../../../../utils/intervention-mean';
+import { fetchRequestsOfIntervention } from '../../../../../utils/request';
 import { Tables } from '../../../../../utils/supabase';
 
 export default function Means() {
@@ -20,8 +22,8 @@ export default function Means() {
     queryFn: () => fecthInterventionMeans(interventionId),
   });
 
-  const onInsert = async (mean: any) => {
-    const completeInterventionMean = await getInterventionMeanFromMean(mean);
+  const onInsertMeans = async (mean: InterventionMean) => {
+    const completeInterventionMean = await getMeansOfInterventionMean(mean);
 
     queryClient.setQueryData(['meansTableMeans'], (oldData: InterventionMean[] | undefined) => [
       completeInterventionMean,
@@ -29,15 +31,15 @@ export default function Means() {
     ]);
   };
 
-  const onUpdate = async (mean: any) => {
-    const completeInterventionMean = await getInterventionMeanFromMean(mean);
+  const onUpdateMeans = async (mean: InterventionMean) => {
+    const completeInterventionMean = await getMeansOfInterventionMean(mean);
 
     queryClient.setQueryData(['meansTableMeans'], (oldData: InterventionMean[] | undefined) =>
       oldData?.map((i) => (i.id === mean.id ? completeInterventionMean : i))
     );
   };
 
-  const onDelete = (mean: any) =>
+  const onDeleteMeans = (mean: InterventionMean) =>
     queryClient.setQueryData(['meansTableMeans'], (old: any[] | undefined) =>
       old?.filter((i) => i.id !== mean.id)
     );
@@ -50,19 +52,55 @@ export default function Means() {
     (payload) => {
       switch (payload.eventType) {
         case 'INSERT':
-          onInsert(payload.new as any);
+          onInsertMeans(payload.new as InterventionMean);
           break;
 
         case 'UPDATE':
-          onUpdate(payload.new as any);
+          onUpdateMeans(payload.new as InterventionMean);
           break;
 
         case 'DELETE':
-          onDelete(payload.old as any);
+          onDeleteMeans(payload.old as InterventionMean);
           break;
       }
     }
   );
 
-  return <MeansPage means={means ?? []} />;
+  const { data: requests } = useQuery({
+    queryKey: ['requestMeans'],
+    queryFn: () => fetchRequestsOfIntervention(interventionId),
+  });
+
+  const onInsertRequests = async (request: Request) => {
+    queryClient.setQueryData(['requestMeans'], (oldData: Request[] | undefined) => [
+      request,
+      ...(oldData ?? []),
+    ]);
+  };
+
+  const onDeleteRequests = (request: Request) => {
+    queryClient.setQueryData(['requestMeans'], (old: Request[] | undefined) =>
+      old?.filter((i) => i.id !== request.id)
+    );
+  };
+
+  useSubscription(
+    {
+      channel: 'requestMeans',
+      table: Tables.requests,
+    },
+    (payload) => {
+      switch (payload.eventType) {
+        case 'INSERT':
+          onInsertRequests(payload.new as Request);
+          break;
+
+        case 'DELETE':
+          onDeleteRequests(payload.old as Request);
+          break;
+      }
+    }
+  );
+
+  return <MeansPage means={means ?? []} requests={requests ?? []} />;
 }

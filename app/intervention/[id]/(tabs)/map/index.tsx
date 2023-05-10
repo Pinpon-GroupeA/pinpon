@@ -15,7 +15,7 @@ import {
   fecthInterventionMeans,
   getFireFighterMeansNotPlaced,
   getFireFightersMeansPlaced,
-  getInterventionMeanFromMean,
+  getMeansOfInterventionMean,
 } from '../../../../../utils/intervention-mean';
 import { Tables } from '../../../../../utils/supabase';
 
@@ -40,7 +40,7 @@ export default function Map() {
   });
 
   const onFireFighterMeanInsert = async (interventionMean: InterventionMean) => {
-    const completeInterventionMean = await getInterventionMeanFromMean(interventionMean);
+    const completeInterventionMean = await getMeansOfInterventionMean(interventionMean);
 
     queryClient.setQueryData(['fireFighterMeans'], (oldData: InterventionMean[] | undefined) => [
       completeInterventionMean,
@@ -49,7 +49,7 @@ export default function Map() {
   };
 
   const onFireFighterMeanUpdate = async (interventionMean: InterventionMean) => {
-    const completeInterventionMean = await getInterventionMeanFromMean(interventionMean);
+    const completeInterventionMean = await getMeansOfInterventionMean(interventionMean);
 
     queryClient.setQueryData(['fireFighterMeans'], (oldData: InterventionMean[] | undefined) =>
       oldData?.map((i) => (i.id === interventionMean.id ? completeInterventionMean : i))
