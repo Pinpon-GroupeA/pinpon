@@ -64,10 +64,9 @@ export default function MeansTable({ means, requests }: MeansTableProps) {
                   <IconButton
                     flex={1}
                     alignItems="center"
-                    marginX={3}
-                    paddingY={1}
+                    marginX={2}
                     _pressed={{ backgroundColor: '#19837C50', borderRadius: '20' }}
-                    icon={<Icon as={Entypo} name="pencil" color="black" />}
+                    icon={<Icon as={Entypo} name="pencil" color="black" size={6} />}
                     onPress={() =>
                       setModalContent({
                         id: mean.id,
