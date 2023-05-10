@@ -4,17 +4,8 @@ import { Badge, Box, HStack, Pressable, Text } from 'native-base';
 import { useAppStore } from '../../stores/store';
 import { Intervention as InterventionType } from '../../types/intervention-types';
 import { getDangerCodeColor } from '../../utils/danger-code';
+import { dateTimeFormattingOptions } from '../../utils/date';
 import { getStatusMessage as getBadgeMessage, getStatusBadgeColor } from '../../utils/intervention';
-
-const dateTimeFormattingOptions: Intl.DateTimeFormatOptions = {
-  year: 'numeric',
-  month: 'numeric',
-  day: 'numeric',
-  hour: 'numeric',
-  minute: 'numeric',
-  second: 'numeric',
-  hour12: false,
-};
 
 type InterventionProps = {
   intervention: InterventionType;
