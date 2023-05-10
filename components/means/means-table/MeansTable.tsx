@@ -4,10 +4,11 @@ import React, { useState } from 'react';
 import { Table, Row } from 'react-native-table-component';
 
 import ConfirmationModal from './ConfirmationModal';
-import ConfirmationModalRequest from './ConfirmationModalRequest';
 import { InterventionMean, MeanModalContent } from '../../../types/mean-types';
 import { Request } from '../../../types/request-types';
 import { getMilitaryTime, addMinutes } from '../../../utils/date';
+import { deleteMeans } from '../../../utils/means';
+import AlertDialogComponent from '../../map/AlertDialogComponent';
 
 type MeansTableProps = {
   means: InterventionMean[];
@@ -16,6 +17,8 @@ type MeansTableProps = {
 
 export default function MeansTable({ means, requests }: MeansTableProps) {
   const [modalContent, setModalContent] = useState<MeanModalContent | null>(null);
+  const [requestId, setRequestId] = useState<number | null>(null);
+
   const tableHead = [
     'Moyen',
     'Demandé à',
@@ -56,10 +59,9 @@ export default function MeansTable({ means, requests }: MeansTableProps) {
                   <IconButton
                     flex={1}
                     alignItems="center"
-                    marginX={3}
-                    paddingY={1}
+                    marginX={2}
                     _pressed={{ backgroundColor: '#19837C50', borderRadius: '20' }}
-                    icon={<Icon as={Entypo} name="pencil" color="black" />}
+                    icon={<Icon as={Entypo} name="pencil" color="black" size={6} />}
                     onPress={() =>
                       setModalContent({
                         id: mean.id,
@@ -78,7 +80,6 @@ export default function MeansTable({ means, requests }: MeansTableProps) {
                 ]}
               />
             ))}
-
             {requests.map((request, index) => (
               <Row
                 key={index}
@@ -89,14 +90,18 @@ export default function MeansTable({ means, requests }: MeansTableProps) {
                   '',
                   '',
                   '',
-                  <ConfirmationModalRequest id={request.id} />,
+                  <IconButton
+                    flex={1}
+                    alignItems="center"
+                    marginX={2}
+                    _pressed={{ backgroundColor: '#19837C50', borderRadius: '20' }}
+                    icon={<Icon as={Entypo} name="cross" color="black" size={7} />}
+                    onPress={() => setRequestId(request.id)}
+                  />,
                 ]}
                 flexArr={[1, 1, 1, 1, 1, 1, 0.5]}
                 textStyle={{ textAlign: 'center', fontSize: 16 }}
-                style={[
-                  { padding: 1 },
-                  index % 2 ? { backgroundColor: 'white' } : { backgroundColor: '#0000' },
-                ]}
+                style={[index % 2 ? { backgroundColor: 'white' } : { backgroundColor: '#0000' }]}
               />
             ))}
           </Table>
@@ -107,6 +112,16 @@ export default function MeansTable({ means, requests }: MeansTableProps) {
           <ConfirmationModal content={modalContent} closeModal={() => setModalContent(null)} />
         </Modal>
       )}
+      <AlertDialogComponent
+        isOpen={requestId !== null}
+        onClose={() => setRequestId(null)}
+        onConfirm={() => {
+          deleteMeans(requestId!);
+          setRequestId(null);
+        }}
+        headerText="Confirmer suppression"
+        bodyText="Voulez-vous supprimer la demande du moyen ?"
+      />
     </Box>
   );
 }

@@ -1,26 +1,37 @@
 import { AlertDialog, Button } from 'native-base';
 import { useRef } from 'react';
 
-type PolylineDeletionAlertProps = {
+type AlertDialogComponentProps = {
   isOpen: boolean;
   onClose: () => void;
   onConfirm: () => void;
+  headerText: string;
+  bodyText: string;
 };
 
-const PolylineDeletionAlert = ({ isOpen, onClose, onConfirm }: PolylineDeletionAlertProps) => {
+const AlertDialogComponent = ({
+  isOpen,
+  onClose,
+  onConfirm,
+  headerText,
+  bodyText,
+}: AlertDialogComponentProps) => {
   const cancelRef = useRef(null);
 
   return (
     <AlertDialog leastDestructiveRef={cancelRef} isOpen={isOpen} onClose={onClose}>
       <AlertDialog.Content>
         <AlertDialog.CloseButton />
-        <AlertDialog.Header>Suppression tracé</AlertDialog.Header>
-        <AlertDialog.Body>
-          Voulez-vous vraiment supprimer ce tracé ? Cette action est irréversible.
-        </AlertDialog.Body>
+        <AlertDialog.Header>{headerText}</AlertDialog.Header>
+        <AlertDialog.Body>{bodyText}</AlertDialog.Body>
         <AlertDialog.Footer>
           <Button.Group space={2}>
-            <Button variant="unstyled" colorScheme="coolGray" onPress={onClose} ref={cancelRef}>
+            <Button
+              variant="ghost"
+              _pressed={{ bgColor: '#19837C30' }}
+              onPress={onClose}
+              ref={cancelRef}
+            >
               Annuler
             </Button>
             <Button bgColor="#19837C" onPress={onConfirm}>
@@ -33,4 +44,4 @@ const PolylineDeletionAlert = ({ isOpen, onClose, onConfirm }: PolylineDeletionA
   );
 };
 
-export default PolylineDeletionAlert;
+export default AlertDialogComponent;

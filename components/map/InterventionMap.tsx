@@ -5,7 +5,7 @@ import { Box, Fab, Icon, Modal, Text } from 'native-base';
 import { useState } from 'react';
 import { MapPressEvent, Marker, Polyline } from 'react-native-maps';
 
-import PolylineDeletionAlert from './PolylineDeletionAlert';
+import AlertDialogComponent from './AlertDialogComponent';
 import CustomCircle from './symbols/CustomCircle';
 import FireFighterVehicle from './symbols/FireFighterVehicle';
 import { useAppStore } from '../../stores/store';
@@ -199,13 +199,15 @@ function InterventionMap({
           <ConfirmationModal content={modalContent} closeModal={() => setModalContent(null)} />
         </Modal>
       )}
-      <PolylineDeletionAlert
+      <AlertDialogComponent
         isOpen={pressedPolylineId !== null}
         onClose={() => setPressedPolylineId(null)}
         onConfirm={() => {
           deleteOtherMeanMutation(pressedPolylineId!);
           setPressedPolylineId(null);
         }}
+        headerText="Suppression tracé"
+        bodyText="Voulez-vous vraiment supprimer ce tracé ? Cette action est irréversible."
       />
     </Box>
   );
