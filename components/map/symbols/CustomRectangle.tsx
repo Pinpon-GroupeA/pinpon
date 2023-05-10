@@ -6,14 +6,12 @@ import { SizeType } from '../../../types/global-types';
 type CustomRectangleProps = {
   color: string;
   strokeStyle?: boolean;
-  fill?: boolean;
   size?: SizeType;
 };
 
 function CustomRectangle({
   color,
   strokeStyle,
-  fill,
   size = { height: 20, width: 20 },
 }: CustomRectangleProps) {
   return (
@@ -26,7 +24,7 @@ function CustomRectangle({
         strokeWidth="5"
         stroke={color}
         strokeDasharray={strokeStyle ? 5 : 'none'}
-        fill={fill ? color : 'none'}
+        fill={color}
       />
     </Svg>
   );

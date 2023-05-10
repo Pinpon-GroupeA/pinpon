@@ -20,7 +20,7 @@ function SymbolList() {
 
   return (
     <Box>
-      <Text alignSelf="center">Autres moyens</Text>
+      <Text alignSelf="center">Zones d'action</Text>
       <ScrollView flexDirection="column">
         <PressableSymbol
           type="InvertedTriangle"

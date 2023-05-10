@@ -6,14 +6,12 @@ import { SizeType } from '../../../types/global-types';
 type CustomStarProps = {
   color?: string;
   dashed?: boolean;
-  fill?: boolean;
   size?: SizeType;
 };
 
 function CustomStar({
   color = 'black',
   dashed,
-  fill,
   size = { height: 30, width: 30 },
 }: CustomStarProps) {
   return (
@@ -21,7 +19,7 @@ function CustomStar({
       height={size.height}
       width={size.width}
       viewBox={`0 0 ${size.width + 3} ${size.height + 3}`}
-      fill="none"
+      fill="black"
     >
       <Polygon
         x={1.5}
@@ -33,9 +31,8 @@ function CustomStar({
           ${size.width},${size.height / 3}
           ${size.width / 5},${size.height}
          `}
-        stroke={fill ? 'black' : color}
-        strokeWidth={3}
-        fill={fill ? color : 'none'}
+        stroke={color}
+        fill={color}
         strokeDasharray={dashed ? '5,5' : 'none'}
       />
     </Svg>
