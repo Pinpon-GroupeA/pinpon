@@ -51,7 +51,7 @@ function InterventionMap({
     mutationFn: (otherMeanId: number) => deleteOtherMean(otherMeanId),
   });
 
-  const { selectedSymbol, setSelectedSymbol, drawingsColor } = useAppStore((state) => state);
+  const { selectedSymbol, setSelectedSymbol, drawingsColor } = useAppStore();
 
   const [newPolyline, setNewPolyline] = useState<Coordinates[]>([]);
   const [polylineDrawMode, setPolylineDrawMode] = useState(false);

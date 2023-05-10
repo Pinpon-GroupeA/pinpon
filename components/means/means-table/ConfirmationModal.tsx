@@ -15,9 +15,10 @@ type ConfirmationModalProps = {
   closeModal: () => void;
 };
 
-export default function ConfirmationModal({ content, closeModal }: ConfirmationModalProps) {
-  const { id, crmArrival, sectorArrival, availableAt } = content;
-
+export default function ConfirmationModal({
+  content: { id, crmArrival, sectorArrival, availableAt },
+  closeModal,
+}: ConfirmationModalProps) {
   const { mutateAsync: updateCrmDate } = useMutation({
     mutationFn: () => updateCrmArrivalDate(id),
   });

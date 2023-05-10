@@ -9,10 +9,7 @@ import { useAppStore } from '../../stores/store';
 import { SymbolsType } from '../../types/global-types';
 
 function SymbolList() {
-  const selectedSymbol = useAppStore((state) => state.selectedSymbol);
-  const setSelectedSymbol = useAppStore((state) => state.setSelectedSymbol);
-  const drawingsColor = useAppStore((state) => state.drawingsColor);
-
+  const { selectedSymbol, setSelectedSymbol, drawingsColor } = useAppStore();
   const handleSymbolPress = (symbolType: SymbolsType) => {
     if (selectedSymbol?.symboleType === symbolType) {
       setSelectedSymbol(undefined);
