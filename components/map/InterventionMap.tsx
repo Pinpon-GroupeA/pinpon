@@ -24,19 +24,23 @@ type InterventionMapProps = {
   otherMeans: OtherMean[];
   interventionLocation: Coordinates;
 };
-const waterPointDistance = 1000;
-const waterPointNumber = 400;
+
 function InterventionMap({
   fireFighterMeans,
   otherMeans,
   interventionLocation,
 }: InterventionMapProps) {
+  const waterPointDistance = 1000;
+  const waterPointNumber = 100;
+
   const { error, data } = useQuery({
-    queryKey: ['repoData'],
-    queryFn: () =>
-      fetch(
-        'https://data.opendatasoft.com/api/records/1.0/search/?dataset=deci-pei%40rennes-metropole&rows=+' + waterPointNumber + '&geofilter.distance=' + interventionLocation.latitude + ',' + interventionLocation.longitude + ',' + waterPointDistance
-      ).then((res) => res.json()),
+    queryKey: ['waterPoints', interventionLocation],
+    queryFn: async () => {
+      const response = await fetch(
+        `https://data.opendatasoft.com/api/records/1.0/search/?dataset=deci-pei%40rennes-metropole&rows=${waterPointNumber}&geofilter.distance=${interventionLocation.latitude},${interventionLocation.longitude},${waterPointDistance}`
+      );
+      return response.json();
+    },
   });
 
   const { id: interventionId } = useSearchParams();
