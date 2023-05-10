@@ -63,6 +63,16 @@ export const InterventionMeansLinkColumns = {
   isOnSite: 'is_on_site',
 };
 
+export const DroneColumns = {
+  id: 'id',
+  interventionId: 'intervention_id',
+  position: 'position',
+  currentTime: 'current_time',
+  trajectType: 'traject_type',
+  traject: 'traject',
+  isStopped: 'is_stopped',
+};
+
 export const InterventionDangerLinkColumns = {
   id: 'id',
   interventionId: 'intervention_id',
