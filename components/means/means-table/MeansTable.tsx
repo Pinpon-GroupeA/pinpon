@@ -54,6 +54,11 @@ export default function MeansTable({ means, requests }: MeansTableProps) {
                   getMilitaryTime(mean.sector_arrival ? new Date(mean.sector_arrival) : undefined),
                   getMilitaryTime(mean.available_at ? new Date(mean.available_at) : undefined),
                   <IconButton
+                    flex={1}
+                    alignItems="center"
+                    marginX={3}
+                    paddingY={1}
+                    _pressed={{ backgroundColor: '#19837C50', borderRadius: '20' }}
                     icon={<Icon as={Entypo} name="pencil" color="black" />}
                     onPress={() =>
                       setModalContent({

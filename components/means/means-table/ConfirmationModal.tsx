@@ -38,34 +38,43 @@ export default function ConfirmationModal({
   return (
     <Modal.Content>
       <Modal.CloseButton />
-      <Modal.Header>Confirmation des heures</Modal.Header>
+      <Modal.Header>
+        <Text color="#19837C" fontSize="xl" fontWeight="semibold" textAlign="center">
+          Confirmation des heures
+        </Text>
+      </Modal.Header>
       <Modal.Body>
-        <VStack>
-          <HStack pb="3">
-            <Text bold fontSize="20px" mr="10">
+        <VStack space={3}>
+          <HStack alignItems="center" justifyContent="space-around">
+            <Text fontSize="20px" flex={1} textAlign="center">
               Au CRM à
             </Text>
             {crmArrival === null ? (
               <Button
+                flex={1}
+                bgColor="#19837C"
                 onPress={() => {
                   updateCrmDate();
                   closeModal();
                 }}
               >
-                arrivé au CRM
+                Arrivé au CRM
               </Button>
             ) : (
-              <Button disabled bgColor="gray.400">
-                arrivé au CRM à {getMilitaryTime(new Date(crmArrival))}
-              </Button>
+              <Text fontSize="20px" flex={1} textAlign="center">
+                {getMilitaryTime(new Date(crmArrival))}
+              </Text>
             )}
           </HStack>
-          <HStack pb="3">
-            <Text bold fontSize="20px" mr="10">
+
+          <HStack alignItems="center" justifyContent="space-around">
+            <Text fontSize="20px" flex={1} textAlign="center">
               Sur site à
             </Text>
             {sectorArrival === null ? (
               <Button
+                flex={1}
+                bgColor="#19837C"
                 onPress={() => {
                   updateSectorDate();
                   setOnSite();
@@ -75,17 +84,19 @@ export default function ConfirmationModal({
                 Sur le secteur
               </Button>
             ) : (
-              <Button disabled bgColor="gray.400">
-                Sur le secteur à {getMilitaryTime(new Date(sectorArrival))}
-              </Button>
+              <Text fontSize="20px" flex={1} textAlign="center">
+                {getMilitaryTime(new Date(sectorArrival))}
+              </Text>
             )}
           </HStack>
-          <HStack pb="3">
-            <Text bold fontSize="20px" mr="10">
+
+          <HStack alignItems="center" justifyContent="space-around">
+            <Text fontSize="20px" flex={1} textAlign="center">
               Disponible à
             </Text>
             {availableAt === null ? (
               <Button
+                flex={1}
                 onPress={() => {
                   updateAvailableDate();
                   closeModal();
@@ -94,9 +105,9 @@ export default function ConfirmationModal({
                 Disponible
               </Button>
             ) : (
-              <Button disabled bgColor="gray.400">
-                Disponible à {getMilitaryTime(new Date(availableAt))}
-              </Button>
+              <Text fontSize="20px" flex={1} textAlign="center">
+                {getMilitaryTime(new Date(availableAt))}
+              </Text>
             )}
           </HStack>
         </VStack>
