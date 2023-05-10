@@ -1,14 +1,14 @@
-import { supabase } from './supabase';
+import { Tables, supabase } from './supabase';
 import { Request } from '../types/request-types';
 
 export type CreateRequestData = Omit<Request, 'id'>;
 
-export const createRequest = async (requests: CreateRequestData) => {
-  const { data, error } = await supabase.from('requests').insert(requests);
+export const createRequests = async (requests: CreateRequestData[]) => {
+  const { data, error } = await supabase.from(Tables.requests).insert(requests).select();
 
   if (error) {
     throw error;
   }
 
-  return data;
+  return data as Request[];
 };

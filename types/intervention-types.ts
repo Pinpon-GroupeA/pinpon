@@ -11,6 +11,8 @@ export type Intervention = {
   location: Coordinates;
 };
 
+export type CreateInterventionData = Omit<Intervention, 'id' | 'created_at' | 'is_ongoing'>;
+
 export type InterventionStatus = 'PENDING' | 'ONGOING' | 'OVER';
 
 export type InterventionListData = Intervention & {

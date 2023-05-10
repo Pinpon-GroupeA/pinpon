@@ -2,11 +2,11 @@ import { useQuery } from '@tanstack/react-query';
 import { Box, Fab, Modal } from 'native-base';
 import { useState } from 'react';
 
-import ModalMeansRequest from './ModalMeansRequest';
 import { InterventionMean, MeanType } from '../../../types/mean-types';
 import { Request } from '../../../types/request-types';
 import { fetchMeansTypes } from '../../../utils/means-type';
 import MeansTable from '../means-table/MeansTable';
+import ModalMeansRequest from './ModalMeansRequest';
 
 type MeansPageProps = {
   means: InterventionMean[];
@@ -16,7 +16,7 @@ type MeansPageProps = {
 function MeansPage({ means, requests }: MeansPageProps) {
   const [showModal, setShowModal] = useState(false);
 
-  const { data: meanTypes } = useQuery<MeanType[]>(['meanTypes'], {
+  const { data: meanTypes, isLoading } = useQuery<MeanType[]>(['meanTypes'], {
     queryFn: fetchMeansTypes,
   });
 
@@ -33,7 +33,11 @@ function MeansPage({ means, requests }: MeansPageProps) {
         placement="bottom-right"
       />
       <Modal isOpen={showModal} onClose={() => setShowModal(false)} size="md">
-        <ModalMeansRequest meansType={meanTypes ?? []} setShowModal={setShowModal} />
+        <ModalMeansRequest
+          meanTypes={meanTypes || []}
+          setShowModal={setShowModal}
+          key={meanTypes?.length}
+        />
       </Modal>
     </Box>
   );

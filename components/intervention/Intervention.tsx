@@ -39,9 +39,6 @@ export default function Intervention({ intervention }: InterventionProps) {
   return (
     <Pressable
       p="2"
-      borderWidth="1"
-      borderRadius="md"
-      borderColor="gray.200"
       flexWrap="wrap"
       flexDirection="row"
       justifyContent="space-between"

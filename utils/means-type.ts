@@ -6,7 +6,7 @@ export type CreateInterventionData = Omit<MeanType, 'id'>;
 export const fetchMeansTypes = async (): Promise<MeanType[]> => {
   const { data, error } = await supabase
     .from('means_type')
-    .select('mean_type, label')
+    .select('id, mean_type, label')
     .eq('firefighter_related', true);
 
   if (error) {

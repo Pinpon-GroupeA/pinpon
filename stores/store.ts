@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 
 import { SymbolsType } from '../types/global-types';
+import { CreateInterventionData } from '../types/intervention-types';
 import { UserType } from '../types/user';
 
 type SelectedSymbol = {
@@ -15,6 +16,9 @@ type AppStoreType = {
   setSelectedSymbol: (selectedSymbol?: SelectedSymbol) => void;
   drawingsColor: string;
   setDrawingsColor: (drawingsDangerCode: string) => void;
+  interventionCreationData?: CreateInterventionData;
+  setInterventionCreationData: (interventionCreationData: CreateInterventionData) => void;
+  resetInterventionCreationData: () => void;
 };
 
 export const useAppStore = create<AppStoreType>((set) => ({
@@ -24,4 +28,7 @@ export const useAppStore = create<AppStoreType>((set) => ({
   setSelectedSymbol: (selectedSymbol) => set({ selectedSymbol }),
   drawingsColor: 'black',
   setDrawingsColor: (drawingsDangerCode) => set({ drawingsColor: drawingsDangerCode }),
+  interventionCreationData: undefined,
+  setInterventionCreationData: (interventionCreationData) => set({ interventionCreationData }),
+  resetInterventionCreationData: () => set({ interventionCreationData: undefined }),
 }));
