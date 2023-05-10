@@ -23,7 +23,7 @@ const PolylineDeletionAlert = ({ isOpen, onClose, onConfirm }: PolylineDeletionA
             <Button variant="unstyled" colorScheme="coolGray" onPress={onClose} ref={cancelRef}>
               Annuler
             </Button>
-            <Button colorScheme="danger" onPress={onConfirm}>
+            <Button bgColor="#19837C" onPress={onConfirm}>
               Confirmer
             </Button>
           </Button.Group>
