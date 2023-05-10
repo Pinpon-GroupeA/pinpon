@@ -10,9 +10,7 @@ type FireFighterSymbolListProps = {
 };
 
 const FireFighterSymbolList = ({ fireFighterMeans }: FireFighterSymbolListProps) => {
-  const selectedSymbol = useAppStore((state) => state.selectedSymbol);
-  const setSelectedSymbol = useAppStore((state) => state.setSelectedSymbol);
-  const drawingsColor = useAppStore((state) => state.drawingsColor);
+  const { selectedSymbol, setSelectedSymbol, drawingsColor } = useAppStore();
 
   const handleSymbolPress = (id: number) => {
     if (selectedSymbol && selectedSymbol.id === id) {

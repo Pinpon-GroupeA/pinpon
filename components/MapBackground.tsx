@@ -23,6 +23,7 @@ function MapBackground({ children, handlePress, initialRegion }: MapBackgroundPr
         showsUserLocation
         onPress={handlePress}
         moveOnMarkerPress={false}
+        minPoints={5}
       >
         <UrlTile
           urlTemplate="https://a.tile.openstreetmap.de/{z}/{x}/{y}.png"

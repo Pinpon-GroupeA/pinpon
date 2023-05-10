@@ -9,7 +9,7 @@ type MeanRequestItemProps = {
 };
 
 export default function MeanRequestItem({ mean, values, setValues, index }: MeanRequestItemProps) {
-  function handleIncrementClick() {
+  const handleIncrementClick = () => {
     const nextValues = values.map((v, i) => {
       if (i === index) {
         return v + 1;
@@ -18,9 +18,9 @@ export default function MeanRequestItem({ mean, values, setValues, index }: Mean
       }
     });
     setValues(nextValues);
-  }
+  };
 
-  function handleDecrementClick() {
+  const handleDecrementClick = () => {
     const nextValues = values.map((v, i) => {
       if (i === index && values[index] > 0) {
         return v - 1;
@@ -29,7 +29,7 @@ export default function MeanRequestItem({ mean, values, setValues, index }: Mean
       }
     });
     setValues(nextValues);
-  }
+  };
 
   return (
     <HStack alignItems="center" justifyContent="space-around">

@@ -121,6 +121,18 @@ export default function Map() {
     }
   );
 
+  const getPolylines = () => {
+    if (!otherMeans) return [];
+
+    return otherMeans.filter((mean) => mean.category === 'PL');
+  };
+
+  const getOtherMeans = () => {
+    if (!otherMeans) return [];
+
+    return otherMeans.filter((mean) => mean.category !== 'PL');
+  };
+
   return (
     <HStack h="100%">
       <Box w="30%">
@@ -129,7 +141,8 @@ export default function Map() {
       <Box w="70%">
         <InterventionMap
           fireFighterMeans={getFireFightersMeansPlaced(fireFighterMeans ?? [])}
-          otherMeans={getOtherMeansPlaced(otherMeans ?? [])}
+          otherMeans={getOtherMeansPlaced(getOtherMeans())}
+          currentPolylines={getPolylines()}
           interventionLocation={interventionLocation ?? { latitude: 0, longitude: 0 }}
         />
       </Box>

@@ -1,9 +1,21 @@
-import { Box, Heading, VStack, Divider, HStack, Text, ScrollView } from 'native-base';
-import React from 'react';
+import { Entypo } from '@expo/vector-icons';
+import {
+  Box,
+  Heading,
+  VStack,
+  Divider,
+  HStack,
+  Text,
+  ScrollView,
+  IconButton,
+  Icon,
+  Modal,
+} from 'native-base';
+import React, { useState } from 'react';
 
 import ConfirmationModal from './ConfirmationModal';
 import ConfirmationModalRequest from './ConfirmationModalRequest';
-import { InterventionMean } from '../../../types/mean-types';
+import { InterventionMean, MeanModalContent } from '../../../types/mean-types';
 import { Request } from '../../../types/request-types';
 import { getMilitaryTime, addMinutes } from '../../../utils/date';
 
@@ -13,6 +25,8 @@ type MeansTableProps = {
 };
 
 export default function MeansTable({ means, requests }: MeansTableProps) {
+  const [modalContent, setModalContent] = useState<MeanModalContent | null>(null);
+
   return (
     <Box>
       <Heading pt={3} pb={8} size="2xl" color="#19837C">
@@ -69,11 +83,16 @@ export default function MeansTable({ means, requests }: MeansTableProps) {
               <Text flex={2}>
                 {getMilitaryTime(mean.available_at ? new Date(mean.available_at) : undefined)}
               </Text>
-              <ConfirmationModal
-                id={mean.id}
-                crm={mean.crm_arrival}
-                sector={mean.sector_arrival}
-                available={mean.available_at}
+              <IconButton
+                icon={<Icon as={Entypo} name="pencil" color="black" />}
+                onPress={() =>
+                  setModalContent({
+                    id: mean.id,
+                    crmArrival: mean.crm_arrival,
+                    sectorArrival: mean.sector_arrival,
+                    availableAt: mean.available_at,
+                  })
+                }
               />
             </HStack>
           ))}
@@ -97,6 +116,11 @@ export default function MeansTable({ means, requests }: MeansTableProps) {
           ))}
         </ScrollView>
       </VStack>
+      {modalContent && (
+        <Modal isOpen={modalContent !== null} onClose={() => setModalContent(null)} size="md">
+          <ConfirmationModal content={modalContent} closeModal={() => setModalContent(null)} />
+        </Modal>
+      )}
     </Box>
   );
 }
