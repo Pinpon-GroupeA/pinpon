@@ -5,6 +5,7 @@ import { Box, Fab, Icon, Modal, Text } from 'native-base';
 import { useState } from 'react';
 import { MapPressEvent, Marker, Polyline } from 'react-native-maps';
 
+import PolylineDeletionAlert from './PolylineDeletionAlert';
 import CustomCircle from './symbols/CustomCircle';
 import FireFighterVehicle from './symbols/FireFighterVehicle';
 import { useAppStore } from '../../stores/store';
@@ -55,6 +56,7 @@ function InterventionMap({
   const [newPolyline, setNewPolyline] = useState<Coordinates[]>([]);
   const [polylineDrawMode, setPolylineDrawMode] = useState(false);
   const [modalContent, setModalContent] = useState<MeanModalProps | null>(null);
+  const [pressedPolylineId, setPressedPolylineId] = useState<number | null>(null);
 
   const handlePress = (event: MapPressEvent) => {
     const { latitude, longitude } = event.nativeEvent.coordinate;
@@ -169,6 +171,8 @@ function InterventionMap({
             coordinates={mean.points}
             strokeColor={getDangerCodeColor(mean.danger_code)}
             strokeWidth={3}
+            onPress={() => setPressedPolylineId(mean.id)}
+            tappable
           />
         ))}
       </MapBackground>
@@ -195,6 +199,14 @@ function InterventionMap({
           />
         </Modal>
       )}
+      <PolylineDeletionAlert
+        isOpen={pressedPolylineId !== null}
+        onClose={() => setPressedPolylineId(null)}
+        onConfirm={() => {
+          deleteOtherMeanMutation(pressedPolylineId!);
+          setPressedPolylineId(null);
+        }}
+      />
     </Box>
   );
 }
