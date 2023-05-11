@@ -1,6 +1,7 @@
 import { Entypo } from '@expo/vector-icons';
 import { Box, Heading, ScrollView, IconButton, Icon, Modal } from 'native-base';
 import React, { useState } from 'react';
+import { LogBox } from 'react-native';
 import { Table, Row } from 'react-native-table-component';
 
 import ConfirmationModal from './ConfirmationModal';
@@ -16,6 +17,10 @@ type MeansTableProps = {
 };
 
 export default function MeansTable({ means, requests }: MeansTableProps) {
+  LogBox.ignoreLogs([
+    'Warning: Failed prop type: Invalid prop `textStyle` of type `array` supplied to `Cell`, expected `object`.',
+  ]);
+
   const [modalContent, setModalContent] = useState<MeanModalContent | null>(null);
   const [requestId, setRequestId] = useState<number | null>(null);
 
@@ -74,10 +79,11 @@ export default function MeansTable({ means, requests }: MeansTableProps) {
                 ]}
                 flexArr={[1, 1, 1, 1, 1, 1, 0.5]}
                 textStyle={{ textAlign: 'center', fontSize: 16 }}
-                style={[
-                  { padding: 1 },
-                  index % 2 ? { backgroundColor: 'white' } : { backgroundColor: '#0000' },
-                ]}
+                style={
+                  (index + means.length) % 2
+                    ? { backgroundColor: 'white', padding: 1 }
+                    : { backgroundColor: '#0000', padding: 1 }
+                }
               />
             ))}
             {requests.map((request, index) => (
@@ -101,7 +107,11 @@ export default function MeansTable({ means, requests }: MeansTableProps) {
                 ]}
                 flexArr={[1, 1, 1, 1, 1, 1, 0.5]}
                 textStyle={{ textAlign: 'center', fontSize: 16 }}
-                style={[index % 2 ? { backgroundColor: 'white' } : { backgroundColor: '#0000' }]}
+                style={[
+                  (index + means.length) % 2
+                    ? { backgroundColor: 'white' }
+                    : { backgroundColor: '#0000' },
+                ]}
               />
             ))}
           </Table>

@@ -97,6 +97,7 @@ export default function ConfirmationModal({
             {availableAt === null ? (
               <Button
                 flex={1}
+                bgColor="#19837C"
                 onPress={() => {
                   updateAvailableDate();
                   closeModal();
