@@ -135,10 +135,10 @@ export default function Map() {
 
   return (
     <HStack h="100%">
-      <Box w="30%">
+      <Box w="20%">
         <SymbolsPane fireFighterMeans={getFireFighterMeansNotPlaced(fireFighterMeans ?? [])} />
       </Box>
-      <Box w="70%">
+      <Box w="80%">
         <InterventionMap
           fireFighterMeans={getFireFightersMeansPlaced(fireFighterMeans ?? [])}
           otherMeans={getOtherMeansPlaced(getOtherMeans())}

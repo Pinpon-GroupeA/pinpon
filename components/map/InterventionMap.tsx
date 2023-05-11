@@ -136,7 +136,7 @@ function InterventionMap({
             }}
             title={item.fields.type}
           >
-            <CustomCircle size={{ height: 30, width: 30 }} color="#2D3ED3" fill />
+            <CustomCircle size={{ height: 30, width: 30 }} color="#2D3ED3" />
           </Marker>
         ))}
         {fireFighterMeans.map((mean) => (

@@ -1,8 +1,11 @@
 import { Box, ScrollView, Text } from 'native-base';
 
 import PressableSymbol from './PressableSymbol';
+import CustomInvertedTriangle from './symbols/CustomInvertedTriangle';
+import CustomTriangle from './symbols/CustomTriangle';
 import FireFighterVehicle from './symbols/FireFighterVehicle';
 import { useAppStore } from '../../stores/store';
+import { SymbolsType } from '../../types/global-types';
 import { InterventionMean } from '../../types/mean-types';
 
 type FireFighterSymbolListProps = {
@@ -12,7 +15,7 @@ type FireFighterSymbolListProps = {
 const FireFighterSymbolList = ({ fireFighterMeans }: FireFighterSymbolListProps) => {
   const { selectedSymbol, setSelectedSymbol, drawingsColor } = useAppStore();
 
-  const handleSymbolPress = (id: number) => {
+  const handleSymbolIdPress = (id: number) => {
     if (selectedSymbol && selectedSymbol.id === id) {
       setSelectedSymbol(undefined);
     } else {
@@ -20,23 +23,46 @@ const FireFighterSymbolList = ({ fireFighterMeans }: FireFighterSymbolListProps)
     }
   };
 
+  const handleSymbolPress = (symbolType: SymbolsType) => {
+    if (selectedSymbol?.symboleType === symbolType) {
+      setSelectedSymbol(undefined);
+    } else {
+      setSelectedSymbol({ symboleType: symbolType });
+    }
+  };
+
   return (
     <Box alignItems="center">
-      <Text>Cible/Source</Text>
+      <Text>Cible/Source :</Text>
+      <ScrollView flexDir="column" width="100%">
+        <PressableSymbol
+          type="InvertedTriangle"
+          onPress={() => handleSymbolPress('InvertedTriangle')}
+          darkBackground={selectedSymbol?.symboleType === 'InvertedTriangle'}
+        >
+          <CustomInvertedTriangle color={drawingsColor} size={{ height: 30, width: 30 }} />
+        </PressableSymbol>
+        <PressableSymbol
+          type="Triangle"
+          onPress={() => handleSymbolPress('Triangle')}
+          darkBackground={selectedSymbol?.symboleType === 'Triangle'}
+        >
+          <CustomTriangle color={drawingsColor} size={{ height: 30, width: 30 }} />
+        </PressableSymbol>
+      </ScrollView>
+      <Text>Moyens :</Text>
       <ScrollView flexDir="column" width="100%">
         {fireFighterMeans.map((mean) => (
           <PressableSymbol
             key={mean.id}
             type="FireFighterVehicle"
-            onPress={() => handleSymbolPress(mean.mean_id)}
+            onPress={() => handleSymbolIdPress(mean.mean_id)}
             darkBackground={selectedSymbol?.id === mean.mean_id}
           >
             <FireFighterVehicle color={drawingsColor} dashed name={mean.means.label} />
           </PressableSymbol>
         ))}
       </ScrollView>
-      <Text>Moyens</Text>
-      <ScrollView flexDir="column" width="100%"></ScrollView>
     </Box>
   );
 };

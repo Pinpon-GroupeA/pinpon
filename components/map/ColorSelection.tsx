@@ -1,7 +1,7 @@
-import { Button, Modal } from 'native-base';
+import { Box, Button, HStack, Text } from 'native-base';
 
+import Colors from '../../constants/colors';
 import { useAppStore } from '../../stores/store';
-import { dangerCodeColors } from '../../utils/danger-code';
 
 type ColorSelectionProps = {
   isOpen: boolean;
@@ -9,30 +9,71 @@ type ColorSelectionProps = {
 };
 
 function ColorSelection({ isOpen, onClose }: ColorSelectionProps) {
+  const drawingsColor = useAppStore((state) => state.drawingsColor);
   const setDrawingsColor = useAppStore((state) => state.setDrawingsColor);
-
-  const handleColorPress = (color: string) => {
-    setDrawingsColor(color);
-    onClose();
-  };
+  const selectColor = useAppStore((state) => state.selectColor);
+  const setSelectColor = useAppStore((state) => state.setSelectColor);
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
-      <Modal.Content justifyContent="center">
-        <Modal.CloseButton />
-        <Modal.Header>Type du moyen</Modal.Header>
-        <Modal.Body flexDir="row" justifyContent="center">
-          {dangerCodeColors.map((dangerCode) => (
+    <Box alignItems="center" flexDirection="column" justifyContent="space-evenly" mb="3">
+      <Text>Type :</Text>
+      <HStack space={1} alignContent="center">
+        {!selectColor && (
+          <Button
+            backgroundColor={drawingsColor}
+            onPress={() => {
+              setSelectColor();
+            }}
+          />
+        )}
+        {selectColor && (
+          <>
             <Button
-              key={dangerCode.color}
-              bgColor={dangerCode.color}
-              onPress={() => handleColorPress(dangerCode.color)}
-              marginX={1}
+              backgroundColor={Colors.RED}
+              onPress={() => {
+                setDrawingsColor(Colors.RED);
+                setSelectColor();
+              }}
             />
-          ))}
-        </Modal.Body>
-      </Modal.Content>
-    </Modal>
+            <Button
+              backgroundColor={Colors.BLUE}
+              onPress={() => {
+                setDrawingsColor(Colors.BLUE);
+                setSelectColor();
+              }}
+            />
+            <Button
+              backgroundColor={Colors.GREEN}
+              onPress={() => {
+                setDrawingsColor(Colors.GREEN);
+                setSelectColor();
+              }}
+            />
+            <Button
+              backgroundColor={Colors.ORANGE}
+              onPress={() => {
+                setDrawingsColor(Colors.ORANGE);
+                setSelectColor();
+              }}
+            />
+            <Button
+              backgroundColor={Colors.PURPLE}
+              onPress={() => {
+                setDrawingsColor(Colors.PURPLE);
+                setSelectColor();
+              }}
+            />
+            <Button
+              backgroundColor={Colors.BLACK}
+              onPress={() => {
+                setDrawingsColor(Colors.BLACK);
+                setSelectColor();
+              }}
+            />
+          </>
+        )}
+      </HStack>
+    </Box>
   );
 }
 
