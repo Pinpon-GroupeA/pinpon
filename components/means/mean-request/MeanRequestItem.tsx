@@ -34,9 +34,12 @@ export default function MeanRequestItem({ mean, values, setValues, index }: Mean
   return (
     <HStack alignItems="center" justifyContent="space-around">
       <FormControl.Label flex="8">
-        {mean.label} ({mean.mean_type})
+        {' '}
+        <Text color="black" fontSize="md">
+          {mean.label + ' (' + mean.mean_type + ')'}
+        </Text>
       </FormControl.Label>
-      <HStack alignItems="center" flex="1.5">
+      <HStack alignItems="center" flex="2">
         <Button variant="ghost" _pressed={{ bgColor: '#19837C30' }} onPress={handleDecrementClick}>
           -
         </Button>
