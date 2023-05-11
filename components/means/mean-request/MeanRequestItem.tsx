@@ -37,11 +37,11 @@ export default function MeanRequestItem({ mean, values, setValues, index }: Mean
         {mean.label} ({mean.mean_type})
       </FormControl.Label>
       <HStack alignItems="center" flex="1.5">
-        <Button variant="ghost" onPress={handleDecrementClick}>
+        <Button variant="ghost" _pressed={{ bgColor: '#19837C30' }} onPress={handleDecrementClick}>
           -
         </Button>
         <Text>{values[index]}</Text>
-        <Button variant="ghost" onPress={handleIncrementClick}>
+        <Button variant="ghost" _pressed={{ bgColor: '#19837C30' }} onPress={handleIncrementClick}>
           +
         </Button>
       </HStack>
