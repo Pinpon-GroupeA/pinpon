@@ -6,15 +6,15 @@ import { SizeType } from '../../../types/global-types';
 type CustomTriangleProps = {
   color?: string;
   dashed?: boolean;
-  fill?: boolean;
   size?: SizeType;
+  fill?: boolean;
 };
 
 function CustomTriangle({
   color = 'black',
   dashed,
-  fill,
   size = { height: 30, width: 30 },
+  fill = true,
 }: CustomTriangleProps) {
   return (
     <Svg
@@ -26,8 +26,7 @@ function CustomTriangle({
       <Polygon
         x={1.5}
         points={`0,${size.height} ${size.width},${size.height} ${size.width / 2},0`}
-        stroke={fill ? 'black' : color}
-        strokeWidth={3}
+        stroke={color}
         fill={fill ? color : 'none'}
         strokeDasharray={dashed ? '5,5' : 'none'}
       />

@@ -6,15 +6,15 @@ import { SizeType } from '../../../types/global-types';
 type CustomRectangleProps = {
   color: string;
   strokeStyle?: boolean;
-  fill?: boolean;
   size?: SizeType;
+  fill?: boolean;
 };
 
 function CustomRectangle({
   color,
   strokeStyle,
-  fill,
   size = { height: 20, width: 20 },
+  fill = true,
 }: CustomRectangleProps) {
   return (
     <Svg height={size.height} width={size.width} fill="none">

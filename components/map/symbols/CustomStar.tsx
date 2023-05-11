@@ -6,15 +6,15 @@ import { SizeType } from '../../../types/global-types';
 type CustomStarProps = {
   color?: string;
   dashed?: boolean;
-  fill?: boolean;
   size?: SizeType;
+  fill?: boolean;
 };
 
 function CustomStar({
   color = 'black',
   dashed,
-  fill,
   size = { height: 30, width: 30 },
+  fill = true,
 }: CustomStarProps) {
   return (
     <Svg
@@ -33,8 +33,7 @@ function CustomStar({
           ${size.width},${size.height / 3}
           ${size.width / 5},${size.height}
          `}
-        stroke={fill ? 'black' : color}
-        strokeWidth={3}
+        stroke={color}
         fill={fill ? color : 'none'}
         strokeDasharray={dashed ? '5,5' : 'none'}
       />
