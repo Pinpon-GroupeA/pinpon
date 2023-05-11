@@ -109,8 +109,8 @@ export default function MeansTable({ means, requests }: MeansTableProps) {
                 textStyle={{ textAlign: 'center', fontSize: 16 }}
                 style={[
                   (index + means.length) % 2
-                    ? { backgroundColor: 'white' }
-                    : { backgroundColor: '#0000' },
+                    ? { backgroundColor: '#0000' }
+                    : { backgroundColor: 'white' },
                 ]}
               />
             ))}
