@@ -1,7 +1,6 @@
 import { AntDesign } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { Box, Fab, FlatList, HStack, Heading, Icon, VStack } from 'native-base';
-import React from 'react';
 
 import Intervention from './Intervention';
 import { useAppStore } from '../../stores/store';

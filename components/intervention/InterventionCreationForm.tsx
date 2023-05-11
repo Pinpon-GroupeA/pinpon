@@ -36,7 +36,7 @@ export default function InterventionCreationForm() {
     formState: { errors },
   } = useForm<FormInputs>({
     defaultValues: {
-      dangerCode: interventionCreationData?.danger_code,
+      dangerCode: interventionCreationData?.danger_code ?? undefined,
       street: interventionCreationData?.address?.split(' ')[0],
       postalCode: interventionCreationData?.address?.split(' ')[1],
       city: interventionCreationData?.address?.split(' ')[2],
@@ -69,7 +69,7 @@ export default function InterventionCreationForm() {
     setInterventionCreationData({
       danger_code: dangerType,
       address: `${street} ${postalCode} ${city}`,
-      status_intervention: 'ONGOING',
+      status_intervention: 'PENDING',
       location: {
         longitude,
         latitude,

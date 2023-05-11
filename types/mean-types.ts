@@ -51,3 +51,7 @@ export type MeanModalContent = {
   sectorArrival: string | null;
   availableAt: string | null;
 };
+
+export type MeanTypeToRequest = MeanType & {
+  numberOfRequests: number;
+};

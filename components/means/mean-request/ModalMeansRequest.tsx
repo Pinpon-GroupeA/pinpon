@@ -3,7 +3,7 @@ import { useSearchParams } from 'expo-router';
 import { Button, Modal, Text, VStack, useToast } from 'native-base';
 import React, { useState } from 'react';
 
-import MeanRequestItem from './NewMeanRequestItem';
+import MeanRequestItem from './MeanRequestItem';
 import { MeanType, MeanTypeToRequest } from '../../../types/mean-types';
 import { CreateRequestData, createRequests } from '../../../utils/requests-type';
 import Alert from '../../Alert';
@@ -88,22 +88,19 @@ export default function ModalMeansRequest({ meanTypes, setShowModal }: ModalMean
       </Modal.Header>
       <Modal.Body backgroundColor="#F2F2F2">
         <VStack>
-          {meansType.length === 0 ? (
+          {requestedMeanTypes.length === 0 ? (
             <Text textAlign="center" fontStyle="italic">
               Aucun type de moyen trouvé.
             </Text>
           ) : (
-            meansType.map((item, index) => {
-              return (
-                <MeanRequestItem
-                  mean={item}
-                  values={values}
-                  setValues={setValues}
-                  index={index}
-                  key={index}
-                />
-              );
-            })
+            requestedMeanTypes.map((mean) => (
+              <MeanRequestItem
+                meanToRequest={mean}
+                onDecrementClicked={() => onDecrementMeanClicked(mean.id)}
+                onIncrementClicked={() => onIncrementMeanClicked(mean.id)}
+                key={mean.id}
+              />
+            ))
           )}
         </VStack>
       </Modal.Body>

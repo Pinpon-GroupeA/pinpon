@@ -1633,7 +1633,6 @@
 "@expo/prebuild-config@6.0.1":
   version "6.0.1"
   resolved "https://registry.yarnpkg.com/@expo/prebuild-config/-/prebuild-config-6.0.1.tgz#e3a5bbf5892859e71ac6a2408b1cc8ba6ca3f58f"
-  resolved "https://registry.npmjs.org/@expo/prebuild-config/-/prebuild-config-6.0.1.tgz"
   integrity sha512-WK3FDht1tdXZGCvtG5s7HSwzhsc7Tyu2DdqV9jVUsLtGD42oqUepk13mEWlU9LOTBgLsoEueKjoSK4EXOXFctw==
   dependencies:
     "@expo/config" "~8.0.0"
@@ -3271,9 +3270,9 @@
     cross-fetch "^3.1.5"
 
 "@supabase/postgrest-js@^1.1.1":
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/@supabase/postgrest-js/-/postgrest-js-1.6.0.tgz#e9a225e62a48dd76c61082152007baebf1b7810c"
-  integrity sha512-HCphMC6KjtoaGcowSlkKRVKBOlNpmKWE2CwoumMwwsfhnRxplIy1zBiIYIL3zIYo/Bm20H/1C6enqjBeTvSwXg==
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/@supabase/postgrest-js/-/postgrest-js-1.6.1.tgz#6ff02b82001dfce05b529ea21f72812a719cefec"
+  integrity sha512-WDBUPOCOwcZonaCwEodwdA8hwWYOiXroDF9vWGxZxKAnuSVE2Ieci/kvhR4EsWvgGST2h90LRowgO+msXe8+fA==
   dependencies:
     cross-fetch "^3.1.5"
 
@@ -5964,9 +5963,9 @@ ee-first@1.1.1:
   integrity sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==
 
 electron-to-chromium@^1.4.284:
-  version "1.4.388"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.388.tgz#ec0d1be823d5b14da56d91ec5c57e84b4624ea45"
-  integrity sha512-xZ0y4zjWZgp65okzwwt00f2rYibkFPHUv9qBz+Vzn8cB9UXIo9Zc6Dw81LJYhhNt0G/vR1OJEfStZ49NKl0YxQ==
+  version "1.4.391"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.391.tgz#197994210792e29e39baf3ce807df42f66e9b5f8"
+  integrity sha512-GqydVV1+kUWY5qlEzaw34/hyWTApuQrHiGrcGA2Kk/56nEK44i+YUW45VH43JuZT0Oo7uY8aVtpPhBBZXEWtSA==
 
 emittery@^0.13.1:
   version "0.13.1"
@@ -5995,7 +5994,7 @@ end-of-stream@^1.1.0:
   dependencies:
     once "^1.4.0"
 
-enhanced-resolve@^5.13.0:
+enhanced-resolve@^5.14.0:
   version "5.14.0"
   resolved "https://registry.yarnpkg.com/enhanced-resolve/-/enhanced-resolve-5.14.0.tgz#0b6c676c8a3266c99fa281e4433a706f5c0c61c4"
   integrity sha512-+DCows0XNwLDcUhbFJPdlQEVnT2zXlCv7hPxemTz86/O+B/hCQ+mb7ydkPKiflpVraqLPCAfu7lDy+hBXueojw==
@@ -6985,9 +6984,9 @@ flatted@^3.1.0:
   integrity sha512-5nqDSxl8nn5BSNxyR3n4I6eDmbolI6WT+QqR547RwxQapgjQBmtktdP+HTBb/a/zLsbzERTONyUB5pefh5TtjQ==
 
 flow-parser@0.*:
-  version "0.205.1"
-  resolved "https://registry.yarnpkg.com/flow-parser/-/flow-parser-0.205.1.tgz#337464aaf027b00b2514610386cf21a5f7c94137"
-  integrity sha512-+RF/e1Et6ZX2I/UG7SGAz3Z8+ulj9xKYLu5AD7Wi8H2llzncU8ZpdKfLR50pPvj4g2a/FbZWkXYL7qHc+zXJNA==
+  version "0.206.0"
+  resolved "https://registry.yarnpkg.com/flow-parser/-/flow-parser-0.206.0.tgz#f4f794f8026535278393308e01ea72f31000bfef"
+  integrity sha512-HVzoK3r6Vsg+lKvlIZzaWNBVai+FXTX1wdYhz/wVlH13tb/gOdLXmlTqy6odmTBhT5UoWUbq0k8263Qhr9d88w==
 
 flow-parser@^0.185.0:
   version "0.185.2"
@@ -11054,7 +11053,6 @@ react-hook-form@^7.43.9:
   integrity sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==
 
 react-is@^16.13.0, react-is@^16.13.1:
-"react-is@^16.12.0 || ^17.0.0 || ^18.0.0", react-is@^16.13.0, react-is@^16.13.1:
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
@@ -11122,14 +11120,15 @@ react-native-svg@13.4.0:
     css-select "^5.1.0"
     css-tree "^1.1.3"
 
-react-native-table-component@^1.2.2:
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/react-native-table-component/-/react-native-table-component-1.2.2.tgz#1c9bdcd8f1fd7edf10d1e93ebc3b7877ecd74def"
-  integrity sha512-7bbsi5431iWcjj3toASh8lFHGi6AG/+MTd4M7GuksXKxx/CFs/Qwv1Ys7D2wgyuYKe3hxWNfSVrteFj0tOYXYw==
 react-native-swipe-list-view@^3.2.9:
   version "3.2.9"
   resolved "https://registry.yarnpkg.com/react-native-swipe-list-view/-/react-native-swipe-list-view-3.2.9.tgz#d725c7cdf481dd5df12a00dbfe0120013b5f2e59"
   integrity sha512-SjAEuHc/D6ovp+RjDUhfNmw6NYOntdT7+GFhfMGfP/BSLMuMWynpzJy9GKQeyB8sI78T6Lzip21TVbongOg1Mw==
+
+react-native-table-component@^1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/react-native-table-component/-/react-native-table-component-1.2.2.tgz#1c9bdcd8f1fd7edf10d1e93ebc3b7877ecd74def"
+  integrity sha512-7bbsi5431iWcjj3toASh8lFHGi6AG/+MTd4M7GuksXKxx/CFs/Qwv1Ys7D2wgyuYKe3hxWNfSVrteFj0tOYXYw==
 
 react-native-url-polyfill@^1.3.0:
   version "1.3.0"
@@ -13201,9 +13200,9 @@ webpack-sources@^3.2.3:
   integrity sha512-/DyMEOrDgLKKIG0fmvtz+4dUX/3Ghozwgm6iPp8KRhvn+eQf9+Q7GWxVNMk3+uCPWfdXYC4ExGBckIXdFEfH1w==
 
 webpack@^5.64.4:
-  version "5.82.0"
-  resolved "https://registry.yarnpkg.com/webpack/-/webpack-5.82.0.tgz#3c0d074dec79401db026b4ba0fb23d6333f88e7d"
-  integrity sha512-iGNA2fHhnDcV1bONdUu554eZx+XeldsaeQ8T67H6KKHl2nUSwX8Zm7cmzOA46ox/X1ARxf7Bjv8wQ/HsB5fxBg==
+  version "5.82.1"
+  resolved "https://registry.yarnpkg.com/webpack/-/webpack-5.82.1.tgz#8f38c78e53467556e8a89054ebd3ef6e9f67dbab"
+  integrity sha512-C6uiGQJ+Gt4RyHXXYt+v9f+SN1v83x68URwgxNQ98cvH8kxiuywWGP4XeNZ1paOzZ63aY3cTciCEQJNFUljlLw==
   dependencies:
     "@types/eslint-scope" "^3.7.3"
     "@types/estree" "^1.0.0"
@@ -13214,7 +13213,7 @@ webpack@^5.64.4:
     acorn-import-assertions "^1.7.6"
     browserslist "^4.14.5"
     chrome-trace-event "^1.0.2"
-    enhanced-resolve "^5.13.0"
+    enhanced-resolve "^5.14.0"
     es-module-lexer "^1.2.1"
     eslint-scope "5.1.1"
     events "^3.2.0"
