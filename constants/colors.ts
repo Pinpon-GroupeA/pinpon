@@ -3,7 +3,7 @@ const Colors = {
   RED: '#FF0000',
   ORANGE: '#FF8F28',
   PURPLE: '#8E44AD',
-  BLACK: '#000000',
+  BLACK: '#0D0C0C',
   BLUE: '#2D3ED3',
 };
 
