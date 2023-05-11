@@ -9,6 +9,7 @@ import {
   HStack,
   CheckIcon,
   CloseIcon,
+  ScrollView,
 } from 'native-base';
 
 import { Request } from '../../types/request-types';
@@ -60,63 +61,63 @@ export default function RequestManagement({ address, date, requests }: RequestMa
   };
 
   return (
-    <VStack flex="1" p="24px" alignItems="center" justifyContent="center">
-      <Heading fontSize="xl" p="4" pb="3">
+    <Box marginX={6} flex={1}>
+      <Heading pt={3} size="xl" color="#19837C">
         Moyens demandés
       </Heading>
-      <Box borderRadius="md">
-        <VStack space={[1, 2]} divider={<Divider />}>
-          <Box>
-            <HStack space={[5, 40]} justifyContent="space-between">
-              <VStack>
-                <Text>{address}</Text>
-              </VStack>
-              <VStack>
-                <Text textAlign="right">
-                  {date
-                    ? Intl.DateTimeFormat('fr-FR', dateTimeFormattingOptions).format(new Date(date))
-                    : ''}
-                </Text>
-              </VStack>
-            </HStack>
-          </Box>
+
+      <Box pb="5" justifyContent="space-between" p="2">
+        <Text fontSize="xl">
+          {address}
+          {'  -  '}
+          {date
+            ? Intl.DateTimeFormat('fr-FR', dateTimeFormattingOptions).format(new Date(date))
+            : ''}
+        </Text>
+      </Box>
+
+      <ScrollView mb="2">
+        <VStack flex="1" borderRadius="md" space={[1, 2]}>
           {requests.map((request, id) => (
-            <Box key={id}>
+            <Box
+              key={id}
+              pl={2}
+              py={1}
+              borderWidth={1}
+              borderColor="dark.600"
+              backgroundColor="#F2F2F2"
+            >
               <HStack justifyContent="space-between">
                 <VStack>
-                  <Text>{request.mean_type},</Text>
-
-                  <Text>
+                  <Text fontSize="lg">{request.mean_type},</Text>
+                  <Text fontSize="md">
                     {Intl.DateTimeFormat('fr-FR', dateTimeFormattingOptions).format(
                       new Date(request.request_time)
                     )}
                   </Text>
                 </VStack>
                 <VStack>
-                  <HStack justifyContent="space-between">
-                    <VStack>
-                      <IconButton
-                        onPress={() => validateRequest(request)}
-                        colorScheme="green"
-                        borderRadius="full"
-                        icon={<CheckIcon />}
-                      />
-                    </VStack>
-                    <VStack>
-                      <IconButton
-                        onPress={() => refuseDemand(request.id)}
-                        colorScheme="red"
-                        borderRadius="full"
-                        icon={<CloseIcon />}
-                      />
-                    </VStack>
+                  <HStack justifyContent="space-between" flex={1}>
+                    <IconButton
+                      onPress={() => validateRequest(request)}
+                      colorScheme="green"
+                      borderRadius="full"
+                      icon={<CheckIcon />}
+                    />
+
+                    <IconButton
+                      onPress={() => refuseDemand(request.id)}
+                      colorScheme="red"
+                      borderRadius="full"
+                      icon={<CloseIcon />}
+                    />
                   </HStack>
                 </VStack>
               </HStack>
             </Box>
           ))}
         </VStack>
-      </Box>
-    </VStack>
+      </ScrollView>
+    </Box>
   );
 }

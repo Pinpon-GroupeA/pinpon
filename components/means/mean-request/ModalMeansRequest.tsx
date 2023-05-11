@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 import { useSearchParams } from 'expo-router';
-import { VStack, Button, FormControl, Text, Modal, useToast } from 'native-base';
+import { VStack, Button, Text, Modal, useToast } from 'native-base';
 import React, { useState } from 'react';
 
 import MeanRequestItem from './MeanRequestItem';
@@ -63,27 +63,25 @@ export default function ModalMeansRequest({ meansType, setShowModal }: ModalMean
           Demande de moyens
         </Text>
       </Modal.Header>
-      <Modal.Body backgroundColor="gray.100">
+      <Modal.Body backgroundColor="#F2F2F2">
         <VStack>
-          <FormControl>
-            {meansType.length === 0 ? (
-              <Text textAlign="center" fontStyle="italic">
-                Aucun type de moyen trouvé.
-              </Text>
-            ) : (
-              meansType.map((item, index) => {
-                return (
-                  <MeanRequestItem
-                    mean={item}
-                    values={values}
-                    setValues={setValues}
-                    index={index}
-                    key={index}
-                  />
-                );
-              })
-            )}
-          </FormControl>
+          {meansType.length === 0 ? (
+            <Text textAlign="center" fontStyle="italic">
+              Aucun type de moyen trouvé.
+            </Text>
+          ) : (
+            meansType.map((item, index) => {
+              return (
+                <MeanRequestItem
+                  mean={item}
+                  values={values}
+                  setValues={setValues}
+                  index={index}
+                  key={index}
+                />
+              );
+            })
+          )}
         </VStack>
       </Modal.Body>
       <Modal.Footer>
