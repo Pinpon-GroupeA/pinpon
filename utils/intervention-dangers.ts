@@ -1,4 +1,5 @@
 import { Tables, supabase } from './supabase';
+import { Coordinates } from '../types/global-types';
 import { OtherMean } from '../types/mean-types';
 
 export const fetchInterventionDangers = async (interventionId?: string | string[]) => {
@@ -28,6 +29,17 @@ export const createOtherMean = async (otherMean: OtherMean) => {
 
 export const deleteOtherMean = async (otherMeanId: number) => {
   const { error } = await supabase.from(Tables.otherMeans).delete().eq('id', otherMeanId);
+
+  if (error) {
+    throw error;
+  }
+};
+
+export const updateOtherMeanLocation = async (otherMeanId: number, location: Coordinates) => {
+  const { error } = await supabase
+    .from(Tables.otherMeans)
+    .update({ location })
+    .eq('id', otherMeanId);
 
   if (error) {
     throw error;

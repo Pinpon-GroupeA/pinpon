@@ -1,14 +1,16 @@
 import { useMutation } from '@tanstack/react-query';
 import { Button, HStack, Modal, Text, VStack } from 'native-base';
 
-import { MeanModalContent } from '../../../types/mean-types';
+import { Coordinates } from '../../../types/global-types';
+import { InterventionMeanStatus, MeanModalContent } from '../../../types/mean-types';
 import { getMilitaryTime } from '../../../utils/date';
 import {
   updateAvailableAtDate,
   updateCrmArrivalDate,
-  updateIsOnSite,
+  updateInterventionMeanStatus,
   updateSectorArrivalDate,
 } from '../../../utils/intervention-mean';
+import { updateMeanLocation } from '../../../utils/means';
 
 type ConfirmationModalProps = {
   content: MeanModalContent;
@@ -16,7 +18,7 @@ type ConfirmationModalProps = {
 };
 
 export default function ConfirmationModal({
-  content: { id, crmArrival, sectorArrival, availableAt },
+  content: { id, crmArrival, sectorArrival, availableAt, status, meanId },
   closeModal,
 }: ConfirmationModalProps) {
   const { mutateAsync: updateCrmDate } = useMutation({
@@ -31,8 +33,13 @@ export default function ConfirmationModal({
     mutationFn: () => updateAvailableAtDate(id),
   });
 
-  const { mutateAsync: setOnSite } = useMutation({
-    mutationFn: () => updateIsOnSite(id, true),
+  const { mutateAsync: updateStatus } = useMutation({
+    mutationFn: (status: InterventionMeanStatus) => updateInterventionMeanStatus(id, status),
+  });
+
+  const { mutateAsync: updateMeanLocationMutation } = useMutation({
+    mutationFn: (data: { meanId: number; location: Coordinates | null }) =>
+      updateMeanLocation(data.meanId, data.location),
   });
 
   return (
@@ -54,7 +61,10 @@ export default function ConfirmationModal({
                 flex={1}
                 bgColor="#19837C"
                 onPress={() => {
-                  updateCrmDate();
+                  if (status === 'arriving_crm') {
+                    updateCrmDate();
+                  }
+                  updateStatus('at_crm');
                   closeModal();
                 }}
               >
@@ -71,13 +81,18 @@ export default function ConfirmationModal({
             <Text fontSize="20px" flex={1} textAlign="left">
               Sur site à
             </Text>
-            {sectorArrival === null ? (
+            {sectorArrival === null || status === 'changing_position' ? (
               <Button
                 flex={1}
                 bgColor="#19837C"
                 onPress={() => {
-                  updateSectorDate();
-                  setOnSite();
+                  if (crmArrival === null) {
+                    updateCrmDate();
+                  }
+                  if (status === 'arriving_on_site') {
+                    updateSectorDate();
+                  }
+                  updateStatus('on_site');
                   closeModal();
                 }}
               >
@@ -100,6 +115,7 @@ export default function ConfirmationModal({
                 bgColor="#19837C"
                 onPress={() => {
                   updateAvailableDate();
+                  updateStatus('available');
                   closeModal();
                 }}
               >
@@ -111,6 +127,24 @@ export default function ConfirmationModal({
               </Text>
             )}
           </HStack>
+          {status !== ('at_crm' || 'arriving_crm' || 'returning_crm') && (
+            <HStack alignItems="center" justifyContent="space-around">
+              <Button
+                flex={1}
+                bgColor="#19837C"
+                onPress={() => {
+                  updateStatus('returning_crm');
+                  updateMeanLocationMutation({
+                    meanId,
+                    location: null,
+                  });
+                  closeModal();
+                }}
+              >
+                Renvoyer au CRM
+              </Button>
+            </HStack>
+          )}
         </VStack>
       </Modal.Body>
     </Modal.Content>

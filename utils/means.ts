@@ -16,7 +16,7 @@ export const fetchAvailableMeans = async (meanType: MeanTypeEnum) => {
   return data as { id: number }[];
 };
 
-export const updateMeanLocation = async (meanId: number, location: Coordinates) => {
+export const updateMeanLocation = async (meanId: number, location: Coordinates | null) => {
   const { error } = await supabase.from(Tables.means).update({ location }).eq('id', meanId);
 
   if (error) {

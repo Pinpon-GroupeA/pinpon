@@ -47,8 +47,7 @@ export default function RequestsOfInterventionManagement({
 
     if (availableMeans) {
       await createInterventionMeanMutation({
-        is_on_site: false,
-        using_crm: false,
+        status: 'arriving_crm',
         request_date: request.request_time,
         intervention_id: request.intervention_id,
         mean_id: availableMeans[0].id,

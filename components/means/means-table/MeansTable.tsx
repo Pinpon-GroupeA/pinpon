@@ -70,9 +70,11 @@ export default function MeansTable({ means, requests }: MeansTableProps) {
                     onPress={() =>
                       setModalContent({
                         id: mean.id,
+                        meanId: mean.mean_id,
                         crmArrival: mean.crm_arrival,
                         sectorArrival: mean.sector_arrival,
                         availableAt: mean.available_at,
+                        status: mean.status,
                       })
                     }
                   />,
