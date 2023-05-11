@@ -6,6 +6,7 @@ import { SizeType } from '../../../types/global-types';
 type CustomCircleProps = {
   color: string;
   strokeStyle?: boolean;
+  fill?: boolean;
   size?: SizeType;
 };
 
@@ -13,6 +14,7 @@ function CustomCircle({
   color,
   strokeStyle,
   size = { height: 100, width: 100 },
+  fill = true,
 }: CustomCircleProps) {
   return (
     <Svg height={size.height} width={size.width} fill="none">
@@ -21,7 +23,7 @@ function CustomCircle({
         cy="50%"
         r="25%"
         strokeWidth="5"
-        fill={color}
+        fill={fill ? color : 'none'}
         strokeDasharray={strokeStyle ? '8' : 'none'}
       />
     </Svg>

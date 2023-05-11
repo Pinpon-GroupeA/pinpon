@@ -7,12 +7,14 @@ type CustomRectangleProps = {
   color: string;
   strokeStyle?: boolean;
   size?: SizeType;
+  fill?: boolean;
 };
 
 function CustomRectangle({
   color,
   strokeStyle,
   size = { height: 20, width: 20 },
+  fill = true,
 }: CustomRectangleProps) {
   return (
     <Svg height={size.height} width={size.width} fill="none">
@@ -24,7 +26,7 @@ function CustomRectangle({
         strokeWidth="5"
         stroke={color}
         strokeDasharray={strokeStyle ? 5 : 'none'}
-        fill={color}
+        fill={fill ? color : 'none'}
       />
     </Svg>
   );

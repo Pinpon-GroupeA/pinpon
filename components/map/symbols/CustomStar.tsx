@@ -7,19 +7,21 @@ type CustomStarProps = {
   color?: string;
   dashed?: boolean;
   size?: SizeType;
+  fill?: boolean;
 };
 
 function CustomStar({
   color = 'black',
   dashed,
   size = { height: 30, width: 30 },
+  fill = true,
 }: CustomStarProps) {
   return (
     <Svg
       height={size.height}
       width={size.width}
       viewBox={`0 0 ${size.width + 3} ${size.height + 3}`}
-      fill="black"
+      fill="none"
     >
       <Polygon
         x={1.5}
@@ -32,7 +34,7 @@ function CustomStar({
           ${size.width / 5},${size.height}
          `}
         stroke={color}
-        fill={color}
+        fill={fill ? color : 'none'}
         strokeDasharray={dashed ? '5,5' : 'none'}
       />
     </Svg>

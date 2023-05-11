@@ -15,8 +15,6 @@ type AppStoreType = {
   setSelectedSymbol: (selectedSymbol?: SelectedSymbol) => void;
   drawingsColor: string;
   setDrawingsColor: (drawingsDangerCode: string) => void;
-  selectColor: boolean;
-  setSelectColor: () => void;
 };
 
 export const useAppStore = create<AppStoreType>((set) => ({
@@ -26,6 +24,4 @@ export const useAppStore = create<AppStoreType>((set) => ({
   setSelectedSymbol: (selectedSymbol) => set({ selectedSymbol }),
   drawingsColor: 'black',
   setDrawingsColor: (drawingsDangerCode) => set({ drawingsColor: drawingsDangerCode }),
-  selectColor: false,
-  setSelectColor: () => set((state) => ({ selectColor: !state.selectColor })),
 }));
