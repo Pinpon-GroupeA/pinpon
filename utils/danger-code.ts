@@ -14,6 +14,9 @@ export const getDangerCodeColor = (dangerCode: DangerCode) => {
 export const dangerCodeColors: { dangerCode: DangerCode; color: string }[] = [
   { dangerCode: 'INC', color: Colors.RED },
   { dangerCode: 'SAP', color: Colors.GREEN },
+  { dangerCode: 'EAU', color: Colors.BLUE },
+  { dangerCode: 'PART', color: Colors.ORANGE },
+  { dangerCode: 'COM', color: Colors.PURPLE },
   { dangerCode: 'OTHER', color: Colors.BLACK },
 ];
 
