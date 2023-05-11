@@ -2,13 +2,13 @@ import { useRouter } from 'expo-router';
 import { Badge, Box, HStack, Pressable, Text } from 'native-base';
 
 import { useAppStore } from '../../stores/store';
-import { Intervention as InterventionType } from '../../types/intervention-types';
+import { InterventionListData } from '../../types/intervention-types';
 import { getDangerCodeColor } from '../../utils/danger-code';
 import { dateTimeFormattingOptions } from '../../utils/date';
 import { getStatusMessage as getBadgeMessage, getStatusBadgeColor } from '../../utils/intervention';
 
 type InterventionProps = {
-  intervention: InterventionType;
+  intervention: InterventionListData;
 };
 
 export default function Intervention({ intervention }: InterventionProps) {
@@ -62,6 +62,13 @@ export default function Intervention({ intervention }: InterventionProps) {
             {intervention.danger_code}
           </Text>
           <Text>#{intervention.id}</Text>
+        </Box>
+        <Box alignItems="center" width={7}>
+          {intervention.pendingRequests > 0 && isCodis ? (
+            <Badge variant="solid" colorScheme="danger" rounded="full">
+              {intervention.pendingRequests}
+            </Badge>
+          ) : null}
         </Box>
       </HStack>
     </Pressable>
