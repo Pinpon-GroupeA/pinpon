@@ -1,3 +1,4 @@
+import Colors from '../constants/colors';
 import { DangerCode } from '../types/global-types';
 
 export const getDangerCodeColor = (dangerCode: DangerCode) => {
@@ -11,9 +12,9 @@ export const getDangerCodeColor = (dangerCode: DangerCode) => {
 };
 
 export const dangerCodeColors: { dangerCode: DangerCode; color: string }[] = [
-  { dangerCode: 'INC', color: '#FF0000' },
-  { dangerCode: 'SAP', color: '#00EB17' },
-  { dangerCode: 'OTHER', color: 'black' },
+  { dangerCode: 'INC', color: Colors.RED },
+  { dangerCode: 'SAP', color: Colors.GREEN },
+  { dangerCode: 'OTHER', color: Colors.BLACK },
 ];
 
 export const findDangerCodeFromColor = (color: string) => {
