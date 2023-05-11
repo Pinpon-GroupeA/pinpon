@@ -14,8 +14,33 @@ export const fetchRequestsOfIntervention = async (interventionId?: string | stri
   return data as Request[];
 };
 
+export const fetchNumberOfRequests = async () => {
+  const { count, error } = await supabase.from(Tables.requests).select('*', { count: 'exact' });
+
+  if (error) {
+    throw error;
+  }
+
+  return count as number;
+};
+
+export const fetchNumberOfRequestsOfIntervention = async (
+  interventionId: number
+): Promise<number> => {
+  const { count, error } = await supabase
+    .from(Tables.requests)
+    .select('*', { count: 'exact' })
+    .eq('intervention_id', interventionId);
+
+  if (error) {
+    throw error;
+  }
+
+  return count as number;
+};
+
 export const deleteRequest = async (requestId: number) => {
-  const { error } = await supabase.from('requests').delete().eq('id', requestId);
+  const { error } = await supabase.from(Tables.requests).delete().eq('id', requestId);
 
   if (error) {
     throw error;

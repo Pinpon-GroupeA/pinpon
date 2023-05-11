@@ -4,13 +4,13 @@ import { Box, Fab, FlatList, Heading, Icon, VStack } from 'native-base';
 
 import Intervention from './Intervention';
 import { useAppStore } from '../../stores/store';
-import { Intervention as InterventionType } from '../../types/intervention-types';
+import { InterventionListData } from '../../types/intervention-types';
 
 type InterventionListProps = {
-  interventions: InterventionType[];
+  interventions: InterventionListData[];
 };
 
-const renderIntervention = ({ item }: { item: InterventionType }) => (
+const renderIntervention = ({ item }: { item: InterventionListData }) => (
   <Intervention intervention={item} />
 );
 
@@ -18,10 +18,20 @@ export default function InterventionList({ interventions }: InterventionListProp
   const router = useRouter();
   const isCodis = useAppStore((state) => state.role) === 'CODIS';
 
+  const orderInterventions = (interventions: InterventionListData[]) => {
+    if (isCodis) {
+      return interventions.sort((a, b) => {
+        return b.pendingRequests - a.pendingRequests;
+      });
+    }
+
+    return interventions;
+  };
+
   return (
     <>
       <FlatList
-        data={interventions}
+        data={orderInterventions(interventions)}
         renderItem={renderIntervention}
         ItemSeparatorComponent={() => <Box style={{ height: 10 }} />}
         keyExtractor={(intervention) => String(intervention.id)}
