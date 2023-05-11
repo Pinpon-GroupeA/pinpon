@@ -18,10 +18,20 @@ export default function InterventionList({ interventions }: InterventionListProp
   const router = useRouter();
   const isCodis = useAppStore((state) => state.role) === 'CODIS';
 
+  const orderInterventions = (interventions: InterventionListData[]) => {
+    if (isCodis) {
+      return interventions.sort((a, b) => {
+        return b.pendingRequests - a.pendingRequests;
+      });
+    }
+
+    return interventions;
+  };
+
   return (
     <>
       <FlatList
-        data={interventions}
+        data={orderInterventions(interventions)}
         renderItem={renderIntervention}
         ItemSeparatorComponent={() => <Box style={{ height: 10 }} />}
         keyExtractor={(intervention) => String(intervention.id)}

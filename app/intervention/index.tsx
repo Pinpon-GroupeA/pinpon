@@ -1,12 +1,13 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Stack } from 'expo-router';
 import { Spinner } from 'native-base';
-import React, { useState } from 'react';
+import React from 'react';
 
 import InterventionList from '../../components/intervention/InterventionList';
 import useSubscription from '../../hooks/useSubscription';
 import { Intervention } from '../../types/intervention-types';
-import { fetchInterventions, fetchNbDemandsIntervention } from '../../utils/intervention';
+import { fetchInterventions } from '../../utils/intervention';
+import { fetchNumberOfRequests, fetchNumberOfRequestsOfIntervention } from '../../utils/request';
 
 export default function InterventionScreen() {
   const queryClient = useQueryClient();
@@ -15,26 +16,22 @@ export default function InterventionScreen() {
     queryFn: fetchInterventions,
   });
 
-  const nbDemandsList: number[] = [];
-  interventions?.forEach(function (intervention) {
-    const tmp = async () => {
-      nbDemandsList[intervention.id] = await fetchNbDemandsIntervention(intervention.id);
-    };
+  const { data: numberOfRequests } = useQuery<number>(['numberOfRequests'], {
+    queryFn: fetchNumberOfRequests,
   });
 
-
-  const onInsert = (intervention: Intervention) =>
+  const onInsertIntervention = (intervention: Intervention) =>
     queryClient.setQueryData(['interventions'], (old: Intervention[] | undefined) => [
       intervention,
       ...(old ?? []),
     ]);
 
-  const onUpdate = (intervention: Intervention) =>
+  const onUpdateIntervention = (intervention: Intervention) =>
     queryClient.setQueryData(['interventions'], (old: Intervention[] | undefined) =>
       old?.map((i) => (i.id === intervention.id ? intervention : i))
     );
 
-  const onDelete = (intervention: Intervention) =>
+  const onDeleteIntervention = (intervention: Intervention) =>
     queryClient.setQueryData(['interventions'], (old: Intervention[] | undefined) =>
       old?.filter((i) => i.id !== intervention.id)
     );
@@ -47,31 +44,55 @@ export default function InterventionScreen() {
     (payload) => {
       switch (payload.eventType) {
         case 'INSERT':
-          onInsert(payload.new as Intervention);
+          onInsertIntervention(payload.new as Intervention);
           break;
 
         case 'UPDATE':
-          onUpdate(payload.new as Intervention);
+          onUpdateIntervention(payload.new as Intervention);
           break;
 
         case 'DELETE':
-          onDelete(payload.old as Intervention);
+          onDeleteIntervention(payload.old as Intervention);
           break;
       }
     }
   );
-  /*
-    const interventionsWithPendingRequests = interventions?.map(async (intervention) => {
-      const pendingRequests = useQuery("nbDemands",fetchNbDemandsIntervention(intervention.id));
-      return { ...intervention, pendingRequests };
-    });
-  */
+
+  const onInsertRequest = () => {
+    const newNumberOfRequests = numberOfRequests ? numberOfRequests + 1 : 1;
+
+    queryClient.setQueryData(['numberOfRequests'], newNumberOfRequests);
+  };
+
+  const onDeleteRequest = () => {
+    const newNumberOfRequests = numberOfRequests ? numberOfRequests - 1 : 0;
+
+    queryClient.setQueryData(['numberOfRequests'], newNumberOfRequests);
+  };
+
+  useSubscription(
+    {
+      channel: 'numberOfRequests',
+      table: 'requests',
+    },
+    (payload) => {
+      switch (payload.eventType) {
+        case 'INSERT':
+          onInsertRequest();
+          break;
+        case 'DELETE':
+          onDeleteRequest();
+          break;
+      }
+    }
+  );
+
   const { data: interventionsWithPendingRequests, isLoading } = useQuery({
-    queryKey: ['interventionsWithPendingRequests', interventions],
+    queryKey: ['interventionsWithPendingRequests', interventions, numberOfRequests],
     queryFn: () =>
       Promise.all(
         interventions?.map(async (intervention) => {
-          const pendingRequests = await fetchNbDemandsIntervention(intervention.id);
+          const pendingRequests = await fetchNumberOfRequestsOfIntervention(intervention.id);
 
           return {
             ...intervention,

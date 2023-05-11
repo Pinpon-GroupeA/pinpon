@@ -73,7 +73,7 @@ export default function Intervention({ intervention }: InterventionProps) {
           <Text>#{intervention.id}</Text>
         </Box>
         <Box alignItems="center" width={7}>
-          {intervention.pendingRequests > 0 ? (
+          {intervention.pendingRequests > 0 && isCodis ? (
             <Badge variant="solid" colorScheme="danger" rounded="full">
               {intervention.pendingRequests}
             </Badge>

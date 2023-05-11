@@ -7,4 +7,9 @@ export type Request = {
   mean_type: MeanTypeEnum;
 };
 
+export type NumberOfRequests = {
+  intervention_id: number;
+  number_of_requests: number;
+};
+
 export type RequestStatus = 'ACCEPTEE' | 'EN_ATTENTE' | 'REFUSEE';

@@ -26,18 +26,6 @@ export const fetchInterventions = async (): Promise<Intervention[]> => {
   return data as Intervention[];
 };
 
-export const fetchNbDemandsIntervention = async (id: number): Promise<number> => {
-  const { count, error } = await supabase
-    .from('requests')
-    .select('*', { count: 'exact' })
-    .eq('intervention_id', id);
-  if (error) {
-    throw error;
-  }
-
-  return count as number[];
-};
-
 export const fetchInterventionLocation = async (interventionId?: string | string[]) => {
   const { data, error } = await supabase
     .from('interventions')
