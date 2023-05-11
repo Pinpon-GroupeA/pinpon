@@ -12,7 +12,7 @@ type FireFighterSymbolListProps = {
 const FireFighterSymbolList = ({ fireFighterMeans }: FireFighterSymbolListProps) => {
   const { selectedSymbol, setSelectedSymbol, drawingsColor } = useAppStore();
 
-  const handleSymbolPress = (id: number) => {
+  const handleSymbolIdPress = (id: number) => {
     if (selectedSymbol && selectedSymbol.id === id) {
       setSelectedSymbol(undefined);
     } else {
@@ -22,13 +22,13 @@ const FireFighterSymbolList = ({ fireFighterMeans }: FireFighterSymbolListProps)
 
   return (
     <Box alignItems="center">
-      <Text>Moyens pompiers disponibles</Text>
+      <Text>Moyens :</Text>
       <ScrollView flexDir="column" width="100%">
         {fireFighterMeans.map((mean) => (
           <PressableSymbol
             key={mean.id}
             type="FireFighterVehicle"
-            onPress={() => handleSymbolPress(mean.mean_id)}
+            onPress={() => handleSymbolIdPress(mean.mean_id)}
             darkBackground={selectedSymbol?.id === mean.mean_id}
           >
             <FireFighterVehicle color={drawingsColor} dashed name={mean.means.label} />

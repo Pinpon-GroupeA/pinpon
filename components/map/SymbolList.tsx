@@ -1,4 +1,4 @@
-import { Box, ScrollView, Text } from 'native-base';
+import { ScrollView, Text } from 'native-base';
 import React from 'react';
 
 import PressableSymbol from './PressableSymbol';
@@ -19,32 +19,32 @@ function SymbolList() {
   };
 
   return (
-    <Box>
-      <Text alignSelf="center">Autres moyens</Text>
-      <ScrollView flexDirection="column">
-        <PressableSymbol
-          type="InvertedTriangle"
-          onPress={() => handleSymbolPress('InvertedTriangle')}
-          darkBackground={selectedSymbol?.symboleType === 'InvertedTriangle'}
-        >
-          <CustomInvertedTriangle color={drawingsColor} size={{ height: 30, width: 30 }} />
-        </PressableSymbol>
-        <PressableSymbol
-          type="Triangle"
-          onPress={() => handleSymbolPress('Triangle')}
-          darkBackground={selectedSymbol?.symboleType === 'Triangle'}
-        >
-          <CustomTriangle color={drawingsColor} size={{ height: 30, width: 30 }} />
-        </PressableSymbol>
-        <PressableSymbol
-          type="Star"
-          onPress={() => handleSymbolPress('Star')}
-          darkBackground={selectedSymbol?.symboleType === 'Star'}
-        >
-          <CustomStar color={drawingsColor} size={{ height: 30, width: 30 }} />
-        </PressableSymbol>
-      </ScrollView>
-    </Box>
+    <ScrollView>
+      <Text alignSelf="center">Zones d'action :</Text>
+
+      <PressableSymbol
+        type="Star"
+        onPress={() => handleSymbolPress('Star')}
+        darkBackground={selectedSymbol?.symboleType === 'Star'}
+      >
+        <CustomStar color={drawingsColor} size={{ height: 30, width: 30 }} />
+      </PressableSymbol>
+      <Text alignSelf="center">Cible/Source :</Text>
+      <PressableSymbol
+        type="InvertedTriangle"
+        onPress={() => handleSymbolPress('InvertedTriangle')}
+        darkBackground={selectedSymbol?.symboleType === 'InvertedTriangle'}
+      >
+        <CustomInvertedTriangle color={drawingsColor} size={{ height: 30, width: 30 }} />
+      </PressableSymbol>
+      <PressableSymbol
+        type="Triangle"
+        onPress={() => handleSymbolPress('Triangle')}
+        darkBackground={selectedSymbol?.symboleType === 'Triangle'}
+      >
+        <CustomTriangle color={drawingsColor} size={{ height: 30, width: 30 }} />
+      </PressableSymbol>
+    </ScrollView>
   );
 }
 

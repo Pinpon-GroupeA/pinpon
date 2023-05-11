@@ -13,8 +13,8 @@ type CustomCircleProps = {
 function CustomCircle({
   color,
   strokeStyle,
-  fill,
   size = { height: 100, width: 100 },
+  fill = true,
 }: CustomCircleProps) {
   return (
     <Svg height={size.height} width={size.width} fill="none">
