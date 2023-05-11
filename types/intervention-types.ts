@@ -12,3 +12,7 @@ export type Intervention = {
 };
 
 export type InterventionStatus = 'PENDING' | 'ONGOING' | 'OVER';
+
+export type InterventionListData = Intervention & {
+  pendingRequests: number;
+};

@@ -4,13 +4,13 @@ import { Box, Fab, FlatList, Heading, Icon, VStack } from 'native-base';
 
 import Intervention from './Intervention';
 import { useAppStore } from '../../stores/store';
-import { Intervention as InterventionType } from '../../types/intervention-types';
+import { InterventionListData } from '../../types/intervention-types';
 
 type InterventionListProps = {
-  interventions: InterventionType[];
+  interventions: InterventionListData[];
 };
 
-const renderIntervention = ({ item }: { item: InterventionType }) => (
+const renderIntervention = ({ item }: { item: InterventionListData }) => (
   <Intervention intervention={item} />
 );
 
