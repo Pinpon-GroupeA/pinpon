@@ -1,6 +1,6 @@
 import { AntDesign } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-import { Box, Fab, FlatList, Heading, Icon, VStack } from 'native-base';
+import { Box, Fab, FlatList, Heading, Icon, VStack, HStack } from 'native-base';
 
 import Intervention from './Intervention';
 import { useAppStore } from '../../stores/store';
@@ -19,7 +19,20 @@ export default function InterventionList({ interventions }: InterventionListProp
   const isCodis = useAppStore((state) => state.role) === 'CODIS';
 
   return (
-    <>
+    <Box mx={3}>
+      <HStack m={3} justifyContent={isCodis ? 'space-evenly' : 'flex-start'} alignItems="center">
+        <Heading fontSize="4xl" color="#19837C">
+          Interventions
+        </Heading>
+        {isCodis && <Icon as={AntDesign} name="caretright" color="dark.600" size={6} />}
+
+        {isCodis && (
+          <Heading fontSize="3xl" fontWeight="normal" onPress={() => router.push('/requests')}>
+            Moyens Demandés
+          </Heading>
+        )}
+      </HStack>
+
       <FlatList
         data={interventions}
         renderItem={renderIntervention}
@@ -40,6 +53,6 @@ export default function InterventionList({ interventions }: InterventionListProp
           renderInPortal={false}
         />
       )}
-    </>
+    </Box>
   );
 }

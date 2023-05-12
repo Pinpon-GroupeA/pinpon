@@ -1,25 +1,22 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { useSearchParams } from 'expo-router';
 
-import RequestManagement from '../../../../components/request-management/RequestManagement';
-import useSubscription from '../../../../hooks/useSubscription';
-import { Request } from '../../../../types/request-types';
-import { fetchInterventionAddressDangerCodeAndDate } from '../../../../utils/intervention';
-import { fetchRequestsOfIntervention } from '../../../../utils/request';
+import RequestsManagement from '../../components/request-management/RequestsManagement';
+import useSubscription from '../../hooks/useSubscription';
+import { Request } from '../../types/request-types';
+import { fetchInterventionsIdAddressAndDate } from '../../utils/intervention';
+import { fetchRequests } from '../../utils/requests';
 
 export default function App() {
-  const { id: interventionId } = useSearchParams();
-
   const queryClient = useQueryClient();
 
   const { data: requests } = useQuery({
     queryKey: ['requestList'],
-    queryFn: () => fetchRequestsOfIntervention(interventionId),
+    queryFn: () => fetchRequests(),
   });
 
-  const { data: intervention } = useQuery({
-    queryKey: ['intervention'],
-    queryFn: () => fetchInterventionAddressDangerCodeAndDate(interventionId),
+  const { data: interventions } = useQuery({
+    queryKey: ['interventionList'],
+    queryFn: () => fetchInterventionsIdAddressAndDate(),
   });
 
   const onInsert = (request: Request) =>
@@ -60,12 +57,5 @@ export default function App() {
     }
   );
 
-  return (
-    <RequestManagement
-      address={intervention?.address}
-      danger_code={intervention?.danger_code}
-      date={intervention?.created_at}
-      requests={requests ?? []}
-    />
-  );
+  return <RequestsManagement interventions={interventions ?? []} requests={requests ?? []} />;
 }

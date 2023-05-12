@@ -15,7 +15,7 @@ export const fetchRequestsOfIntervention = async (interventionId?: string | stri
 };
 
 export const deleteRequest = async (requestId: number) => {
-  const { error } = await supabase.from('requests').delete().eq('id', requestId);
+  const { error } = await supabase.from(Tables.requests).delete().eq('id', requestId);
 
   if (error) {
     throw error;
