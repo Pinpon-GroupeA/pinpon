@@ -69,7 +69,7 @@ export default function InterventionCreationForm() {
     setInterventionCreationData({
       danger_code: dangerType,
       address: `${street} ${postalCode} ${city}`,
-      status_intervention: 'PENDING',
+      status_intervention: 'ONGOING',
       location: {
         longitude,
         latitude,
