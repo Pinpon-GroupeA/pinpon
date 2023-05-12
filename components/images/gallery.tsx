@@ -1,5 +1,5 @@
 import { useSearchParams } from 'expo-router';
-import { Image, ScrollView, Text, VStack } from 'native-base';
+import { Heading, Image, ScrollView, Text, VStack } from 'native-base';
 import { useState } from 'react';
 
 import { useQuery } from '@tanstack/react-query';
@@ -56,8 +56,12 @@ export default function Gallery({ longitude, latitude }: GalleryProps) {
 
   const { data: Images } = useQuery({
     queryKey: ['images'],
-    queryFn: () => fetchAllImages(),
+    queryFn: fetchAllImages,
   });
+
+  if (!images.length) {
+    return <Heading>Pas d'images disponibles</Heading>
+  }
 
   return (
     <ScrollView>
