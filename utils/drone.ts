@@ -1,43 +1,17 @@
 import { DroneColumns, Tables, supabase } from './supabase';
-import { TrajectType, DroneCoordinates, PositionFormat, TrajectFormat } from '../types/drone-types';
+import { TrajectType, DroneCoordinates, DroneData } from '../types/drone-types';
 
-export const fetchDronePosition = async (interventionId?: string | string[]) => {
+export const fetchDroneData = async (interventionId?: string | string[]) => {
   const { data, error } = await supabase
     .from(Tables.droneData)
-    .select('id, position')
+    .select('id, position, traject')
     .eq(DroneColumns.interventionId, interventionId);
 
   if (error) {
     throw error;
   }
 
-  return data[0] as PositionFormat;
-};
-
-export const fetchDroneTraject = async (interventionId?: string | string[]) => {
-  const { data, error } = await supabase
-    .from(Tables.droneData)
-    .select('id, traject')
-    .eq(DroneColumns.interventionId, interventionId);
-
-  if (error) {
-    throw error;
-  }
-
-  return data[0] as TrajectFormat;
-};
-
-export const fetchDrone = async (interventionId?: string | string[]) => {
-  const { data, error } = await supabase
-    .from(Tables.droneData)
-    .select('traject')
-    .eq(DroneColumns.interventionId, interventionId);
-
-  if (error) {
-    throw error;
-  }
-
-  return data[0]?.traject as DroneCoordinates;
+  return data[0] as DroneData;
 };
 
 export const updateDroneTraject = async (

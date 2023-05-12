@@ -18,7 +18,7 @@ export type DroneCoordinates = {
   altitude: number;
 };
 
-export type droneData = {
+export type DroneData = {
   id: number;
   traject: DroneCoordinates[];
   position: LatLng;
