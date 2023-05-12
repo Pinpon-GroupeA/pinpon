@@ -24,3 +24,8 @@ export type DroneData = {
   position: LatLng;
   is_stopped: boolean;
 };
+
+export type ImageData = {
+  file: string,
+  name: string
+};

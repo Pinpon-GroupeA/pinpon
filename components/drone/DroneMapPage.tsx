@@ -1,5 +1,6 @@
 import { MaterialCommunityIcons, FontAwesome5 } from '@expo/vector-icons';
 import { useMutation } from '@tanstack/react-query';
+import { useRouter } from 'expo-router';
 import { Box, Fab, Icon } from 'native-base';
 import { useEffect, useState } from 'react';
 import { LatLng, MapPressEvent, Marker, Polyline } from 'react-native-maps';
@@ -43,6 +44,7 @@ function DroneMapPage({
   const [markers, setMarkers] = useState<DroneCoordinates[]>(traject);
   const [draw, setDraw] = useState(false);
   const [trajectType, setTrajectType] = useState<TrajectType>('OPENED_CIRCUIT');
+  const router = useRouter();
 
   useEffect(() => {
     setMarkers(traject);
@@ -129,7 +131,15 @@ function DroneMapPage({
       />
       <MapBackground handlePress={handlePress} initialRegion={interventionLocation}>
         {markers.map((marker, i) => (
-          <Marker coordinate={marker} key={i} />
+          <Marker
+            onPress={() =>
+              router.push(
+                `/intervention/${interventionId}/drone/images?lon=${marker.longitude}&lat=${marker.latitude}`
+              )
+            }
+            coordinate={marker}
+            key={i}
+          />
         ))}
         <Polyline
           coordinates={
