@@ -1,10 +1,11 @@
 import { useSearchParams } from 'expo-router';
-import { Image, ScrollView, VStack, Text } from 'native-base';
-import { useEffect, useState } from 'react';
+import { Image, ScrollView, Text, VStack } from 'native-base';
+import { useState } from 'react';
 
+import { useQuery } from '@tanstack/react-query';
+import { ImageData } from '../../types/drone-types';
 import { Coordinates } from '../../types/global-types';
 import { supabase } from '../../utils/supabase';
-import { useQuery } from '@tanstack/react-query';
 
 type GalleryProps = {
   latitude: Coordinates['latitude'];
@@ -12,37 +13,45 @@ type GalleryProps = {
 };
 
 export default function Gallery({ longitude, latitude }: GalleryProps) {
-  const [images, setImages] = useState<any>([]);
+  const [images, setImages] = useState<ImageData[]>([]);
   const { id: interventionId } = useSearchParams();
+
+
+  const bucketName = 'poc';
 
   const fetchAllImages = async () => {
     setImages([]);
-    console.log(interventionId);
-    await supabase.storage
-      .from('poc')
+    const { data: files, error } = await supabase.storage
+      .from(bucketName)
       .list(`Intervention_${interventionId}/${latitude} ${longitude}`, {
         limit: 100,
         offset: 0,
         sortBy: { column: 'name', order: 'asc' },
-      })
-      .then(({ data }) => {
-        data?.map(async (file) => {
-          await supabase.storage
-            .from('poc')
-            .download(`Intervention_${interventionId}/${latitude} ${longitude}/${file.name}`)
-            .then(({ data }) => {
-              if (data) {
-                const reader = new FileReader();
-                reader.readAsDataURL(data);
-                reader.onloadend = () => {
-                  const base64data = reader.result;
-                  const filename = file.name.slice(0, -4);
-                  setImages((images: any) => [...images, { file: base64data, name: filename }]);
-                };
-              }
-            });
-        });
       });
+
+      if (error) {
+        throw new Error(error.message);
+      }
+
+      const newImages: ImageData[] = [];
+      
+      files.forEach(async (file) => {
+        const { data: downloadedFile, error } = await supabase.storage.from(bucketName).download(`Intervention_${interventionId}/${latitude} ${longitude}/${file.name}`);
+
+        if (error) {
+          throw new Error(error.message);
+        }
+
+        const reader = new FileReader();
+        reader.readAsDataURL(downloadedFile);
+        reader.onloadend = () => {
+          const fileAsBase64 = reader.result;
+          const name = file.name.slice(0, -4);
+          newImages.push({ file: fileAsBase64?.toString() ?? '', name })
+        }
+      });
+
+      setImages((images) => [...images, ...newImages]);
   };
 
   const { data: Images } = useQuery({

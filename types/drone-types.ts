@@ -23,3 +23,8 @@ export type droneData = {
   traject: DroneCoordinates[];
   position: LatLng;
 };
+
+export type ImageData = {
+  file: string,
+  name: string
+};
