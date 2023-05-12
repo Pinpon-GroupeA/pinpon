@@ -51,7 +51,7 @@ export default function Intervention({ intervention }: InterventionProps) {
         </Text>
       </Box>
       <HStack space="6" alignItems="center">
-        {intervention.pendingRequests > -1 && isCodis ? (
+        {intervention.pendingRequests > 0 && isCodis ? (
           <Badge variant="solid" colorScheme="danger" rounded="full">
             {intervention.pendingRequests}
           </Badge>
