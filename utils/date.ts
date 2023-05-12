@@ -1,9 +1,3 @@
-export const addMinutes = (date: string, minutes: number) => {
-  const newDate = new Date(date);
-  newDate.setMinutes(newDate.getMinutes() + minutes);
-  return getMilitaryTime(newDate);
-};
-
 export const getMilitaryTime = (date?: Date) => {
   if (!date) {
     return '';

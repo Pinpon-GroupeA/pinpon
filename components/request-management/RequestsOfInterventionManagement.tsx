@@ -9,6 +9,7 @@ import {
   ScrollView,
   VStack,
   Text,
+  useToast,
 } from 'native-base';
 
 import { Request } from '../../types/request-types';
@@ -16,6 +17,7 @@ import { dateTimeFormattingOptions } from '../../utils/date';
 import { InterventionMeanCreateType, createInterventionMean } from '../../utils/intervention-mean';
 import { fetchAvailableMeans, updateMeanStatus } from '../../utils/means';
 import { deleteRequest } from '../../utils/requests-of-intervention';
+import Alert from '../Alert';
 
 type RequestsOfInterventionManagementProps = {
   address?: string;
@@ -29,6 +31,8 @@ export default function RequestsOfInterventionManagement({
   date,
   requests,
 }: RequestsOfInterventionManagementProps) {
+  const toast = useToast();
+
   const { mutateAsync: createInterventionMeanMutation } = useMutation({
     mutationFn: (data: InterventionMeanCreateType) => createInterventionMean(data),
   });
@@ -45,20 +49,38 @@ export default function RequestsOfInterventionManagement({
   const validateRequest = async (request: Request) => {
     const availableMeans = await fetchAvailableMeans(request.mean_type);
 
-    if (availableMeans) {
-      await createInterventionMeanMutation({
-        status: 'arriving_crm',
-        request_date: request.request_time,
-        intervention_id: request.intervention_id,
-        mean_id: availableMeans[0].id,
-      });
+    const isEnoughMeansAvailable = availableMeans.length > 0;
 
-      await updateMeanStatusMutation({ meanId: availableMeans[0].id, is_available: false });
-      await deleteRequestMutation(request.id);
+    if (!isEnoughMeansAvailable) {
+      // TODO: Improve this toast: it is quickly dimissed after the navigation
+      toast.show({
+        render: () => (
+          <Alert
+            variant="subtle"
+            status="warning"
+            textContent={`Pas de ${request.mean_type} disponibles.`}
+          />
+        ),
+      });
+      return;
     }
+
+    const scheduledArrival = new Date();
+    scheduledArrival.setMinutes(scheduledArrival.getMinutes() + 20);
+
+    await createInterventionMeanMutation({
+      scheduled_arrival: scheduledArrival.toISOString(),
+      status: 'arriving_crm',
+      request_date: request.request_time,
+      intervention_id: request.intervention_id,
+      mean_id: availableMeans[0].id,
+    });
+
+    await updateMeanStatusMutation({ meanId: availableMeans[0].id, is_available: false });
+    await deleteRequestMutation(request.id);
   };
 
-  const refuseDemand = async (id: number) => {
+  const refuseRequest = async (id: number) => {
     await deleteRequestMutation(id);
   };
 
@@ -108,7 +130,7 @@ export default function RequestsOfInterventionManagement({
                     />
 
                     <IconButton
-                      onPress={() => refuseDemand(request.id)}
+                      onPress={() => refuseRequest(request.id)}
                       colorScheme="red"
                       borderRadius="full"
                       icon={<CloseIcon />}

@@ -10,7 +10,7 @@ import {
   updateInterventionMeanStatus,
   updateSectorArrivalDate,
 } from '../../../utils/intervention-mean';
-import { updateMeanLocation } from '../../../utils/means';
+import { updateMeanLocation, updateMeanStatus } from '../../../utils/means';
 
 type ConfirmationModalProps = {
   content: MeanModalContent;
@@ -35,6 +35,10 @@ export default function ConfirmationModal({
 
   const { mutateAsync: updateStatus } = useMutation({
     mutationFn: (status: InterventionMeanStatus) => updateInterventionMeanStatus(id, status),
+  });
+
+  const { mutateAsync: setMeanAvailable } = useMutation({
+    mutationFn: () => updateMeanStatus(meanId, true),
   });
 
   const { mutateAsync: updateMeanLocationMutation } = useMutation({
@@ -116,6 +120,7 @@ export default function ConfirmationModal({
                 onPress={() => {
                   updateAvailableDate();
                   updateStatus('available');
+                  setMeanAvailable();
                   closeModal();
                 }}
               >
@@ -127,7 +132,7 @@ export default function ConfirmationModal({
               </Text>
             )}
           </HStack>
-          {status !== ('at_crm' || 'arriving_crm' || 'returning_crm') && (
+          {status !== 'returning_crm' && status !== 'at_crm' && status !== 'arriving_crm' && (
             <HStack alignItems="center" justifyContent="space-around">
               <Button
                 flex={1}

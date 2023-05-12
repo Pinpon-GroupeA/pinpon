@@ -4,13 +4,7 @@ import { InterventionMean, InterventionMeanStatus, Mean } from '../types/mean-ty
 
 export type InterventionMeanCreateType = Omit<
   InterventionMean,
-  | 'id'
-  | 'means'
-  | 'scheduled_arrival'
-  | 'crm_arrival'
-  | 'sector_arrival'
-  | 'available_at'
-  | 'danger_code'
+  'id' | 'means' | 'crm_arrival' | 'sector_arrival' | 'available_at' | 'danger_code'
 >;
 
 export const fecthInterventionMeans = async (interventionId?: string | string[]) => {
@@ -39,6 +33,7 @@ export const createInterventionMean = async (mean: InterventionMeanCreateType) =
 };
 
 export const createMultipleInterventionMeans = async (means: InterventionMeanCreateType[]) => {
+  console.log(means);
   const { error } = await supabase.from(Tables.interventionMeansLink).insert(means);
 
   if (error) {
@@ -58,7 +53,9 @@ export const updateInterventionMeanDangerCode = async (meanId: number, dangerCod
 };
 
 export const getFireFighterMeansNotPlaced = (interventionMeans: InterventionMean[]) => {
-  return interventionMeans.filter((interventionMean) => !interventionMean.means.location);
+  return interventionMeans
+    .filter((interventionMean) => !interventionMean.means.location)
+    .filter((interventionMean) => interventionMean.status !== 'available');
 };
 
 export const getFireFightersMeansPlaced = (interventionMeans: InterventionMean[]) => {

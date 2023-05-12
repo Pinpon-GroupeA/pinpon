@@ -6,7 +6,10 @@ import { useAppStore } from '../../stores/store';
 import { Intervention } from '../../types/intervention-types';
 import { MeanType, MeanTypeToRequest } from '../../types/mean-types';
 import { createIntervention } from '../../utils/intervention';
-import { createMultipleInterventionMeans } from '../../utils/intervention-mean';
+import {
+  InterventionMeanCreateType,
+  createMultipleInterventionMeans,
+} from '../../utils/intervention-mean';
 import { fetchAvailableMeans } from '../../utils/means';
 import Alert from '../Alert';
 import ErrorModal from '../ErrorModal';
@@ -90,15 +93,16 @@ export default function InitialMeansRequest({ meanTypes }: InitialMeansRequestPr
       const scheduledArrival = new Date();
       scheduledArrival.setMinutes(scheduledArrival.getMinutes() + 20);
 
-      const interventionMeansRequests = Array.from({ length: numberOfMeansToRequest }, (_, i) => ({
-        is_on_site: false,
-        using_crm: false,
-        scheduled_arrival: scheduledArrival,
-        request_date: new Date().toISOString(),
-        danger_code: intervention.danger_code,
-        intervention_id: intervention.id,
-        mean_id: availableMeans[i].id,
-      }));
+      const interventionMeansRequests: InterventionMeanCreateType[] = Array.from(
+        { length: numberOfMeansToRequest },
+        (_, i) => ({
+          scheduled_arrival: scheduledArrival.toISOString(),
+          request_date: new Date().toISOString(),
+          intervention_id: intervention.id,
+          mean_id: availableMeans[i].id,
+          status: 'arriving_crm',
+        })
+      );
 
       try {
         await createMultipleInterventionMeans(interventionMeansRequests);

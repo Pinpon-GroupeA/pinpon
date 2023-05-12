@@ -237,7 +237,7 @@ function InterventionMap({
             <FireFighterVehicle
               color={getDangerCodeColor(mean.danger_code)}
               name={mean.means.label}
-              dashed={!(mean.status === 'on_site')}
+              dashed={mean.status !== 'on_site'}
             />
           </Marker>
         ))}
