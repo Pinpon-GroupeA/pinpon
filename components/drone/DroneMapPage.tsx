@@ -1,5 +1,5 @@
-import { useSearchParams } from 'expo-router';
-import { Box, Button, Container, Fab, Text } from 'native-base';
+import { useRouter, useSearchParams } from 'expo-router';
+import { Box, Fab } from 'native-base';
 import { useState } from 'react';
 import { LatLng, MapPressEvent, Marker, Polyline } from 'react-native-maps';
 
@@ -21,6 +21,7 @@ function DroneMapPage({ dronePosition, interventionLocation }: MapBackgroundProp
   const [markers, setMarkers] = useState<DroneCoordinates[]>([]);
   const [draw, setDraw] = useState(false);
   const [trajectType, setTrajectType] = useState<TrajectType>('OPENED_CIRCUIT');
+  const router = useRouter();
 
   const { id: interventionId } = useSearchParams();
 
@@ -83,7 +84,15 @@ function DroneMapPage({ dronePosition, interventionLocation }: MapBackgroundProp
       />
       <MapBackground handlePress={handlePress} initialRegion={interventionLocation}>
         {markers.map((marker, i) => (
-          <Marker coordinate={marker} key={i} />
+          <Marker
+            onPress={() =>
+              router.push(
+                `/intervention/${interventionId}/drone/images?lon=${marker.longitude}&lat=${marker.latitude}`
+              )
+            }
+            coordinate={marker}
+            key={i}
+          />
         ))}
         <Polyline
           coordinates={

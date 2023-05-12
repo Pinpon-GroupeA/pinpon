@@ -1,19 +1,26 @@
 import { useSearchParams } from 'expo-router';
-import { Button, Image, ScrollView, VStack, Text } from 'native-base';
-import { useState } from 'react';
+import { Image, ScrollView, VStack, Text } from 'native-base';
+import { useEffect, useState } from 'react';
 
+import { Coordinates } from '../../types/global-types';
 import { supabase } from '../../utils/supabase';
+import { useQuery } from '@tanstack/react-query';
 
-export default function Drone() {
+type GalleryProps = {
+  latitude: Coordinates['latitude'];
+  longitude: Coordinates['longitude'];
+};
+
+export default function Gallery({ longitude, latitude }: GalleryProps) {
   const [images, setImages] = useState<any>([]);
   const { id: interventionId } = useSearchParams();
 
-  const onPressDrone = async () => {
+  const fetchAllImages = async () => {
     setImages([]);
     console.log(interventionId);
     await supabase.storage
       .from('poc')
-      .list('Intervention_' + interventionId + '/666 999', {
+      .list(`Intervention_${interventionId}/${latitude} ${longitude}`, {
         limit: 100,
         offset: 0,
         sortBy: { column: 'name', order: 'asc' },
@@ -22,7 +29,7 @@ export default function Drone() {
         data?.map(async (file) => {
           await supabase.storage
             .from('poc')
-            .download('Intervention_' + interventionId + '/666 999/' + file.name)
+            .download(`Intervention_${interventionId}/${latitude} ${longitude}/${file.name}`)
             .then(({ data }) => {
               if (data) {
                 const reader = new FileReader();
@@ -38,9 +45,13 @@ export default function Drone() {
       });
   };
 
+  const { data: Images } = useQuery({
+    queryKey: ['images'],
+    queryFn: () => fetchAllImages(),
+  });
+
   return (
     <ScrollView>
-      <Button onPress={onPressDrone}>Demande de données au back du drone</Button>
       {images?.map((image: { file: string; name: string }, i: number) => (
         <VStack key={i.toString()} alignItems="center" mb="5">
           <Image source={{ uri: image.file }} alt={i.toString()} w="650" h="300" mb="3" />
