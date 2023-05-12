@@ -30,7 +30,7 @@ export default function Intervention({ intervention }: InterventionProps) {
 
   const handleInterventionPress = () => {
     if (isCodis) {
-      router.push(`/intervention/${intervention.id}/requests`);
+      router.push(`/intervention/${intervention.id}/requests-of-intervention`);
     } else {
       router.push(`/intervention/${intervention.id}/map`);
     }

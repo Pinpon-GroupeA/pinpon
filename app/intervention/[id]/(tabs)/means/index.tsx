@@ -9,7 +9,7 @@ import {
   fecthInterventionMeans,
   getMeansOfInterventionMean,
 } from '../../../../../utils/intervention-mean';
-import { fetchRequestsOfIntervention } from '../../../../../utils/request';
+import { fetchRequestsOfIntervention } from '../../../../../utils/requests-of-intervention';
 import { Tables } from '../../../../../utils/supabase';
 
 export default function Means() {
