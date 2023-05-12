@@ -1,4 +1,4 @@
-import { supabase } from './supabase';
+import { Tables, supabase } from './supabase';
 import { Coordinates } from '../types/global-types';
 import { Intervention, InterventionStatus } from '../types/intervention-types';
 
@@ -43,7 +43,7 @@ export const fetchInterventionAddressDangerCodeAndDate = async (
   interventionId?: string | string[]
 ) => {
   const { data, error } = await supabase
-    .from('interventions')
+    .from(Tables.interventions)
     .select('address, danger_code, created_at')
     .eq('id', interventionId);
 
@@ -52,6 +52,18 @@ export const fetchInterventionAddressDangerCodeAndDate = async (
   }
 
   return data[0] as { address: string; danger_code: string; created_at: string };
+};
+
+export const fetchInterventionsIdAddressAndDate = async () => {
+  const { data, error } = await supabase
+    .from(Tables.interventions)
+    .select('id,address, created_at');
+
+  if (error) {
+    throw error;
+  }
+
+  return data as { id: number; address: string; created_at: string }[];
 };
 
 export const getStatusMessage = (status: InterventionStatus) => {

@@ -4,7 +4,6 @@ import {
   Heading,
   Text,
   VStack,
-  Divider,
   IconButton,
   HStack,
   CheckIcon,
@@ -16,16 +15,20 @@ import { Request } from '../../types/request-types';
 import { dateTimeFormattingOptions } from '../../utils/date';
 import { InterventionMeanCreateType, createInterventionMean } from '../../utils/intervention-mean';
 import { fetchAvailableMeans, updateMeanStatus } from '../../utils/means';
-import { deleteRequest } from '../../utils/request';
+import { deleteRequest } from '../../utils/requests-of-intervention';
 
-type RequestManagementProps = {
+type RequestsOfInterventionManagementProps = {
   address?: string;
   date?: string;
   danger_code?: string;
   requests: Request[];
 };
 
-export default function RequestManagement({ address, date, requests }: RequestManagementProps) {
+export default function RequestsOfInterventionManagement({
+  address,
+  date,
+  requests,
+}: RequestsOfInterventionManagementProps) {
   const { mutateAsync: createInterventionMeanMutation } = useMutation({
     mutationFn: (data: InterventionMeanCreateType) => createInterventionMean(data),
   });

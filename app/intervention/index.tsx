@@ -1,13 +1,16 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Stack } from 'expo-router';
-import { Spinner } from 'native-base';
+import { Box, Spinner } from 'native-base';
 import React from 'react';
 
 import InterventionList from '../../components/intervention/InterventionList';
 import useSubscription from '../../hooks/useSubscription';
 import { Intervention } from '../../types/intervention-types';
 import { fetchInterventions } from '../../utils/intervention';
-import { fetchNumberOfRequests, fetchNumberOfRequestsOfIntervention } from '../../utils/request';
+import {
+  fetchNumberOfRequests,
+  fetchNumberOfRequestsOfIntervention,
+} from '../../utils/requests-of-intervention';
 
 export default function InterventionScreen() {
   const queryClient = useQueryClient();
@@ -108,9 +111,9 @@ export default function InterventionScreen() {
   }
 
   return (
-    <>
+    <Box height="100%">
       <Stack.Screen options={{ title: 'Liste des interventions' }} />
       <InterventionList interventions={interventionsWithPendingRequests ?? []} />
-    </>
+    </Box>
   );
 }
