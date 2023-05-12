@@ -1,5 +1,6 @@
+import { MaterialCommunityIcons, FontAwesome5 } from '@expo/vector-icons';
 import { useMutation } from '@tanstack/react-query';
-import { Box, Fab } from 'native-base';
+import { Box, Fab, Icon } from 'native-base';
 import { useEffect, useState } from 'react';
 import { LatLng, MapPressEvent, Marker, Polyline } from 'react-native-maps';
 
@@ -17,6 +18,7 @@ type MapBackgroundProps = {
   interventionLocation: Coordinates;
   interventionId: string | string[] | undefined;
   traject: DroneCoordinates[];
+  isStopped: boolean;
 };
 
 function DroneMapPage({
@@ -24,15 +26,14 @@ function DroneMapPage({
   traject,
   dronePosition,
   interventionLocation,
+  isStopped,
 }: MapBackgroundProps) {
   const { mutateAsync: updateTraject } = useMutation({
-    mutationFn: (data: { positions: DroneCoordinates[] }) =>
-      updateDroneTraject(data.positions, interventionId),
+    mutationFn: (positions: DroneCoordinates[]) => updateDroneTraject(positions, interventionId),
   });
 
   const { mutateAsync: updateIsStopped } = useMutation({
-    mutationFn: (data: { is_stopped: boolean }) =>
-      updateDroneIsStopped(data.is_stopped, interventionId),
+    mutationFn: (is_stopped: boolean) => updateDroneIsStopped(is_stopped, interventionId),
   });
 
   const { mutateAsync: updateTrajectType } = useMutation({
@@ -62,40 +63,60 @@ function DroneMapPage({
   return (
     <Box flex={1}>
       <Fab
-        label="Trajectoire"
         renderInPortal={false}
-        backgroundColor={draw ? '#0A0' : '#A00'}
+        placement="bottom-right"
+        right="148px"
+        backgroundColor={draw ? 'white' : '#19837C'}
+        icon={
+          draw ? (
+            <Icon as={MaterialCommunityIcons} name="stop" size={6} color="black" />
+          ) : (
+            <Icon as={MaterialCommunityIcons} name="draw" size={6} color="white" />
+          )
+        }
         onPress={() => {
           if (draw) {
-            updateTraject({ positions: markers as DroneCoordinates[] });
+            updateTraject(markers);
           }
           setDraw(!draw);
+        }}
+      />
+      <Fab
+        icon={<Icon as={FontAwesome5} name="trash" size={5} color="white" />}
+        backgroundColor="#19837C"
+        renderInPortal={false}
+        onPress={() => {
+          setMarkers([]);
+          updateTraject([]);
         }}
         placement="bottom-right"
       />
       <Fab
-        label="Clear"
         renderInPortal={false}
-        onPress={() => setMarkers([])}
-        placement="bottom-left"
+        placement="bottom-right"
+        right="216px"
+        backgroundColor={isStopped ? '#19837C' : 'white'}
+        icon={
+          isStopped ? (
+            <Icon as={MaterialCommunityIcons} name="play" size={6} color="white" />
+          ) : (
+            <Icon as={MaterialCommunityIcons} name="pause" size={6} color="black" />
+          )
+        }
+        onPress={() => updateIsStopped(!isStopped)}
       />
       <Fab
-        label="Start"
         renderInPortal={false}
-        onPress={() => updateIsStopped({ is_stopped: false })}
-        placement="top-left"
-      />
-      <Fab
-        label="Stop"
-        renderInPortal={false}
-        onPress={() => updateIsStopped({ is_stopped: true })}
-        placement="top-right"
-      />
-      <Fab
-        label={trajectType}
-        renderInPortal={false}
-        left="25%"
-        right="35%"
+        right="80px"
+        placement="bottom-right"
+        backgroundColor={trajectType === 'CLOSED_CIRCUIT' ? '#19837C' : 'white'}
+        icon={
+          trajectType === 'CLOSED_CIRCUIT' ? (
+            <Icon as={MaterialCommunityIcons} name="vector-square-open" size={6} color="white" />
+          ) : (
+            <Icon as={MaterialCommunityIcons} name="vector-square" size={6} color="black" />
+          )
+        }
         onPress={() => {
           if (trajectType === 'CLOSED_CIRCUIT') {
             updateTrajectType({ type: 'OPENED_CIRCUIT' });

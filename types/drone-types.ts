@@ -22,4 +22,5 @@ export type DroneData = {
   id: number;
   traject: DroneCoordinates[];
   position: LatLng;
+  is_stopped: boolean;
 };

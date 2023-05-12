@@ -4,7 +4,7 @@ import { TrajectType, DroneCoordinates, DroneData } from '../types/drone-types';
 export const fetchDroneData = async (interventionId?: string | string[]) => {
   const { data, error } = await supabase
     .from(Tables.droneData)
-    .select('id, position, traject')
+    .select('id, position, traject, is_stopped')
     .eq(DroneColumns.interventionId, interventionId);
 
   if (error) {
@@ -54,8 +54,4 @@ export const updateDroneIsStopped = async (
   if (error) {
     throw error;
   }
-};
-
-export const deleteDrone = async (interventionId?: string | string[]) => {
-  await supabase.from(Tables.droneData).delete().eq(DroneColumns.interventionId, interventionId);
 };

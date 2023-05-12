@@ -49,6 +49,7 @@ export default function Drone() {
       interventionId={interventionId}
       interventionLocation={interventionLocation ?? { latitude: 0, longitude: 0 }}
       dronePosition={drone?.position ?? { latitude: 0, longitude: 0 }}
+      isStopped={drone?.is_stopped ?? true}
     />
   );
 }
