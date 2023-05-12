@@ -7,7 +7,7 @@ import { Table, Row } from 'react-native-table-component';
 import ConfirmationModal from './ConfirmationModal';
 import { InterventionMean, MeanModalContent } from '../../../types/mean-types';
 import { Request } from '../../../types/request-types';
-import { getMilitaryTime, addMinutes } from '../../../utils/date';
+import { getMilitaryTime } from '../../../utils/date';
 import { deleteMeans } from '../../../utils/means';
 import AlertDialogComponent from '../../map/AlertDialogComponent';
 
@@ -57,7 +57,9 @@ export default function MeansTable({ means, requests }: MeansTableProps) {
                 data={[
                   mean.means.label,
                   getMilitaryTime(mean.request_date ? new Date(mean.request_date) : undefined),
-                  addMinutes(mean.request_date, 20),
+                  getMilitaryTime(
+                    mean.scheduled_arrival ? new Date(mean.scheduled_arrival) : undefined
+                  ),
                   getMilitaryTime(mean.crm_arrival ? new Date(mean.crm_arrival) : undefined),
                   getMilitaryTime(mean.sector_arrival ? new Date(mean.sector_arrival) : undefined),
                   getMilitaryTime(mean.available_at ? new Date(mean.available_at) : undefined),
@@ -70,9 +72,11 @@ export default function MeansTable({ means, requests }: MeansTableProps) {
                     onPress={() =>
                       setModalContent({
                         id: mean.id,
+                        meanId: mean.mean_id,
                         crmArrival: mean.crm_arrival,
                         sectorArrival: mean.sector_arrival,
                         availableAt: mean.available_at,
+                        status: mean.status,
                       })
                     }
                   />,

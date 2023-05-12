@@ -1,16 +1,10 @@
 import { Tables, supabase } from './supabase';
 import { DangerCode } from '../types/global-types';
-import { InterventionMean, Mean } from '../types/mean-types';
+import { InterventionMean, InterventionMeanStatus, Mean } from '../types/mean-types';
 
 export type InterventionMeanCreateType = Omit<
   InterventionMean,
-  | 'id'
-  | 'means'
-  | 'scheduled_arrival'
-  | 'crm_arrival'
-  | 'sector_arrival'
-  | 'available_at'
-  | 'danger_code'
+  'id' | 'means' | 'crm_arrival' | 'sector_arrival' | 'available_at' | 'danger_code'
 >;
 
 export const fecthInterventionMeans = async (interventionId?: string | string[]) => {
@@ -39,6 +33,7 @@ export const createInterventionMean = async (mean: InterventionMeanCreateType) =
 };
 
 export const createMultipleInterventionMeans = async (means: InterventionMeanCreateType[]) => {
+  console.log(means);
   const { error } = await supabase.from(Tables.interventionMeansLink).insert(means);
 
   if (error) {
@@ -58,11 +53,15 @@ export const updateInterventionMeanDangerCode = async (meanId: number, dangerCod
 };
 
 export const getFireFighterMeansNotPlaced = (interventionMeans: InterventionMean[]) => {
-  return interventionMeans.filter((interventionMean) => !interventionMean.means.location);
+  return interventionMeans
+    .filter((interventionMean) => !interventionMean.means.location)
+    .filter((interventionMean) => interventionMean.status !== 'available');
 };
 
 export const getFireFightersMeansPlaced = (interventionMeans: InterventionMean[]) => {
-  return interventionMeans.filter((interventionMean) => interventionMean.means.location);
+  return interventionMeans
+    .filter((interventionMean) => interventionMean.means.location)
+    .filter((interventionMean) => interventionMean.status !== 'available');
 };
 
 export const getMeansOfInterventionMean = async (interventionMean: InterventionMean) => {
@@ -113,13 +112,40 @@ export const updateAvailableAtDate = async (meanId: number) => {
   }
 };
 
-export const updateIsOnSite = async (meanId: number, isOnSite: boolean) => {
+export const updateInterventionMeanStatus = async (id: number, status: InterventionMeanStatus) => {
   const { error } = await supabase
     .from(Tables.interventionMeansLink)
-    .update({ is_on_site: isOnSite })
-    .eq('id', meanId);
+    .update({ status })
+    .eq('id', id);
 
   if (error) {
     throw error;
   }
+};
+
+export const updateInterventionMeanStatusFromMeanId = async (
+  meanId: number,
+  status: InterventionMeanStatus
+) => {
+  const { error } = await supabase
+    .from(Tables.interventionMeansLink)
+    .update({ status })
+    .eq('mean_id', meanId);
+
+  if (error) {
+    throw error;
+  }
+};
+
+export const fetchStatusFromMeanId = async (meanId: number) => {
+  const { data, error } = await supabase
+    .from(Tables.interventionMeansLink)
+    .select('status')
+    .eq('mean_id', meanId);
+
+  if (error) {
+    throw error;
+  }
+
+  return data[0].status as InterventionMeanStatus;
 };

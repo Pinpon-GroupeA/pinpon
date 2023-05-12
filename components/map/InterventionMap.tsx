@@ -3,18 +3,32 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { useSearchParams } from 'expo-router';
 import { Box, Fab, Icon, Modal, Text } from 'native-base';
 import { useState } from 'react';
-import { MapPressEvent, Marker, Polyline } from 'react-native-maps';
+import { MapPressEvent, Marker, MarkerDragStartEndEvent, Polyline } from 'react-native-maps';
 
 import AlertDialogComponent from './AlertDialogComponent';
 import CustomCircle from './symbols/CustomCircle';
 import FireFighterVehicle from './symbols/FireFighterVehicle';
 import { useAppStore } from '../../stores/store';
-import { Coordinates } from '../../types/global-types';
-import { InterventionMean, MeanModalContent, OtherMean } from '../../types/mean-types';
+import { Coordinates, DangerCode } from '../../types/global-types';
+import {
+  InterventionMean,
+  InterventionMeanStatus,
+  MeanModalContent,
+  OtherMean,
+} from '../../types/mean-types';
 import { findDangerCodeFromColor, getDangerCodeColor } from '../../utils/danger-code';
 import { castInterventionIdAsNumber } from '../../utils/intervention';
-import { createOtherMean, deleteOtherMean } from '../../utils/intervention-dangers';
-import { updateInterventionMeanDangerCode } from '../../utils/intervention-mean';
+import {
+  createOtherMean,
+  deleteOtherMean,
+  updateOtherMeanLocation,
+} from '../../utils/intervention-dangers';
+import {
+  fetchStatusFromMeanId,
+  updateInterventionMeanDangerCode,
+  updateInterventionMeanStatus,
+  updateInterventionMeanStatusFromMeanId,
+} from '../../utils/intervention-mean';
 import { updateMeanLocation } from '../../utils/means';
 import {
   getOtherMeanFromSymbolTypeAndColorAndLocationAndInterventionId,
@@ -56,6 +70,35 @@ function InterventionMap({
     mutationFn: (otherMeanId: number) => deleteOtherMean(otherMeanId),
   });
 
+  const { mutateAsync: updateOtherMeanLocationMutation } = useMutation({
+    mutationFn: (data: { otherMeanId: number; location: Coordinates }) =>
+      updateOtherMeanLocation(data.otherMeanId, data.location),
+  });
+
+  const { mutateAsync: updateMeanLocationMutation } = useMutation({
+    mutationFn: (data: { meanId: number; location: Coordinates }) =>
+      updateMeanLocation(data.meanId, data.location),
+  });
+
+  const { mutateAsync: updateMeanStatus } = useMutation({
+    mutationFn: (data: { id: number; status: InterventionMeanStatus }) =>
+      updateInterventionMeanStatus(data.id, data.status),
+  });
+
+  const { mutateAsync: updateMeanStatusFromMeanId } = useMutation({
+    mutationFn: (data: { meanId: number; status: InterventionMeanStatus }) =>
+      updateInterventionMeanStatusFromMeanId(data.meanId, data.status),
+  });
+
+  const { mutateAsync: createOtherMeanMutation } = useMutation({
+    mutationFn: (otherMean: OtherMean) => createOtherMean(otherMean),
+  });
+
+  const { mutateAsync: updateInterventionMeanDangerCodeMutation } = useMutation({
+    mutationFn: (data: { meanId: number; dangerCode: DangerCode }) =>
+      updateInterventionMeanDangerCode(data.meanId, data.dangerCode),
+  });
+
   const { selectedSymbol, setSelectedSymbol, drawingsColor } = useAppStore();
 
   const [newPolyline, setNewPolyline] = useState<Coordinates[]>([]);
@@ -63,7 +106,7 @@ function InterventionMap({
   const [modalContent, setModalContent] = useState<MeanModalContent | null>(null);
   const [pressedPolylineId, setPressedPolylineId] = useState<number | null>(null);
 
-  const handlePress = (event: MapPressEvent) => {
+  const handlePress = async (event: MapPressEvent) => {
     const { latitude, longitude } = event.nativeEvent.coordinate;
 
     if (polylineDrawMode) {
@@ -73,7 +116,7 @@ function InterventionMap({
 
     if (selectedSymbol) {
       if (selectedSymbol.symboleType && selectedSymbol.symboleType !== 'FireFighterVehicle') {
-        createOtherMean(
+        createOtherMeanMutation(
           getOtherMeanFromSymbolTypeAndColorAndLocationAndInterventionId(
             selectedSymbol.symboleType,
             drawingsColor,
@@ -85,13 +128,25 @@ function InterventionMap({
           )
         );
       } else if (selectedSymbol.id) {
-        updateMeanLocation(selectedSymbol.id, {
-          latitude,
-          longitude,
+        updateMeanLocationMutation({
+          meanId: selectedSymbol.id,
+          location: { latitude, longitude },
         });
-        updateInterventionMeanDangerCode(selectedSymbol.id, findDangerCodeFromColor(drawingsColor));
+
+        updateInterventionMeanDangerCodeMutation({
+          meanId: selectedSymbol.id,
+          dangerCode: findDangerCodeFromColor(drawingsColor),
+        });
+
+        const meanStatus = await fetchStatusFromMeanId(selectedSymbol.id);
+
+        updateMeanStatusFromMeanId({
+          meanId: selectedSymbol.id,
+          status: meanStatus === 'returning_crm' ? 'changing_position' : 'arriving_on_site',
+        });
+
+        setSelectedSymbol(undefined);
       }
-      setSelectedSymbol(undefined);
     }
   };
 
@@ -116,9 +171,37 @@ function InterventionMap({
   const handleFireFighterVehiclePress = (mean: InterventionMean) => {
     setModalContent({
       id: mean.id,
+      meanId: mean.mean_id,
       crmArrival: mean.crm_arrival,
       sectorArrival: mean.sector_arrival,
       availableAt: mean.available_at,
+      status: mean.status,
+    });
+  };
+
+  const handleOtherMeanDragEnd = (event: MarkerDragStartEndEvent, otherMeanId: number) => {
+    const { latitude, longitude } = event.nativeEvent.coordinate;
+
+    updateOtherMeanLocationMutation({
+      otherMeanId,
+      location: { latitude, longitude },
+    });
+  };
+
+  const handleFireFighterVehicleDragEnd = (
+    event: MarkerDragStartEndEvent,
+    mean: InterventionMean
+  ) => {
+    const { latitude, longitude } = event.nativeEvent.coordinate;
+
+    updateMeanLocationMutation({
+      meanId: mean.mean_id,
+      location: { latitude, longitude },
+    });
+
+    updateMeanStatus({
+      id: mean.id,
+      status: 'changing_position',
     });
   };
 
@@ -148,11 +231,13 @@ function InterventionMap({
             }}
             title="Modifier moyen"
             onCalloutPress={() => handleFireFighterVehiclePress(mean)}
+            draggable
+            onDragEnd={(event) => handleFireFighterVehicleDragEnd(event, mean)}
           >
             <FireFighterVehicle
               color={getDangerCodeColor(mean.danger_code)}
               name={mean.means.label}
-              dashed={!mean.is_on_site}
+              dashed={mean.status !== 'on_site'}
             />
           </Marker>
         ))}
@@ -165,6 +250,8 @@ function InterventionMap({
             }}
             title="X"
             onCalloutPress={() => deleteOtherMeanMutation(mean.id)}
+            draggable
+            onDragEnd={(event) => handleOtherMeanDragEnd(event, mean.id)}
           >
             {selectRightSymbol(mean.category, mean.danger_code)}
           </Marker>

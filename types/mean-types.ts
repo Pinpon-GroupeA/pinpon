@@ -11,8 +11,7 @@ export type InterventionMean = {
   sector_arrival: string;
   available_at: string;
   danger_code: DangerCode;
-  using_crm: boolean;
-  is_on_site: boolean;
+  status: InterventionMeanStatus;
 };
 
 export type Mean = {
@@ -34,6 +33,15 @@ export type OtherMean = {
   points: Coordinates[];
 };
 
+export type InterventionMeanStatus =
+  | 'arriving_crm'
+  | 'at_crm'
+  | 'arriving_on_site'
+  | 'on_site'
+  | 'returning_crm'
+  | 'changing_position'
+  | 'available';
+
 export type MeanCategory = 'PS' | 'SD' | 'ZA' | 'PL';
 
 export type MeanTypeEnum = 'VSAV' | 'FPT' | 'VLCG' | 'OTHER';
@@ -47,9 +55,11 @@ export type MeanType = {
 
 export type MeanModalContent = {
   id: number;
+  meanId: number;
   crmArrival: string | null;
   sectorArrival: string | null;
   availableAt: string | null;
+  status: InterventionMeanStatus;
 };
 
 export type MeanTypeToRequest = MeanType & {
