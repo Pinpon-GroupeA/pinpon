@@ -1,8 +1,7 @@
 import { useSearchParams } from 'expo-router';
 import { Heading, Image, ScrollView, Text, VStack } from 'native-base';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import { useQuery } from '@tanstack/react-query';
 import { ImageData } from '../../types/drone-types';
 import { Coordinates } from '../../types/global-types';
 import { supabase } from '../../utils/supabase';
@@ -13,54 +12,51 @@ type GalleryProps = {
 };
 
 export default function Gallery({ longitude, latitude }: GalleryProps) {
-  const [images, setImages] = useState<ImageData[]>([]);
   const { id: interventionId } = useSearchParams();
+  const [images, setImages] = useState<ImageData[]>([]);
 
-
-  const bucketName = 'poc';
+  const bucketName = 'photo';
 
   const fetchAllImages = async () => {
     setImages([]);
     const { data: files, error } = await supabase.storage
       .from(bucketName)
-      .list(`Intervention_${interventionId}/${latitude} ${longitude}`, {
+      .list(`intervention_${interventionId}/${latitude}_${longitude}`, {
         limit: 100,
         offset: 0,
         sortBy: { column: 'name', order: 'asc' },
       });
 
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    files.forEach(async (file) => {
+      const { data: downloadedFile, error } = await supabase.storage
+        .from(bucketName)
+        .download(`intervention_${interventionId}/${latitude}_${longitude}/${file.name}`);
+
       if (error) {
         throw new Error(error.message);
       }
 
-      const newImages: ImageData[] = [];
-      
-      files.forEach(async (file) => {
-        const { data: downloadedFile, error } = await supabase.storage.from(bucketName).download(`Intervention_${interventionId}/${latitude} ${longitude}/${file.name}`);
-
-        if (error) {
-          throw new Error(error.message);
-        }
-
-        const reader = new FileReader();
-        reader.readAsDataURL(downloadedFile);
-        reader.onloadend = () => {
-          const fileAsBase64 = reader.result;
-          const name = file.name.slice(0, -4);
-          newImages.push({ file: fileAsBase64?.toString() ?? '', name })
-        }
-      });
-
-      setImages((images) => [...images, ...newImages]);
+      const reader = new FileReader();
+      reader.readAsDataURL(downloadedFile);
+      reader.onloadend = () => {
+        const fileAsBase64 = reader.result;
+        const name = file.name.slice(0, -4);
+        setImages((images) => [...images, { file: fileAsBase64?.toString() ?? '', name }]);
+      };
+    });
   };
 
-  const { data: Images } = useQuery({
-    queryKey: ['images'],
-    queryFn: fetchAllImages,
-  });
+  useEffect(() => {
+    fetchAllImages();
+  }, []);
+  console.log(images);
 
-  if (!images.length) {
-    return <Heading>Pas d'images disponibles</Heading>
+  if (!images || !images.length) {
+    return <Heading>Pas d'images disponibles</Heading>;
   }
 
   return (
