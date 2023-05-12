@@ -53,7 +53,6 @@ export default function Gallery({ longitude, latitude }: GalleryProps) {
   useEffect(() => {
     fetchAllImages();
   }, []);
-  console.log(images);
 
   if (!images || !images.length) {
     return <Heading>Pas d'images disponibles</Heading>;
