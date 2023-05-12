@@ -38,7 +38,7 @@ function InterventionMap({
   interventionLocation,
 }: InterventionMapProps) {
   const waterPointDistance = 1000;
-  const waterPointNumber = 100;
+  const waterPointNumber = 20;
 
   const { error, data } = useQuery({
     queryKey: ['waterPoints', interventionLocation],

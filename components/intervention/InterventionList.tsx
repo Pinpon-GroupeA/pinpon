@@ -29,7 +29,7 @@ export default function InterventionList({ interventions }: InterventionListProp
   };
 
   return (
-    <Box mx={3}>
+    <Box mx={3} h="100%">
       <HStack m={3} justifyContent={isCodis ? 'space-evenly' : 'flex-start'} alignItems="center">
         <Heading fontSize="4xl" color="#19837C">
           Interventions
