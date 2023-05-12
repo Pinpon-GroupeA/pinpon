@@ -30,6 +30,16 @@ export const fetchInterventions = async (): Promise<Intervention[]> => {
   return data as Intervention[];
 };
 
+export const supprInterventions = async (id: number): Promise<any> => {
+  const { data, error } = await supabase.from('interventions').delete().eq('id', id);
+
+  if (error) {
+    throw error;
+  }
+
+  return data;
+};
+
 export const fetchInterventionLocation = async (interventionId?: string | string[]) => {
   const { data, error } = await supabase
     .from('interventions')

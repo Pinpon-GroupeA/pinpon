@@ -1,18 +1,16 @@
 import { AntDesign } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-import { Box, Fab, FlatList, HStack, Heading, Icon, VStack } from 'native-base';
+import { Box, Fab, HStack, Heading, Icon, VStack, NativeBaseProvider } from 'native-base';
+import { SwipeListView } from 'react-native-swipe-list-view';
 
 import Intervention from './Intervention';
 import { useAppStore } from '../../stores/store';
 import { InterventionListData } from '../../types/intervention-types';
+import { supprInterventions } from '../../utils/intervention';
 
 type InterventionListProps = {
   interventions: InterventionListData[];
 };
-
-const renderIntervention = ({ item }: { item: InterventionListData }) => (
-  <Intervention intervention={item} />
-);
 
 export default function InterventionList({ interventions }: InterventionListProps) {
   const router = useRouter();
@@ -28,41 +26,59 @@ export default function InterventionList({ interventions }: InterventionListProp
     return interventions;
   };
 
+  const renderIntervention = ({ item }: { item: InterventionListData }) => (
+    <Intervention intervention={item} />
+  );
+  const renderHiddenIntervention = ({ item }: { item: InterventionListData }) => <HStack />;
+
+  const deleteIntervention = (id: any) => {
+    supprInterventions(id);
+  };
+
   return (
-    <Box mx={3} h="100%">
-      <HStack m={3} justifyContent={isCodis ? 'space-evenly' : 'flex-start'} alignItems="center">
-        <Heading fontSize="4xl" color="#19837C">
-          Interventions
-        </Heading>
-        {isCodis && <Icon as={AntDesign} name="caretright" color="dark.600" size={6} />}
-
-        {isCodis && (
-          <Heading fontSize="3xl" fontWeight="normal" onPress={() => router.push('/requests')}>
-            Moyens Demandés
+    <NativeBaseProvider>
+      <Box mx={3} h="100%">
+        <HStack m={3} justifyContent={isCodis ? 'space-evenly' : 'flex-start'} alignItems="center">
+          <Heading fontSize="4xl" color="#19837C">
+            Interventions
           </Heading>
-        )}
-      </HStack>
+          {isCodis && <Icon as={AntDesign} name="caretright" color="dark.600" size={6} />}
 
-      <FlatList
-        data={orderInterventions(interventions)}
-        renderItem={renderIntervention}
-        ItemSeparatorComponent={() => <Box w="100%" h="1px" backgroundColor="gray.300" />}
-        keyExtractor={(intervention) => String(intervention.id)}
-        ListEmptyComponent={() => (
-          <VStack flex="1" p="24px" alignItems="center" justifyContent="center">
-            <Heading>Pas d'interventions trouvées</Heading>
-          </VStack>
-        )}
-      />
-      {isCodis && (
-        <Fab
-          placement="bottom-right"
-          bgColor="#19837C"
-          icon={<Icon color="white" as={AntDesign} name="plus" size="4" />}
-          onPress={() => router.push('/intervention/create')}
-          renderInPortal={false}
+          {isCodis && (
+            <Heading fontSize="3xl" fontWeight="normal" onPress={() => router.push('/requests')}>
+              Moyens Demandés
+            </Heading>
+          )}
+        </HStack>
+
+        <SwipeListView
+          data={orderInterventions(interventions)}
+          renderItem={renderIntervention}
+          renderHiddenItem={renderHiddenIntervention}
+          ItemSeparatorComponent={() => <Box w="100%" h="1px" backgroundColor="gray.300" />}
+          keyExtractor={(intervention) => String(intervention.id)}
+          ListEmptyComponent={() => (
+            <VStack flex="1" p="24px" alignItems="center" justifyContent="center">
+              <Heading>Pas d'interventions trouvées</Heading>
+            </VStack>
+          )}
+          rightOpenValue={-75}
+          leftOpenValue={75}
+          rightActivationValue={75}
+          leftActivationValue={75}
+          onRightAction={deleteIntervention}
+          onLeftAction={deleteIntervention}
         />
-      )}
-    </Box>
+        {isCodis && (
+          <Fab
+            placement="bottom-right"
+            bgColor="#19837C"
+            icon={<Icon color="white" as={AntDesign} name="plus" size="4" />}
+            onPress={() => router.push('/intervention/create')}
+            renderInPortal={false}
+          />
+        )}
+      </Box>
+    </NativeBaseProvider>
   );
 }
