@@ -1,6 +1,6 @@
 import { AntDesign } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-import { Box, Fab, FlatList, Heading, Icon, VStack, HStack } from 'native-base';
+import { Box, Fab, FlatList, HStack, Heading, Icon, VStack } from 'native-base';
 
 import Intervention from './Intervention';
 import { useAppStore } from '../../stores/store';
@@ -46,7 +46,7 @@ export default function InterventionList({ interventions }: InterventionListProp
       <FlatList
         data={orderInterventions(interventions)}
         renderItem={renderIntervention}
-        ItemSeparatorComponent={() => <Box style={{ height: 10 }} />}
+        ItemSeparatorComponent={() => <Box w="100%" h="1px" backgroundColor="gray.300" />}
         keyExtractor={(intervention) => String(intervention.id)}
         ListEmptyComponent={() => (
           <VStack flex="1" p="24px" alignItems="center" justifyContent="center">

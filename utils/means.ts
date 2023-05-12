@@ -33,7 +33,7 @@ export const updateMeanStatus = async (meanId: number, is_available: boolean) =>
 };
 
 export const requestsRequest = async (id: Partial<URLSearchParams>): Promise<Request[]> => {
-  const { data, error } = await supabase.from('Requests').select('*').eq('id_inter', id);
+  const { data, error } = await supabase.from(Tables.requests).select('*').eq('id_inter', id);
   if (error) {
     throw new Error(error.message);
   }
@@ -51,11 +51,6 @@ export const meansRequest = async (id: number): Promise<Mean[]> => {
   }
 
   return data as Mean[];
-};
-
-export const getlocalTime = (): string => {
-  const tzoffset = new Date().getTimezoneOffset() * 60000;
-  return new Date(Date.now() - tzoffset).toISOString().slice(0, -1);
 };
 
 export const deleteMeans = async (id: number) => {

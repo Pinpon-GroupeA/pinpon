@@ -14,7 +14,7 @@ export default function ErrorModal({ isOpen, onClose, message }: ErrorModalProps
         <Modal.Header>Erreur</Modal.Header>
         <Modal.Body>
           <VStack space={3}>
-            <Text fontWeight="md">{message}</Text>
+            <Text fontWeight="medium">{message}</Text>
           </VStack>
         </Modal.Body>
       </Modal.Content>

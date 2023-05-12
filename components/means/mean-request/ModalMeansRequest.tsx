@@ -1,57 +1,80 @@
 import { useMutation } from '@tanstack/react-query';
 import { useSearchParams } from 'expo-router';
-import { VStack, Button, Text, Modal, useToast } from 'native-base';
+import { Button, Modal, Text, VStack, useToast } from 'native-base';
 import React, { useState } from 'react';
 
 import MeanRequestItem from './MeanRequestItem';
-import { MeanType } from '../../../types/mean-types';
-import { CreateRequestData, createRequest } from '../../../utils/requests-type';
+import { MeanType, MeanTypeToRequest } from '../../../types/mean-types';
+import { CreateRequestData, createRequests } from '../../../utils/requests-type';
 import Alert from '../../Alert';
 
 type ModalMeansRequestProps = {
-  meansType: MeanType[];
+  meanTypes: MeanType[];
   setShowModal: (showModal: boolean) => void;
 };
 
-export default function ModalMeansRequest({ meansType, setShowModal }: ModalMeansRequestProps) {
-  const [values, setValues] = React.useState<number[]>(new Array(meansType.length).fill(0));
-  const [isSendingRequests, setIsSendingRequests] = useState(false);
+export default function ModalMeansRequest({ meanTypes, setShowModal }: ModalMeansRequestProps) {
+  const [requestedMeanTypes, setRequestedMeanTypes] = useState<MeanTypeToRequest[]>(
+    meanTypes.map((mean) => ({ ...mean, numberOfRequests: 0 }))
+  );
   const { id: interventionId } = useSearchParams();
 
   const toast = useToast();
-  const isSendingPossible = meansType.length === 0 || values.reduce((acc, i) => acc + i, 0) === 0;
+  const isSendingPossible =
+    meanTypes.length === 0 ||
+    requestedMeanTypes.map((mean) => mean.numberOfRequests).reduce((acc, i) => acc + i, 0) === 0;
 
-  const { mutateAsync } = useMutation({
-    mutationFn: (data: CreateRequestData) => createRequest(data),
+  const { mutateAsync, isLoading } = useMutation({
+    mutationFn: (requests: CreateRequestData[]) => createRequests(requests),
   });
 
-  async function handleSend() {
-    setIsSendingRequests(true);
+  if (!interventionId || Number.isNaN(Number(interventionId))) {
+    throw new Error('Invalid intervention id');
+  }
 
-    values.map(async (val, i) => {
-      for (let j = 0; j < val; j++) {
-        const request: CreateRequestData = {
-          intervention_id: interventionId === undefined ? 0 : +interventionId,
-          request_time: new Date().toISOString(),
-          mean_type: meansType[i].mean_type,
-        };
-        await mutateAsync(request);
-      }
-      if (i === values.length - 1) {
-        setIsSendingRequests(false);
-        setShowModal(false);
-        toast.show({
-          render: () => {
-            return (
-              <Alert
-                variant="subtle"
-                status="success"
-                textContent="Demande de moyens envoyée avec succès."
-              />
-            );
-          },
-        });
-      }
+  const onDecrementMeanClicked = (meanId: number) =>
+    setRequestedMeanTypes((means) =>
+      means.map((mean) => {
+        if (mean.id === meanId && mean.numberOfRequests > 0) {
+          return { ...mean, numberOfRequests: mean.numberOfRequests - 1 };
+        }
+        return mean;
+      })
+    );
+
+  const onIncrementMeanClicked = (meanId: number) =>
+    setRequestedMeanTypes((means) =>
+      means.map((mean) => {
+        if (mean.id === meanId) {
+          return { ...mean, numberOfRequests: mean.numberOfRequests + 1 };
+        }
+        return mean;
+      })
+    );
+
+  async function handleSend() {
+    requestedMeanTypes.forEach(async (mean) => {
+      if (mean.numberOfRequests === 0) return;
+
+      const requests: CreateRequestData[] = Array.from({ length: mean.numberOfRequests }, () => ({
+        intervention_id: Number(interventionId),
+        request_time: new Date().toISOString(),
+        mean_type: mean.mean_type,
+      }));
+      await mutateAsync(requests);
+    });
+
+    setShowModal(false);
+    toast.show({
+      render: () => {
+        return (
+          <Alert
+            variant="subtle"
+            status="success"
+            textContent="Demande de moyens envoyée avec succès."
+          />
+        );
+      },
     });
   }
 
@@ -65,29 +88,26 @@ export default function ModalMeansRequest({ meansType, setShowModal }: ModalMean
       </Modal.Header>
       <Modal.Body backgroundColor="#F2F2F2">
         <VStack>
-          {meansType.length === 0 ? (
+          {requestedMeanTypes.length === 0 ? (
             <Text textAlign="center" fontStyle="italic">
               Aucun type de moyen trouvé.
             </Text>
           ) : (
-            meansType.map((item, index) => {
-              return (
-                <MeanRequestItem
-                  mean={item}
-                  values={values}
-                  setValues={setValues}
-                  index={index}
-                  key={index}
-                />
-              );
-            })
+            requestedMeanTypes.map((mean) => (
+              <MeanRequestItem
+                meanToRequest={mean}
+                onDecrementClicked={() => onDecrementMeanClicked(mean.id)}
+                onIncrementClicked={() => onIncrementMeanClicked(mean.id)}
+                key={mean.id}
+              />
+            ))
           )}
         </VStack>
       </Modal.Body>
       <Modal.Footer>
         <Button
           flex="1"
-          isLoading={isSendingRequests}
+          isLoading={isLoading}
           isLoadingText="Envoi en cours..."
           onPress={handleSend}
           bgColor="#19837C"

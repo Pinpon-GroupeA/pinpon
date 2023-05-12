@@ -33,7 +33,11 @@ function MeansPage({ means, requests }: MeansPageProps) {
         placement="bottom-right"
       />
       <Modal isOpen={showModal} onClose={() => setShowModal(false)} size="md">
-        <ModalMeansRequest meansType={meanTypes ?? []} setShowModal={setShowModal} />
+        <ModalMeansRequest
+          meanTypes={meanTypes || []}
+          setShowModal={setShowModal}
+          key={meanTypes?.length}
+        />
       </Modal>
     </Box>
   );

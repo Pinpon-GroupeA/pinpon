@@ -24,7 +24,7 @@ export default function LoginForm() {
   const { mutateAsync, isLoading } = useLogin();
   const setUserType = useAppStore((state) => state.setRole);
 
-  async function signInWithEmail(email: string, password: string, type: UserType) {
+  const signIn = async (email: string, password: string, type: UserType) => {
     try {
       await mutateAsync({ email, password });
       setUserType(type);
@@ -32,7 +32,7 @@ export default function LoginForm() {
     } catch (error) {
       setError((error as Error).message);
     }
-  }
+  };
 
   return (
     <Center w="100%">
@@ -99,9 +99,7 @@ export default function LoginForm() {
             mt="2"
             disabled={isLoading}
             colorScheme="teal"
-            onPress={handleSubmit(({ email, password }) =>
-              signInWithEmail(email, password, 'CODIS')
-            )}
+            onPress={handleSubmit(({ email, password }) => signIn(email, password, 'CODIS'))}
           >
             Connexion CODIS
           </Button>
@@ -109,7 +107,7 @@ export default function LoginForm() {
             mt="2"
             disabled={isLoading}
             colorScheme="teal"
-            onPress={handleSubmit(({ email, password }) => signInWithEmail(email, password, 'COS'))}
+            onPress={handleSubmit(({ email, password }) => signIn(email, password, 'COS'))}
           >
             Connexion COS
           </Button>

@@ -1,50 +1,37 @@
 import { Button, FormControl, HStack, Text } from 'native-base';
 import React from 'react';
 
+import { MeanTypeToRequest } from '../../../types/mean-types';
+
 type MeanRequestItemProps = {
-  mean: { mean_type: any; label: any };
-  values: number[];
-  setValues: (values: number[]) => void;
-  index: number;
+  meanToRequest: MeanTypeToRequest;
+  onIncrementClicked: () => void;
+  onDecrementClicked: () => void;
 };
 
-export default function MeanRequestItem({ mean, values, setValues, index }: MeanRequestItemProps) {
-  const handleIncrementClick = () => {
-    const nextValues = values.map((v, i) => {
-      if (i === index) {
-        return v + 1;
-      } else {
-        return v;
-      }
-    });
-    setValues(nextValues);
-  };
-
-  const handleDecrementClick = () => {
-    const nextValues = values.map((v, i) => {
-      if (i === index && values[index] > 0) {
-        return v - 1;
-      } else {
-        return v;
-      }
-    });
-    setValues(nextValues);
-  };
-
+export default function MeanRequestItem({
+  meanToRequest,
+  onIncrementClicked,
+  onDecrementClicked,
+}: MeanRequestItemProps) {
   return (
     <HStack alignItems="center" justifyContent="space-around">
       <FormControl.Label flex="8">
-        {' '}
         <Text color="black" fontSize="md">
-          {mean.label + ' (' + mean.mean_type + ')'}
+          {meanToRequest.label + ' (' + meanToRequest.mean_type + ')'}
         </Text>
       </FormControl.Label>
       <HStack alignItems="center" flex="2">
-        <Button variant="ghost" _pressed={{ bgColor: '#19837C30' }} onPress={handleDecrementClick}>
+        <Button
+          variant="ghost"
+          disabled={meanToRequest.numberOfRequests < 1}
+          onPress={onDecrementClicked}
+          _pressed={{ bgColor: '#19837C30' }}
+        >
           -
         </Button>
-        <Text>{values[index]}</Text>
-        <Button variant="ghost" _pressed={{ bgColor: '#19837C30' }} onPress={handleIncrementClick}>
+        <Text>{meanToRequest.numberOfRequests}</Text>
+        <Button variant="ghost" onPress={onIncrementClicked} _pressed={{ bgColor: '#19837C30' }}>
           +
         </Button>
       </HStack>

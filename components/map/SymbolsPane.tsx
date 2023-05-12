@@ -1,10 +1,10 @@
 import { Box, Divider } from 'native-base';
 import { useState } from 'react';
 
+import ColorSelection from './ColorSelection';
 import FireFighterSymbolList from './FireFighterSymbolList';
 import SymbolList from './SymbolList';
 import { InterventionMean } from '../../types/mean-types';
-import ColorSelection from './ColorSelection';
 
 type SymbolsPaneProps = {
   fireFighterMeans: InterventionMean[];

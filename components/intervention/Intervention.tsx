@@ -39,21 +39,23 @@ export default function Intervention({ intervention }: InterventionProps) {
   return (
     <Pressable
       p="2"
-      borderWidth="1"
-      borderRadius="md"
-      borderColor="gray.200"
       flexWrap="wrap"
       flexDirection="row"
       justifyContent="space-between"
       onPress={handleInterventionPress}
     >
-      <Box>
+      <Box flex="1" flexWrap="nowrap" ml="1">
         {title}
         <Text fontSize="sm" color="gray.400">
           {formattedDate}
         </Text>
       </Box>
       <HStack space="6" alignItems="center">
+        {intervention.pendingRequests > -1 && isCodis ? (
+          <Badge variant="solid" colorScheme="danger" rounded="full">
+            {intervention.pendingRequests}
+          </Badge>
+        ) : null}
         <Badge variant="solid" colorScheme={getStatusBadgeColor(intervention.status_intervention)}>
           {getBadgeMessage(intervention.status_intervention)}
         </Badge>
@@ -62,13 +64,6 @@ export default function Intervention({ intervention }: InterventionProps) {
             {intervention.danger_code}
           </Text>
           <Text>#{intervention.id}</Text>
-        </Box>
-        <Box alignItems="center" width={7}>
-          {intervention.pendingRequests > 0 && isCodis ? (
-            <Badge variant="solid" colorScheme="danger" rounded="full">
-              {intervention.pendingRequests}
-            </Badge>
-          ) : null}
         </Box>
       </HStack>
     </Pressable>

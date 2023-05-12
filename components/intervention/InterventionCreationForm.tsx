@@ -1,18 +1,18 @@
 import { MaterialIcons } from '@expo/vector-icons';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'expo-router';
 import debounce from 'lodash.debounce';
 import { Button, FormControl, Heading, Icon, Input, ScrollView, Select, VStack } from 'native-base';
 import { useCallback, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
+import { useAppStore } from '../../stores/store';
 import { DangerCode } from '../../types/global-types';
 import { searchCoordinates } from '../../utils/geocoding';
-import { CreateInterventionData, createIntervention } from '../../utils/intervention';
 import ErrorModal from '../ErrorModal';
 
 type FormInputs = {
-  dangerType: DangerCode;
+  dangerCode: DangerCode;
   street?: string;
   postalCode: string;
   city: string;
@@ -22,6 +22,11 @@ type FormInputs = {
 
 export default function InterventionCreationForm() {
   const router = useRouter();
+
+  const interventionCreationData = useAppStore((state) => state.interventionCreationData);
+  const setInterventionCreationData = useAppStore((state) => state.setInterventionCreationData);
+  const resetInterventionCreationData = useAppStore((state) => state.resetInterventionCreationData);
+
   const {
     control,
     handleSubmit,
@@ -31,10 +36,12 @@ export default function InterventionCreationForm() {
     formState: { errors },
   } = useForm<FormInputs>({
     defaultValues: {
-      dangerType: undefined,
-      street: '',
-      latitude: NaN,
-      longitude: NaN,
+      dangerCode: interventionCreationData?.danger_code ?? undefined,
+      street: interventionCreationData?.address?.split(' ')[0],
+      postalCode: interventionCreationData?.address?.split(' ')[1],
+      city: interventionCreationData?.address?.split(' ')[2],
+      latitude: interventionCreationData?.location?.latitude ?? NaN,
+      longitude: interventionCreationData?.location?.longitude ?? NaN,
     },
   });
   const [error, setError] = useState('');
@@ -51,32 +58,25 @@ export default function InterventionCreationForm() {
     enabled: false,
   });
 
-  const onSubmit = async ({
-    dangerType,
+  const onSubmit = ({
+    dangerCode: dangerType,
     street,
     postalCode,
     city,
     latitude,
     longitude,
   }: FormInputs) => {
-    try {
-      await mutateAsync({
-        danger_code: dangerType,
-        address: `${street} ${postalCode} ${city}`,
-        status_intervention: 'ONGOING',
-        location: {
-          longitude,
-          latitude,
-        },
-      });
-    } catch (error) {
-      setError((error as Error).message);
-      return;
-    }
+    setInterventionCreationData({
+      danger_code: dangerType,
+      address: `${street} ${postalCode} ${city}`,
+      status_intervention: 'ONGOING',
+      location: {
+        longitude,
+        latitude,
+      },
+    });
 
-    router.push('/intervention');
-
-    // ToastAndroid.show('intervention créée', ToastAndroid.SHORT);
+    router.push('/intervention/create/means');
   };
 
   const getAddressCoordinates = async () => {
@@ -92,10 +92,6 @@ export default function InterventionCreationForm() {
 
   useEffect(() => () => debouncedGetAddressCoordinates.cancel(), [getValues]);
 
-  const { mutateAsync, isLoading } = useMutation({
-    mutationFn: (data: CreateInterventionData) => createIntervention(data),
-  });
-
   return (
     <VStack space={3} mt="5" mx="2">
       <Heading
@@ -109,7 +105,7 @@ export default function InterventionCreationForm() {
         Création d'une intervention
       </Heading>
       <ScrollView mb="5%">
-        <FormControl isRequired isInvalid={'language' in errors}>
+        <FormControl isRequired isInvalid={'dangerCode' in errors}>
           <FormControl.Label>Type de danger</FormControl.Label>
           <Controller
             control={control}
@@ -130,10 +126,10 @@ export default function InterventionCreationForm() {
                 <Select.Item label="Secours à personne" value="SAP" />
               </Select>
             )}
-            name="dangerType"
+            name="dangerCode"
             rules={{ required: 'Field is required' }}
           />
-          <FormControl.ErrorMessage>{errors.dangerType?.message}</FormControl.ErrorMessage>
+          <FormControl.ErrorMessage>{errors.dangerCode?.message}</FormControl.ErrorMessage>
         </FormControl>
         <FormControl isInvalid={'street' in errors}>
           <FormControl.Label>Rue</FormControl.Label>
@@ -228,15 +224,17 @@ export default function InterventionCreationForm() {
           />
           <FormControl.ErrorMessage>{errors.longitude?.message}</FormControl.ErrorMessage>
         </FormControl>
-        <Button mt="6" disabled={isLoading} colorScheme="teal" onPress={handleSubmit(onSubmit)}>
-          Créer
+        <Button mt="6" colorScheme="teal" onPress={handleSubmit(onSubmit)}>
+          Suivant
         </Button>
         <Button
           mt="2"
-          disabled={isLoading}
           colorScheme="teal"
           variant="outline"
-          onPress={() => reset()}
+          onPress={() => {
+            reset();
+            resetInterventionCreationData();
+          }}
         >
           Réinitialiser
         </Button>

@@ -1,13 +1,13 @@
 import { useMutation } from '@tanstack/react-query';
-import { Modal, VStack, Text, HStack, Button } from 'native-base';
+import { Button, HStack, Modal, Text, VStack } from 'native-base';
 
 import { MeanModalContent } from '../../../types/mean-types';
 import { getMilitaryTime } from '../../../utils/date';
 import {
-  updateCrmArrivalDate,
-  updateSectorArrivalDate,
   updateAvailableAtDate,
+  updateCrmArrivalDate,
   updateIsOnSite,
+  updateSectorArrivalDate,
 } from '../../../utils/intervention-mean';
 
 type ConfirmationModalProps = {
@@ -46,7 +46,7 @@ export default function ConfirmationModal({
       <Modal.Body>
         <VStack space={3}>
           <HStack alignItems="center" justifyContent="space-around">
-            <Text fontSize="20px" flex={1} textAlign="center">
+            <Text fontSize="20px" flex={1} textAlign="left">
               Au CRM à
             </Text>
             {crmArrival === null ? (
@@ -68,7 +68,7 @@ export default function ConfirmationModal({
           </HStack>
 
           <HStack alignItems="center" justifyContent="space-around">
-            <Text fontSize="20px" flex={1} textAlign="center">
+            <Text fontSize="20px" flex={1} textAlign="left">
               Sur site à
             </Text>
             {sectorArrival === null ? (
@@ -91,7 +91,7 @@ export default function ConfirmationModal({
           </HStack>
 
           <HStack alignItems="center" justifyContent="space-around">
-            <Text fontSize="20px" flex={1} textAlign="center">
+            <Text fontSize="20px" flex={1} textAlign="left">
               Disponible à
             </Text>
             {availableAt === null ? (

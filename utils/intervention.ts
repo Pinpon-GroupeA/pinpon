@@ -1,15 +1,19 @@
 import { Tables, supabase } from './supabase';
 import { Coordinates } from '../types/global-types';
-import { Intervention, InterventionStatus } from '../types/intervention-types';
-
-export type CreateInterventionData = Omit<Intervention, 'id' | 'created_at' | 'is_ongoing'>;
+import {
+  CreateInterventionData,
+  Intervention,
+  InterventionStatus,
+} from '../types/intervention-types';
 
 export const createIntervention = async (interventionData: CreateInterventionData) => {
-  const { error } = await supabase.from('interventions').insert(interventionData);
+  const { data, error } = await supabase.from('interventions').insert(interventionData).select();
 
   if (error) {
     throw error;
   }
+
+  return data as Intervention[];
 };
 
 export const fetchInterventions = async (): Promise<Intervention[]> => {
