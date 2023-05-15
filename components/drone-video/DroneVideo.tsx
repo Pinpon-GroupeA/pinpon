@@ -15,7 +15,7 @@ export default function DroneVideo({ interventionId }: DroneVideoProps) {
   const fetchCurrentImage = async () => {
     const { data, error } = await supabase.storage
       .from('video')
-      .createSignedUrl(`${interventionId}/photo.png`, 30);
+      .createSignedUrl(`intervention_${interventionId}/photo.png`, 30);
 
     if (error) {
       ToastAndroid.show(error.message, ToastAndroid.SHORT);
