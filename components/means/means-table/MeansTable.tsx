@@ -78,6 +78,7 @@ export default function MeansTable({ means, requests }: MeansTableProps) {
                         sectorArrival: mean.sector_arrival,
                         availableAt: mean.available_at,
                         status: mean.status,
+                        meanLocation: mean.means.location,
                       })
                     }
                   />,

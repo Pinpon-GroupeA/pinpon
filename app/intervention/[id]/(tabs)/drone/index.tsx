@@ -50,6 +50,7 @@ export default function Drone() {
       interventionLocation={interventionLocation ?? { latitude: 0, longitude: 0 }}
       dronePosition={drone?.position ?? { latitude: 0, longitude: 0 }}
       isStopped={drone?.is_stopped ?? true}
+      trajectType={drone?.traject_type ?? 'OPENED_CIRCUIT'}
     />
   );
 }

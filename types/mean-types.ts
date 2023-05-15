@@ -60,6 +60,7 @@ export type MeanModalContent = {
   sectorArrival: string | null;
   availableAt: string | null;
   status: InterventionMeanStatus;
+  meanLocation: Coordinates;
 };
 
 export type MeanTypeToRequest = MeanType & {

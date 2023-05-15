@@ -5,7 +5,6 @@ import { Box, Fab, Icon } from 'native-base';
 import { useEffect, useState } from 'react';
 import { LatLng, MapPressEvent, Marker, Polyline } from 'react-native-maps';
 
-import Colors from '../../constants/colors';
 import { DroneCoordinates, TrajectType } from '../../types/drone-types';
 import { Coordinates } from '../../types/global-types';
 import {
@@ -21,6 +20,7 @@ type MapBackgroundProps = {
   interventionId: string | string[] | undefined;
   traject: DroneCoordinates[];
   isStopped: boolean;
+  trajectType: TrajectType;
 };
 
 function DroneMapPage({
@@ -29,6 +29,7 @@ function DroneMapPage({
   dronePosition,
   interventionLocation,
   isStopped,
+  trajectType,
 }: MapBackgroundProps) {
   const { mutateAsync: updateTraject } = useMutation({
     mutationFn: (positions: DroneCoordinates[]) => updateDroneTraject(positions, interventionId),
@@ -39,12 +40,11 @@ function DroneMapPage({
   });
 
   const { mutateAsync: updateTrajectType } = useMutation({
-    mutationFn: (data: { type: TrajectType }) => updateDroneTrajectType(data.type, interventionId),
+    mutationFn: (type: TrajectType) => updateDroneTrajectType(type, interventionId),
   });
 
-  const [markers, setMarkers] = useState<DroneCoordinates[]>(traject);
+  const [markers, setMarkers] = useState<DroneCoordinates[]>([]);
   const [draw, setDraw] = useState(false);
-  const [trajectType, setTrajectType] = useState<TrajectType>('OPENED_CIRCUIT');
   const router = useRouter();
 
   useEffect(() => {
@@ -68,8 +68,24 @@ function DroneMapPage({
       <Fab
         renderInPortal={false}
         placement="bottom-right"
+        right="216px"
+        disabled={draw}
+        backgroundColor={isStopped ? '#19837C' : 'white'}
+        icon={
+          isStopped ? (
+            <Icon as={MaterialCommunityIcons} name="play" size={6} color="white" />
+          ) : (
+            <Icon as={MaterialCommunityIcons} name="pause" size={6} color="black" />
+          )
+        }
+        onPress={() => updateIsStopped(!isStopped)}
+      />
+      <Fab
+        renderInPortal={false}
+        isDisabled={!isStopped}
+        placement="bottom-right"
         right="148px"
-        backgroundColor={draw ? 'white' : Colors.TURQUOISE}
+        backgroundColor={draw ? 'white' : '#19837C'}
         icon={
           draw ? (
             <Icon as={MaterialCommunityIcons} name="stop" size={6} color="black" />
@@ -85,34 +101,11 @@ function DroneMapPage({
         }}
       />
       <Fab
-        icon={<Icon as={FontAwesome5} name="trash" size={5} color="white" />}
-        backgroundColor={Colors.TURQUOISE}
         renderInPortal={false}
-        onPress={() => {
-          setMarkers([]);
-          updateTraject([]);
-        }}
-        placement="bottom-right"
-      />
-      <Fab
-        renderInPortal={false}
-        placement="bottom-right"
-        right="216px"
-        backgroundColor={isStopped ? Colors.TURQUOISE : 'white'}
-        icon={
-          isStopped ? (
-            <Icon as={MaterialCommunityIcons} name="play" size={6} color="white" />
-          ) : (
-            <Icon as={MaterialCommunityIcons} name="pause" size={6} color="black" />
-          )
-        }
-        onPress={() => updateIsStopped(!isStopped)}
-      />
-      <Fab
-        renderInPortal={false}
+        disabled={!isStopped || draw}
         right="80px"
         placement="bottom-right"
-        backgroundColor={trajectType === 'CLOSED_CIRCUIT' ? Colors.TURQUOISE : 'white'}
+        backgroundColor={trajectType === 'CLOSED_CIRCUIT' ? '#19837C' : 'white'}
         icon={
           trajectType === 'CLOSED_CIRCUIT' ? (
             <Icon as={MaterialCommunityIcons} name="vector-square-open" size={6} color="white" />
@@ -122,14 +115,23 @@ function DroneMapPage({
         }
         onPress={() => {
           if (trajectType === 'CLOSED_CIRCUIT') {
-            updateTrajectType({ type: 'OPENED_CIRCUIT' });
-            setTrajectType('OPENED_CIRCUIT');
+            updateTrajectType('OPENED_CIRCUIT');
           } else {
-            updateTrajectType({ type: 'CLOSED_CIRCUIT' });
-            setTrajectType('CLOSED_CIRCUIT');
+            updateTrajectType('CLOSED_CIRCUIT');
           }
         }}
       />
+      <Fab
+        icon={<Icon as={FontAwesome5} name="trash" size={5} color="white" />}
+        disabled={!isStopped || draw}
+        backgroundColor="#19837C"
+        renderInPortal={false}
+        onPress={() => {
+          updateTraject([]);
+        }}
+        placement="bottom-right"
+      />
+
       <MapBackground handlePress={handlePress} initialRegion={interventionLocation}>
         {markers.map((marker, i) => (
           <Marker

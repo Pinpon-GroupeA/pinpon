@@ -145,9 +145,8 @@ function InterventionMap({
           meanId: selectedSymbol.id,
           status: meanStatus === 'returning_crm' ? 'changing_position' : 'arriving_on_site',
         });
-
-        setSelectedSymbol(undefined);
       }
+      setSelectedSymbol(undefined);
     }
   };
 
@@ -177,6 +176,7 @@ function InterventionMap({
       sectorArrival: mean.sector_arrival,
       availableAt: mean.available_at,
       status: mean.status,
+      meanLocation: mean.means.location,
     });
   };
 
