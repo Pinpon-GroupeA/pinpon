@@ -5,7 +5,12 @@ export type Coordinates = {
 
 export type DangerCode = 'INC' | 'SAP' | 'EAU' | 'PART' | 'COM' | 'OTHER';
 
-export type SymbolsType = 'FireFighterVehicle' | 'Star' | 'InvertedTriangle' | 'Triangle';
+export type SymbolsType =
+  | 'FireFighterVehicle'
+  | 'Star'
+  | 'InvertedTriangle'
+  | 'Triangle'
+  | 'Explosion';
 
 export type SizeType = {
   width: number;

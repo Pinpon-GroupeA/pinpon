@@ -1,4 +1,4 @@
-import { Box, Divider } from 'native-base';
+import { Box, Divider, ScrollView } from 'native-base';
 import { useState } from 'react';
 
 import ColorSelection from './ColorSelection';
@@ -14,7 +14,7 @@ const SymbolsPane = ({ fireFighterMeans }: SymbolsPaneProps) => {
   const [openModal, setOpenModal] = useState<boolean>(false);
 
   return (
-    <Box>
+    <ScrollView>
       <ColorSelection isOpen={openModal} onClose={() => setOpenModal(false)} />
       <Box flexDir="row">
         <Box width="50%">
@@ -25,7 +25,7 @@ const SymbolsPane = ({ fireFighterMeans }: SymbolsPaneProps) => {
           <SymbolList />
         </Box>
       </Box>
-    </Box>
+    </ScrollView>
   );
 };
 

@@ -42,7 +42,7 @@ export type InterventionMeanStatus =
   | 'changing_position'
   | 'available';
 
-export type MeanCategory = 'PS' | 'SD' | 'ZA' | 'PL';
+export type MeanCategory = 'PS' | 'SD' | 'ZA' | 'PL' | 'CA';
 
 export type MeanTypeEnum = 'VSAV' | 'FPT' | 'VLCG' | 'OTHER';
 
