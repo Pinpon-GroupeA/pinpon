@@ -6,7 +6,7 @@ import { Controller, useForm } from 'react-hook-form';
 import Colors from '../../constants/colors';
 import useLogin from '../../hooks/useLogin';
 import { useAppStore } from '../../stores/store';
-import { UserType } from '../../types/user';
+import { supabase } from '../../utils/supabase';
 import ErrorModal from '../ErrorModal';
 
 type FormInputs = {
@@ -25,11 +25,15 @@ export default function LoginForm() {
   const { mutateAsync, isLoading } = useLogin();
   const setUserType = useAppStore((state) => state.setRole);
 
-  const signIn = async (email: string, password: string, type: UserType) => {
+  const signIn = async (email: string, password: string) => {
     try {
       await mutateAsync({ email, password });
-      setUserType(type);
-      router.replace('/intervention');
+      const role = await supabase.from('users').select('role').eq('email', email);
+      if (role.data !== null) {
+        setUserType(role.data[0].role);
+        console.log(role.data[0].role);
+        router.replace('/intervention');
+      }
     } catch (error) {
       setError((error as Error).message);
     }
@@ -38,7 +42,7 @@ export default function LoginForm() {
   return (
     <ScrollView>
       <Center w="100%">
-        <Box p="2" py="8" w="90%" maxW="290">
+        <Box safeArea p="2" py="8" w="90%" maxW="290">
           <Heading
             size="lg"
             fontWeight="600"
@@ -69,7 +73,7 @@ export default function LoginForm() {
                 name="email"
                 render={({ field: { onChange, onBlur } }) => (
                   <Input
-                    variant="filled"
+                    variant="filledr"
                     onBlur={onBlur}
                     onChangeText={onChange}
                     bgColor="white"
@@ -101,21 +105,12 @@ export default function LoginForm() {
               mt="2"
               disabled={isLoading}
               colorScheme="teal"
-              onPress={handleSubmit(({ email, password }) => signIn(email, password, 'CODIS'))}
+              onPress={handleSubmit(({ email, password }) => signIn(email, password))}
             >
-              Connexion CODIS
-            </Button>
-            <Button
-              mt="2"
-              disabled={isLoading}
-              colorScheme="teal"
-              onPress={handleSubmit(({ email, password }) => signIn(email, password, 'COS'))}
-            >
-              Connexion COS
+              Connexion
             </Button>
           </VStack>
         </Box>
-
         <ErrorModal message={error} isOpen={error !== ''} onClose={() => setError('')} />
       </Center>
     </ScrollView>
