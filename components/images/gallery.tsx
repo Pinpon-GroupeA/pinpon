@@ -1,5 +1,6 @@
-import { useSearchParams } from 'expo-router';
-import { Heading, Image, ScrollView, Text, VStack } from 'native-base';
+import { AntDesign } from '@expo/vector-icons';
+import { useRouter, useSearchParams } from 'expo-router';
+import { Fab, HStack, Icon, Image, ScrollView, Text, VStack } from 'native-base';
 import { useEffect, useState } from 'react';
 
 import { ImageData } from '../../types/drone-types';
@@ -13,6 +14,7 @@ type GalleryProps = {
 
 export default function Gallery({ longitude, latitude }: GalleryProps) {
   const { id: interventionId } = useSearchParams();
+  const router = useRouter();
   const [images, setImages] = useState<ImageData[]>([]);
 
   const bucketName = 'photo';
@@ -55,17 +57,41 @@ export default function Gallery({ longitude, latitude }: GalleryProps) {
   }, []);
 
   if (!images || !images.length) {
-    return <Heading>Pas d'images disponibles</Heading>;
+    return (
+      <>
+        <HStack height="100%" alignItems="center">
+          <VStack width="100%" alignItems="center">
+            <Text fontSize="3xl">Pas d'images disponibles</Text>
+          </VStack>
+        </HStack>
+        <Fab
+          placement="top-left"
+          bgColor="#19837C"
+          icon={<Icon color="white" as={AntDesign} name="caretleft" size="4" />}
+          onPress={() => router.back()}
+          renderInPortal={false}
+        />
+      </>
+    );
   }
 
   return (
-    <ScrollView>
-      {images?.map((image: { file: string; name: string }, i: number) => (
-        <VStack key={i.toString()} alignItems="center" mb="5">
-          <Image source={{ uri: image.file }} alt={i.toString()} w="650" h="300" mb="3" />
-          <Text fontSize="xl">{image.name}</Text>
-        </VStack>
-      ))}
-    </ScrollView>
+    <>
+      <ScrollView>
+        {images?.map((image: { file: string; name: string }, i: number) => (
+          <VStack key={`${i}`} alignItems="center" mb="5">
+            <Image source={{ uri: image.file }} alt={`Photo n°${i}`} w="650" h="300" mb="3" />
+            <Text fontSize="xl">{image.name}</Text>
+          </VStack>
+        ))}
+      </ScrollView>
+      <Fab
+        placement="top-left"
+        bgColor="#19837C"
+        icon={<Icon color="white" as={AntDesign} name="caretleft" size="4" />}
+        onPress={() => router.back()}
+        renderInPortal={false}
+      />
+    </>
   );
 }
