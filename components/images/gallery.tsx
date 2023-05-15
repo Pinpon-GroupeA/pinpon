@@ -80,7 +80,7 @@ export default function Gallery({ longitude, latitude }: GalleryProps) {
       <ScrollView>
         {images?.map((image: { file: string; name: string }, i: number) => (
           <VStack key={`${i}`} alignItems="center" mb="5">
-            <Image source={{ uri: image.file }} alt={i.toString()} w="650" h="300" mb="3" />
+            <Image source={{ uri: image.file }} alt={`Photo n°${i}`} w="650" h="300" mb="3" />
             <Text fontSize="xl">{image.name}</Text>
           </VStack>
         ))}
