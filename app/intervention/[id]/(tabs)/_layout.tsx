@@ -37,6 +37,13 @@ export default function InterventionDetailsLayout() {
           tabBarIcon: ({ color }) => <TabBarIcon name="plane" color={color} />,
         }}
       />
+      <Tabs.Screen
+        name="video"
+        options={{
+          title: 'Vidéo',
+          tabBarIcon: ({ color }) => <TabBarIcon name="video-camera" color={color} />,
+        }}
+      />
     </Tabs>
   );
 }

@@ -59,7 +59,6 @@ export default function InterventionList({ interventions }: InterventionListProp
           Interventions
         </Heading>
         {isCodis && <Icon as={AntDesign} name="caretright" color="dark.600" size={6} />}
-
         {isCodis && (
           <Heading fontSize="3xl" fontWeight="normal" onPress={() => router.push('/requests')}>
             Moyens Demandés
