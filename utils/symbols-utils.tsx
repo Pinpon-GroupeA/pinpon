@@ -4,6 +4,7 @@ import { findDangerCodeFromColor, getDangerCodeColor } from './danger-code';
 import CustomInvertedTriangle from '../components/map/symbols/CustomInvertedTriangle';
 import CustomStar from '../components/map/symbols/CustomStar';
 import CustomTriangle from '../components/map/symbols/CustomTriangle';
+import Explosion from '../components/map/symbols/Explosion';
 import { Coordinates, DangerCode, SymbolsType } from '../types/global-types';
 import { MeanCategory, OtherMean } from '../types/mean-types';
 
@@ -15,6 +16,8 @@ export const selectRightSymbol = (meanCategory: MeanCategory, dangerCode: Danger
       return <CustomTriangle color={getDangerCodeColor(dangerCode)} />;
     case 'Star':
       return <CustomStar color={getDangerCodeColor(dangerCode)} />;
+    case 'Explosion':
+      return <Explosion color={getDangerCodeColor(dangerCode)} />;
     default:
       return <Text> Erreur </Text>;
   }
@@ -27,6 +30,8 @@ export const getSymbolNameTypeFromMeanCategory = (meanCategory: MeanCategory) =>
     case 'SD':
       return 'Triangle';
     case 'ZA':
+      return 'Explosion';
+    case 'CA':
       return 'Star';
     default:
       return 'Error';
@@ -40,6 +45,8 @@ export const getMeanCategoryFromSymbolType = (symbolType: SymbolsType) => {
     case 'Triangle':
       return 'SD';
     case 'Star':
+      return 'CA';
+    case 'Explosion':
       return 'ZA';
     default:
       return 'Error';
