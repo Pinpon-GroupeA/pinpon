@@ -26,6 +26,6 @@ export type DroneData = {
 };
 
 export type ImageData = {
-  file: string,
-  name: string
+  file: string;
+  name: string;
 };
