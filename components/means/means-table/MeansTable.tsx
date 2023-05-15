@@ -5,6 +5,7 @@ import { LogBox } from 'react-native';
 import { Table, Row } from 'react-native-table-component';
 
 import ConfirmationModal from './ConfirmationModal';
+import Colors from '../../../constants/colors';
 import { InterventionMean, MeanModalContent } from '../../../types/mean-types';
 import { Request } from '../../../types/request-types';
 import { getMilitaryTime } from '../../../utils/date';
@@ -36,17 +37,17 @@ export default function MeansTable({ means, requests }: MeansTableProps) {
 
   return (
     <Box marginX={3}>
-      <Heading pt={3} pb={5} size="xl" color="#19837C">
+      <Heading pt={3} pb={5} size="xl" color={Colors.TURQUOISE}>
         Tableau des moyens
       </Heading>
 
       <Box marginX={3} paddingBottom={300}>
-        <Table borderStyle={{ borderWidth: 2, borderColor: '#F2F2F2' }}>
+        <Table borderStyle={{ borderWidth: 2, borderColor: Colors.BACKGROUND_GREY }}>
           <Row
             data={tableHead}
             flexArr={[1, 1, 1, 1, 1, 1, 0.5]}
             textStyle={{ fontWeight: 'bold', textAlign: 'center', fontSize: 17 }}
-            style={{ backgroundColor: '#19837C30' }}
+            style={{ backgroundColor: Colors.TURQUOISE30 }}
           />
         </Table>
         <ScrollView>
@@ -67,7 +68,7 @@ export default function MeansTable({ means, requests }: MeansTableProps) {
                     flex={1}
                     alignItems="center"
                     marginX={2}
-                    _pressed={{ backgroundColor: '#19837C50', borderRadius: '20' }}
+                    _pressed={{ backgroundColor: Colors.TURQUOISE50, borderRadius: '20' }}
                     icon={<Icon as={Entypo} name="pencil" color="black" size={6} />}
                     onPress={() =>
                       setModalContent({
@@ -86,7 +87,7 @@ export default function MeansTable({ means, requests }: MeansTableProps) {
                 style={
                   (index + means.length) % 2
                     ? { backgroundColor: 'white', padding: 1 }
-                    : { backgroundColor: '#0000', padding: 1 }
+                    : { backgroundColor: Colors.TRANSPARENT, padding: 1 }
                 }
               />
             ))}
@@ -104,7 +105,7 @@ export default function MeansTable({ means, requests }: MeansTableProps) {
                     flex={1}
                     alignItems="center"
                     marginX={2}
-                    _pressed={{ backgroundColor: '#19837C50', borderRadius: '20' }}
+                    _pressed={{ backgroundColor: Colors.TURQUOISE50, borderRadius: '20' }}
                     icon={<Icon as={Entypo} name="cross" color="black" size={7} />}
                     onPress={() => setRequestId(request.id)}
                   />,
@@ -113,7 +114,7 @@ export default function MeansTable({ means, requests }: MeansTableProps) {
                 textStyle={{ textAlign: 'center', fontSize: 16 }}
                 style={[
                   (index + means.length) % 2
-                    ? { backgroundColor: '#0000' }
+                    ? { backgroundColor: Colors.TRANSPARENT }
                     : { backgroundColor: 'white' },
                 ]}
               />

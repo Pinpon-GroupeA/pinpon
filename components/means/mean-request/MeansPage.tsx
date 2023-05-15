@@ -3,6 +3,7 @@ import { Box, Fab, Modal } from 'native-base';
 import { useState } from 'react';
 
 import ModalMeansRequest from './ModalMeansRequest';
+import Colors from '../../../constants/colors';
 import { InterventionMean, MeanType } from '../../../types/mean-types';
 import { Request } from '../../../types/request-types';
 import { fetchMeansTypes } from '../../../utils/means-type';
@@ -27,7 +28,7 @@ function MeansPage({ means, requests }: MeansPageProps) {
         label="Demande de moyens"
         isLoading={meanTypes === undefined}
         isLoadingText="Récupération des moyens possibles..."
-        backgroundColor="#19837C"
+        backgroundColor={Colors.TURQUOISE}
         onPress={() => setShowModal(true)}
         renderInPortal={false}
         placement="bottom-right"

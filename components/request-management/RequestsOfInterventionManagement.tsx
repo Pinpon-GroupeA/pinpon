@@ -12,6 +12,7 @@ import {
   useToast,
 } from 'native-base';
 
+import Colors from '../../constants/colors';
 import { Request } from '../../types/request-types';
 import { dateTimeFormattingOptions } from '../../utils/date';
 import { InterventionMeanCreateType, createInterventionMean } from '../../utils/intervention-mean';
@@ -86,7 +87,7 @@ export default function RequestsOfInterventionManagement({
 
   return (
     <Box marginX={6} flex={1}>
-      <Heading pt={3} size="xl" color="#19837C">
+      <Heading pt={3} size="xl" color={Colors.TURQUOISE}>
         Moyens demandés
       </Heading>
 
@@ -109,7 +110,7 @@ export default function RequestsOfInterventionManagement({
               py={1}
               borderWidth={1}
               borderColor="dark.600"
-              backgroundColor="#F2F2F2"
+              backgroundColor={Colors.BACKGROUND_GREY}
             >
               <HStack justifyContent="space-between">
                 <VStack>

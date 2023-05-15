@@ -1,8 +1,9 @@
 import { useRouter } from 'expo-router';
-import { Box, Button, Center, FormControl, Heading, Input, VStack } from 'native-base';
+import { Box, Button, Center, FormControl, Heading, Input, ScrollView, VStack } from 'native-base';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
+import Colors from '../../constants/colors';
 import useLogin from '../../hooks/useLogin';
 import { useAppStore } from '../../stores/store';
 import { UserType } from '../../types/user';
@@ -35,85 +36,88 @@ export default function LoginForm() {
   };
 
   return (
-    <Center w="100%">
-      <Box safeArea p="2" py="8" w="90%" maxW="290">
-        <Heading
-          size="lg"
-          fontWeight="600"
-          color="coolGray.800"
-          _dark={{
-            color: 'warmGray.50',
-          }}
-        >
-          🚨 Pinpon
-        </Heading>
-        <Heading
-          mt="1"
-          _dark={{
-            color: 'warmGray.200',
-          }}
-          color="coolGray.600"
-          fontWeight="medium"
-          size="xs"
-        >
-          Connectez-vous pour continuer
-        </Heading>
+    <ScrollView>
+      <Center w="100%">
+        <Box p="2" py="8" w="90%" maxW="290">
+          <Heading
+            size="lg"
+            fontWeight="600"
+            color="coolGray.800"
+            _dark={{
+              color: 'warmGray.50',
+            }}
+          >
+            🚨 Pinpon
+          </Heading>
+          <Heading
+            mt="1"
+            _dark={{
+              color: 'warmGray.200',
+            }}
+            color="coolGray.600"
+            fontWeight="medium"
+            size="xs"
+          >
+            Connectez-vous pour continuer
+          </Heading>
 
-        <VStack space={3} mt="5">
-          <FormControl isRequired>
-            <FormControl.Label>Email</FormControl.Label>
-            <Controller
-              control={control}
-              name="email"
-              render={({ field: { onChange, onBlur } }) => (
-                <Input
-                  variant="filledr"
-                  onBlur={onBlur}
-                  onChangeText={onChange}
-                  bgColor="white"
-                  _focus={{ borderColor: '#19837C' }}
-                />
-              )}
-            />
-            <FormControl.ErrorMessage>{errors.email?.message}</FormControl.ErrorMessage>
-          </FormControl>
-          <FormControl isRequired>
-            <FormControl.Label>Mot de passe</FormControl.Label>
-            <Controller
-              control={control}
-              name="password"
-              render={({ field: { onChange, onBlur } }) => (
-                <Input
-                  variant="filled"
-                  type="password"
-                  onBlur={onBlur}
-                  onChangeText={onChange}
-                  bgColor="white"
-                  _focus={{ borderColor: '#19837C' }}
-                />
-              )}
-            />
-            <FormControl.ErrorMessage>{errors.password?.message}</FormControl.ErrorMessage>
-          </FormControl>
-          <Button
-            mt="2"
-            disabled={isLoading}
-            colorScheme="teal"
-            onPress={handleSubmit(({ email, password }) => signIn(email, password, 'CODIS'))}
-          >
-            Connexion CODIS
-          </Button>
-          <Button
-            mt="2"
-            disabled={isLoading}
-            colorScheme="teal"
-            onPress={handleSubmit(({ email, password }) => signIn(email, password, 'COS'))}
-          >
-            Connexion COS
-          </Button>
-        </VStack>
-      </Box>
-      <ErrorModal message={error} isOpen={error !== ''} onClose={() => setError('')} />
-    </Center>
+          <VStack space={3} mt="5">
+            <FormControl isRequired>
+              <FormControl.Label>Email</FormControl.Label>
+              <Controller
+                control={control}
+                name="email"
+                render={({ field: { onChange, onBlur } }) => (
+                  <Input
+                    variant="filled"
+                    onBlur={onBlur}
+                    onChangeText={onChange}
+                    bgColor="white"
+                    _focus={{ borderColor: Colors.TURQUOISE }}
+                  />
+                )}
+              />
+              <FormControl.ErrorMessage>{errors.email?.message}</FormControl.ErrorMessage>
+            </FormControl>
+            <FormControl isRequired>
+              <FormControl.Label>Mot de passe</FormControl.Label>
+              <Controller
+                control={control}
+                name="password"
+                render={({ field: { onChange, onBlur } }) => (
+                  <Input
+                    variant="filled"
+                    type="password"
+                    onBlur={onBlur}
+                    onChangeText={onChange}
+                    bgColor="white"
+                    _focus={{ borderColor: Colors.TURQUOISE }}
+                  />
+                )}
+              />
+              <FormControl.ErrorMessage>{errors.password?.message}</FormControl.ErrorMessage>
+            </FormControl>
+            <Button
+              mt="2"
+              disabled={isLoading}
+              colorScheme="teal"
+              onPress={handleSubmit(({ email, password }) => signIn(email, password, 'CODIS'))}
+            >
+              Connexion CODIS
+            </Button>
+            <Button
+              mt="2"
+              disabled={isLoading}
+              colorScheme="teal"
+              onPress={handleSubmit(({ email, password }) => signIn(email, password, 'COS'))}
+            >
+              Connexion COS
+            </Button>
+          </VStack>
+        </Box>
+
+        <ErrorModal message={error} isOpen={error !== ''} onClose={() => setError('')} />
+      </Center>
+    </ScrollView>
   );
 }

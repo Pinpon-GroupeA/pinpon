@@ -5,6 +5,11 @@ const Colors = {
   PURPLE: '#8E44AD',
   BLACK: '#0D0C0C',
   BLUE: '#2D3ED3',
+  BACKGROUND_GREY: '#F2F2F2',
+  TURQUOISE: '#19837C',
+  TURQUOISE50: '#19837C50',
+  TURQUOISE30: '#19837C30',
+  TRANSPARENT: '#0000',
 };
 
 export default Colors;

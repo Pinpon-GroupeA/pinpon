@@ -15,6 +15,7 @@ import {
   useToast,
 } from 'native-base';
 
+import Colors from '../../constants/colors';
 import { Request } from '../../types/request-types';
 import { dateTimeFormattingOptions } from '../../utils/date';
 import { InterventionMeanCreateType, createInterventionMean } from '../../utils/intervention-mean';
@@ -85,13 +86,12 @@ export default function RequestsManagement({ interventions, requests }: Requests
   return (
     <Box>
       <HStack my={3} mx={6} justifyContent="space-evenly" alignItems="center">
-        <Heading size="xl" color="#19837C">
-          Moyens demandés
-        </Heading>
-        <Icon as={AntDesign} name="caretleft" color="dark.600" size={6} />
-
         <Heading fontSize="3xl" fontWeight="normal" onPress={() => router.push('/intervention')}>
           Interventions
+        </Heading>
+        <Icon as={AntDesign} name="caretleft" color="dark.600" size={6} />
+        <Heading fontSize="3xl" color={Colors.TURQUOISE}>
+          Moyens demandés
         </Heading>
       </HStack>
       <ScrollView mb="16">
@@ -119,7 +119,7 @@ export default function RequestsManagement({ interventions, requests }: Requests
                     py={1}
                     borderWidth={1}
                     borderColor="dark.600"
-                    backgroundColor="#F2F2F2"
+                    backgroundColor={Colors.BACKGROUND_GREY}
                   >
                     <HStack justifyContent="space-between">
                       <VStack>

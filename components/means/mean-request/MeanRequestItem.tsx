@@ -1,6 +1,7 @@
 import { Button, FormControl, HStack, Text } from 'native-base';
 import React from 'react';
 
+import Colors from '../../../constants/colors';
 import { MeanTypeToRequest } from '../../../types/mean-types';
 
 type MeanRequestItemProps = {
@@ -26,12 +27,16 @@ export default function MeanRequestItem({
           variant="ghost"
           disabled={meanToRequest.numberOfRequests < 1}
           onPress={onDecrementClicked}
-          _pressed={{ bgColor: '#19837C30' }}
+          _pressed={{ bgColor: Colors.TURQUOISE30 }}
         >
           -
         </Button>
         <Text>{meanToRequest.numberOfRequests}</Text>
-        <Button variant="ghost" onPress={onIncrementClicked} _pressed={{ bgColor: '#19837C30' }}>
+        <Button
+          variant="ghost"
+          onPress={onIncrementClicked}
+          _pressed={{ bgColor: Colors.TURQUOISE30 }}
+        >
           +
         </Button>
       </HStack>

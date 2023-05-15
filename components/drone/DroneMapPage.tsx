@@ -5,6 +5,7 @@ import { Box, Fab, Icon } from 'native-base';
 import { useEffect, useState } from 'react';
 import { LatLng, MapPressEvent, Marker, Polyline } from 'react-native-maps';
 
+import Colors from '../../constants/colors';
 import { DroneCoordinates, TrajectType } from '../../types/drone-types';
 import { Coordinates } from '../../types/global-types';
 import {
@@ -68,7 +69,7 @@ function DroneMapPage({
         renderInPortal={false}
         placement="bottom-right"
         right="148px"
-        backgroundColor={draw ? 'white' : '#19837C'}
+        backgroundColor={draw ? 'white' : Colors.TURQUOISE}
         icon={
           draw ? (
             <Icon as={MaterialCommunityIcons} name="stop" size={6} color="black" />
@@ -85,7 +86,7 @@ function DroneMapPage({
       />
       <Fab
         icon={<Icon as={FontAwesome5} name="trash" size={5} color="white" />}
-        backgroundColor="#19837C"
+        backgroundColor={Colors.TURQUOISE}
         renderInPortal={false}
         onPress={() => {
           setMarkers([]);
@@ -97,7 +98,7 @@ function DroneMapPage({
         renderInPortal={false}
         placement="bottom-right"
         right="216px"
-        backgroundColor={isStopped ? '#19837C' : 'white'}
+        backgroundColor={isStopped ? Colors.TURQUOISE : 'white'}
         icon={
           isStopped ? (
             <Icon as={MaterialCommunityIcons} name="play" size={6} color="white" />
@@ -111,7 +112,7 @@ function DroneMapPage({
         renderInPortal={false}
         right="80px"
         placement="bottom-right"
-        backgroundColor={trajectType === 'CLOSED_CIRCUIT' ? '#19837C' : 'white'}
+        backgroundColor={trajectType === 'CLOSED_CIRCUIT' ? Colors.TURQUOISE : 'white'}
         icon={
           trajectType === 'CLOSED_CIRCUIT' ? (
             <Icon as={MaterialCommunityIcons} name="vector-square-open" size={6} color="white" />
