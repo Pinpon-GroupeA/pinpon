@@ -19,7 +19,7 @@ type ConfirmationModalProps = {
 };
 
 export default function ConfirmationModal({
-  content: { id, crmArrival, sectorArrival, availableAt, status, meanId },
+  content: { id, crmArrival, sectorArrival, availableAt, status, meanId, meanLocation },
   closeModal,
 }: ConfirmationModalProps) {
   const { mutateAsync: updateCrmDate } = useMutation({
@@ -90,6 +90,7 @@ export default function ConfirmationModal({
               <Button
                 flex={1}
                 bgColor={Colors.TURQUOISE}
+                isDisabled={meanLocation === null}
                 onPress={() => {
                   if (crmArrival === null) {
                     updateCrmDate();
@@ -119,6 +120,12 @@ export default function ConfirmationModal({
                 flex={1}
                 bgColor={Colors.TURQUOISE}
                 onPress={() => {
+                  if (crmArrival === null) {
+                    updateCrmDate();
+                  }
+                  if (sectorArrival === null) {
+                    updateSectorDate();
+                  }
                   updateAvailableDate();
                   updateStatus('available');
                   setMeanAvailable();
