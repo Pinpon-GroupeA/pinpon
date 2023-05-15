@@ -4,6 +4,7 @@ import { Button, Modal, Text, VStack, useToast } from 'native-base';
 import React, { useState } from 'react';
 
 import MeanRequestItem from './MeanRequestItem';
+import Colors from '../../../constants/colors';
 import { MeanType, MeanTypeToRequest } from '../../../types/mean-types';
 import { CreateRequestData, createRequests } from '../../../utils/requests-type';
 import Alert from '../../Alert';
@@ -82,11 +83,11 @@ export default function ModalMeansRequest({ meanTypes, setShowModal }: ModalMean
     <Modal.Content maxWidth="500">
       <Modal.CloseButton />
       <Modal.Header alignItems="center">
-        <Text color="#19837C" fontSize="2xl" fontWeight="semibold">
+        <Text color={Colors.TURQUOISE} fontSize="2xl" fontWeight="semibold">
           Demande de moyens
         </Text>
       </Modal.Header>
-      <Modal.Body backgroundColor="#F2F2F2">
+      <Modal.Body backgroundColor={Colors.BACKGROUND_GREY}>
         <VStack>
           {requestedMeanTypes.length === 0 ? (
             <Text textAlign="center" fontStyle="italic">
@@ -110,7 +111,7 @@ export default function ModalMeansRequest({ meanTypes, setShowModal }: ModalMean
           isLoading={isLoading}
           isLoadingText="Envoi en cours..."
           onPress={handleSend}
-          bgColor="#19837C"
+          bgColor={Colors.TURQUOISE}
           isDisabled={isSendingPossible}
         >
           Envoyer

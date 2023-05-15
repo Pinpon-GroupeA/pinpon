@@ -8,6 +8,7 @@ import { MapPressEvent, Marker, MarkerDragStartEndEvent, Polyline } from 'react-
 import AlertDialogComponent from './AlertDialogComponent';
 import CustomCircle from './symbols/CustomCircle';
 import FireFighterVehicle from './symbols/FireFighterVehicle';
+import Colors from '../../constants/colors';
 import { useAppStore } from '../../stores/store';
 import { Coordinates, DangerCode } from '../../types/global-types';
 import {
@@ -271,7 +272,7 @@ function InterventionMap({
       <Fab
         renderInPortal={false}
         placement="bottom-right"
-        backgroundColor={polylineDrawMode ? 'white' : '#19837C'}
+        backgroundColor={polylineDrawMode ? 'white' : Colors.TURQUOISE}
         icon={
           polylineDrawMode ? (
             <Icon as={MaterialCommunityIcons} name="stop" size={6} color="black" />

@@ -19,12 +19,23 @@ function ColorSelection({ isOpen, onClose }: ColorSelectionProps) {
     setSelectColor(!selectColor);
   };
 
+  const colorsList = [
+    Colors.RED,
+    Colors.BLUE,
+    Colors.GREEN,
+    Colors.ORANGE,
+    Colors.PURPLE,
+    Colors.BLACK,
+  ];
+
   return (
     <Box alignItems="center" flexDirection="column" justifyContent="space-evenly" mb="3">
       <Text>Type :</Text>
       <HStack space={1} alignContent="center">
         {!selectColor && (
           <Button
+            width="6"
+            height="6"
             backgroundColor={drawingsColor}
             onPress={() => {
               handleSelectColor();
@@ -32,49 +43,19 @@ function ColorSelection({ isOpen, onClose }: ColorSelectionProps) {
           />
         )}
         {selectColor && (
-          <Box flexDirection="row" flexWrap="wrap" justifyContent="space-between">
-            <Button
-              backgroundColor={Colors.RED}
-              onPress={() => {
-                setDrawingsColor(Colors.RED);
-                handleSelectColor();
-              }}
-            />
-            <Button
-              backgroundColor={Colors.BLUE}
-              onPress={() => {
-                setDrawingsColor(Colors.BLUE);
-                handleSelectColor();
-              }}
-            />
-            <Button
-              backgroundColor={Colors.GREEN}
-              onPress={() => {
-                setDrawingsColor(Colors.GREEN);
-                handleSelectColor();
-              }}
-            />
-            <Button
-              backgroundColor={Colors.ORANGE}
-              onPress={() => {
-                setDrawingsColor(Colors.ORANGE);
-                handleSelectColor();
-              }}
-            />
-            <Button
-              backgroundColor={Colors.PURPLE}
-              onPress={() => {
-                setDrawingsColor(Colors.PURPLE);
-                handleSelectColor();
-              }}
-            />
-            <Button
-              backgroundColor={Colors.BLACK}
-              onPress={() => {
-                setDrawingsColor(Colors.BLACK);
-                handleSelectColor();
-              }}
-            />
+          <Box flex="1" flexDirection="row" flexWrap="wrap" justifyContent="space-around" px={2}>
+            {colorsList.map((color, index) => (
+              <Button
+                width="6"
+                height="6"
+                key={index}
+                backgroundColor={color}
+                onPress={() => {
+                  setDrawingsColor(color);
+                  handleSelectColor();
+                }}
+              />
+            ))}
           </Box>
         )}
       </HStack>

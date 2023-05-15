@@ -1,6 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { Button, HStack, Modal, Text, VStack } from 'native-base';
 
+import Colors from '../../../constants/colors';
 import { Coordinates } from '../../../types/global-types';
 import { InterventionMeanStatus, MeanModalContent } from '../../../types/mean-types';
 import { getMilitaryTime } from '../../../utils/date';
@@ -50,7 +51,7 @@ export default function ConfirmationModal({
     <Modal.Content>
       <Modal.CloseButton />
       <Modal.Header>
-        <Text color="#19837C" fontSize="xl" fontWeight="semibold" textAlign="center">
+        <Text color={Colors.TURQUOISE} fontSize="xl" fontWeight="semibold" textAlign="center">
           Confirmation des heures
         </Text>
       </Modal.Header>
@@ -63,7 +64,7 @@ export default function ConfirmationModal({
             {crmArrival === null ? (
               <Button
                 flex={1}
-                bgColor="#19837C"
+                bgColor={Colors.TURQUOISE}
                 onPress={() => {
                   if (status === 'arriving_crm') {
                     updateCrmDate();
@@ -88,7 +89,7 @@ export default function ConfirmationModal({
             {sectorArrival === null || status === 'changing_position' ? (
               <Button
                 flex={1}
-                bgColor="#19837C"
+                bgColor={Colors.TURQUOISE}
                 onPress={() => {
                   if (crmArrival === null) {
                     updateCrmDate();
@@ -116,7 +117,7 @@ export default function ConfirmationModal({
             {availableAt === null ? (
               <Button
                 flex={1}
-                bgColor="#19837C"
+                bgColor={Colors.TURQUOISE}
                 onPress={() => {
                   updateAvailableDate();
                   updateStatus('available');
@@ -136,7 +137,7 @@ export default function ConfirmationModal({
             <HStack alignItems="center" justifyContent="space-around">
               <Button
                 flex={1}
-                bgColor="#19837C"
+                bgColor={Colors.TURQUOISE}
                 onPress={() => {
                   updateStatus('returning_crm');
                   updateMeanLocationMutation({

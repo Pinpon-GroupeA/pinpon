@@ -4,6 +4,7 @@ import { Box, Fab, HStack, Heading, Icon, VStack, NativeBaseProvider } from 'nat
 import { SwipeListView } from 'react-native-swipe-list-view';
 
 import Intervention from './Intervention';
+import Colors from '../../constants/colors';
 import { useAppStore } from '../../stores/store';
 import { InterventionListData } from '../../types/intervention-types';
 import { supprInterventions } from '../../utils/intervention';
@@ -39,7 +40,7 @@ export default function InterventionList({ interventions }: InterventionListProp
     <NativeBaseProvider>
       <Box mx={3} h="100%">
         <HStack m={3} justifyContent={isCodis ? 'space-evenly' : 'flex-start'} alignItems="center">
-          <Heading fontSize="4xl" color="#19837C">
+          <Heading fontSize="4xl" color={Colors.TURQUOISE}>
             Interventions
           </Heading>
           {isCodis && <Icon as={AntDesign} name="caretright" color="dark.600" size={6} />}
@@ -72,7 +73,7 @@ export default function InterventionList({ interventions }: InterventionListProp
         {isCodis && (
           <Fab
             placement="bottom-right"
-            bgColor="#19837C"
+            bgColor={Colors.TURQUOISE}
             icon={<Icon color="white" as={AntDesign} name="plus" size="4" />}
             onPress={() => router.push('/intervention/create')}
             renderInPortal={false}

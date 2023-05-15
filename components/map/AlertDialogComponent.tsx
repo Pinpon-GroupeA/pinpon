@@ -1,6 +1,8 @@
 import { AlertDialog, Button } from 'native-base';
 import { useRef } from 'react';
 
+import Colors from '../../constants/colors';
+
 type AlertDialogComponentProps = {
   isOpen: boolean;
   onClose: () => void;
@@ -28,13 +30,13 @@ const AlertDialogComponent = ({
           <Button.Group space={2}>
             <Button
               variant="ghost"
-              _pressed={{ bgColor: '#19837C30' }}
+              _pressed={{ bgColor: Colors.TURQUOISE30 }}
               onPress={onClose}
               ref={cancelRef}
             >
               Annuler
             </Button>
-            <Button bgColor="#19837C" onPress={onConfirm}>
+            <Button bgColor={Colors.TURQUOISE} onPress={onConfirm}>
               Confirmer
             </Button>
           </Button.Group>
