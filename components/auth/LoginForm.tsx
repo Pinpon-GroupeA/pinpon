@@ -31,7 +31,6 @@ export default function LoginForm() {
       const role = await supabase.from('users').select('role').eq('email', email);
       if (role.data !== null) {
         setUserType(role.data[0].role);
-        console.log(role.data[0].role);
         router.replace('/intervention');
       }
     } catch (error) {
@@ -73,7 +72,7 @@ export default function LoginForm() {
                 name="email"
                 render={({ field: { onChange, onBlur } }) => (
                   <Input
-                    variant="filledr"
+                    variant="filled"
                     onBlur={onBlur}
                     onChangeText={onChange}
                     bgColor="white"

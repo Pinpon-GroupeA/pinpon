@@ -33,7 +33,6 @@ export const createInterventionMean = async (mean: InterventionMeanCreateType) =
 };
 
 export const createMultipleInterventionMeans = async (means: InterventionMeanCreateType[]) => {
-  console.log(means);
   const { error } = await supabase.from(Tables.interventionMeansLink).insert(means);
 
   if (error) {
