@@ -2,8 +2,9 @@ import { AntDesign } from '@expo/vector-icons';
 import { useRouter, useSearchParams } from 'expo-router';
 import { Fab, HStack, Icon, Image, ScrollView, Text, VStack } from 'native-base';
 import { useEffect, useState } from 'react';
+import { ToastAndroid } from 'react-native';
 
-import { ImageData } from '../../types/drone-types';
+import { ImageData, isImageData } from '../../types/drone-types';
 import { Coordinates } from '../../types/global-types';
 import { supabase } from '../../utils/supabase';
 
@@ -20,7 +21,6 @@ export default function Gallery({ longitude, latitude }: GalleryProps) {
   const bucketName = 'photo';
 
   const fetchAllImages = async () => {
-    setImages([]);
     const { data: files, error } = await supabase.storage
       .from(bucketName)
       .list(`intervention_${interventionId}/${latitude}_${longitude}`, {
@@ -33,23 +33,28 @@ export default function Gallery({ longitude, latitude }: GalleryProps) {
       throw new Error(error.message);
     }
 
-    files.forEach(async (file) => {
-      const { data: downloadedFile, error } = await supabase.storage
-        .from(bucketName)
-        .download(`intervention_${interventionId}/${latitude}_${longitude}/${file.name}`);
+    const newImages = await Promise.all(
+      files.map(async (file) => {
+        const { data, error } = await supabase.storage
+          .from(bucketName)
+          .createSignedUrl(
+            `intervention_${interventionId}/${latitude}_${longitude}/${file.name}`,
+            3600
+          );
 
-      if (error) {
-        throw new Error(error.message);
-      }
+        if (error) {
+          ToastAndroid.show(error.message, ToastAndroid.SHORT);
+        }
 
-      const reader = new FileReader();
-      reader.readAsDataURL(downloadedFile);
-      reader.onloadend = () => {
-        const fileAsBase64 = reader.result;
-        const name = file.name.slice(0, -4);
-        setImages((images) => [...images, { file: fileAsBase64?.toString() ?? '', name }]);
-      };
-    });
+        if (!data) return;
+
+        return { name: file.name.slice(0, -4), file: data.signedUrl };
+      })
+    );
+
+    const filteredNewImages = newImages.filter(isImageData);
+
+    setImages([...new Set([...images, ...filteredNewImages])]);
   };
 
   useEffect(() => {

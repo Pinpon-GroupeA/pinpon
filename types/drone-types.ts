@@ -30,3 +30,5 @@ export type ImageData = {
   file: string;
   name: string;
 };
+
+export const isImageData = (data: any): data is ImageData => !!data;

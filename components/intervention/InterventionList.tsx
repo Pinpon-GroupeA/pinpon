@@ -1,6 +1,6 @@
 import { AntDesign } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-import { Box, Fab, HStack, Heading, Icon, VStack, NativeBaseProvider } from 'native-base';
+import { Box, Fab, HStack, Heading, Icon, NativeBaseProvider, VStack } from 'native-base';
 import { SwipeListView } from 'react-native-swipe-list-view';
 
 import Intervention from './Intervention';
@@ -38,9 +38,9 @@ export default function InterventionList({ interventions }: InterventionListProp
 
   return (
     <NativeBaseProvider>
-      <Box mx={3} h="100%">
+      <Box h="100%">
         <HStack m={3} justifyContent={isCodis ? 'space-evenly' : 'flex-start'} alignItems="center">
-          <Heading fontSize="4xl" color={Colors.TURQUOISE}>
+          <Heading mx={3} fontSize="4xl" color={Colors.TURQUOISE}>
             Interventions
           </Heading>
           {isCodis && <Icon as={AntDesign} name="caretright" color="dark.600" size={6} />}
