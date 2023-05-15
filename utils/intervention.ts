@@ -30,8 +30,21 @@ export const fetchInterventions = async (): Promise<Intervention[]> => {
   return data as Intervention[];
 };
 
-export const supprInterventions = async (id: number): Promise<any> => {
+export const deleteIntervention = async (id: number) => {
   const { data, error } = await supabase.from('interventions').delete().eq('id', id);
+
+  if (error) {
+    throw error;
+  }
+
+  return data;
+};
+
+export const markAsCompleted = async (id: number) => {
+  const { data, error } = await supabase
+    .from('interventions')
+    .update({ status_intervention: 'OVER' })
+    .eq('id', id);
 
   if (error) {
     throw error;
