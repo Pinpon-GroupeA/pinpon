@@ -61,14 +61,14 @@ export default function InterventionScreen() {
     }
   );
 
-  const onInsertRequest = () => {
-    const newNumberOfRequests = numberOfRequests ? numberOfRequests + 1 : 1;
+  const onInsertRequest = async () => {
+    const newNumberOfRequests = await fetchNumberOfRequests();
 
     queryClient.setQueryData(['numberOfRequests'], newNumberOfRequests);
   };
 
-  const onDeleteRequest = () => {
-    const newNumberOfRequests = numberOfRequests ? numberOfRequests - 1 : 0;
+  const onDeleteRequest = async () => {
+    const newNumberOfRequests = await fetchNumberOfRequests();
 
     queryClient.setQueryData(['numberOfRequests'], newNumberOfRequests);
   };

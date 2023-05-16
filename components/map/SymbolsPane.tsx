@@ -35,7 +35,7 @@ const SymbolsPane = ({ fireFighterMeans }: SymbolsPaneProps) => {
         </Box>
       </Box>
       <Button onPress={() => setOpenSymbolSelection(true)} bgColor={Colors.TURQUOISE}>
-        Ajouter un symbole
+        Demande de moyens
       </Button>
       <Modal isOpen={openSymbolSelection} onClose={() => setOpenSymbolSelection(false)} size="md">
         <ModalMeansRequest
