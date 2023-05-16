@@ -9,7 +9,6 @@ import Colors from '../../constants/colors';
 import { InterventionMean, MeanType } from '../../types/mean-types';
 import { fetchMeansTypes } from '../../utils/means-type';
 import ModalMeansRequest from '../means/mean-request/ModalMeansRequest';
-import Colors from '../../constants/colors';
 
 type SymbolsPaneProps = {
   fireFighterMeans: InterventionMean[];
