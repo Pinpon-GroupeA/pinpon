@@ -5,6 +5,7 @@ import { useState } from 'react';
 import ColorSelection from './ColorSelection';
 import FireFighterSymbolList from './FireFighterSymbolList';
 import SymbolList from './SymbolList';
+import Colors from '../../constants/colors';
 import { InterventionMean, MeanType } from '../../types/mean-types';
 import { fetchMeansTypes } from '../../utils/means-type';
 import ModalMeansRequest from '../means/mean-request/ModalMeansRequest';
