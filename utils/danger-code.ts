@@ -6,7 +6,7 @@ export const getDangerCodeColor = (dangerCode: DangerCode) => {
     (dangerCodeColor) => dangerCodeColor.dangerCode === dangerCode
   );
   if (!dangerCodeColor) {
-    return 'black.500';
+    return 'Colors.BLACK';
   }
   return dangerCodeColor.color;
 };
