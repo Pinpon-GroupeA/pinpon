@@ -13,6 +13,7 @@ import {
   updateDroneTrajectType,
 } from '../../utils/drone';
 import MapBackground from '../MapBackground';
+import DroneSymbole from './DroneSymbole';
 
 type MapBackgroundProps = {
   dronePosition: LatLng;
@@ -152,7 +153,9 @@ function DroneMapPage({
           }
           strokeWidth={4}
         />
-        <Marker coordinate={dronePosition} pinColor="blue" />
+        <Marker coordinate={dronePosition} >
+          <DroneSymbole />
+        </Marker>
       </MapBackground>
     </Box>
   );
