@@ -22,7 +22,7 @@ const FireFighterSymbolList = ({ fireFighterMeans }: FireFighterSymbolListProps)
 
   return (
     <Box alignItems="center">
-      <Text>Moyens :</Text>
+      <Text>CRM :</Text>
       <ScrollView flexDir="column" width="100%">
         {fireFighterMeans.map((mean) => (
           <PressableSymbol

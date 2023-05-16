@@ -32,13 +32,13 @@ export default function DroneVideo({ interventionId }: DroneVideoProps) {
     fetchCurrentImage();
   }, []);
 
-  useInterval(fetchCurrentImage, 5000);
+  useInterval(fetchCurrentImage, 3000);
 
   if (!currentImage) return <Spinner />;
 
   return (
     <Image
-      style={{ width: 1100, height: 600 }}
+      style={{ width: 980, height: 380 }}
       source={{ uri: currentImage, cache: 'reload' }}
       defaultSource={{ uri: currentImage, cache: 'reload' }}
       resizeMethod="scale"

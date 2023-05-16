@@ -28,7 +28,10 @@ export default function LoginForm() {
   const signIn = async (email: string, password: string) => {
     try {
       await mutateAsync({ email, password });
-      const role = await supabase.from('users').select('role').eq('email', email);
+      const role = await supabase
+        .from('users')
+        .select('role')
+        .eq('email', email.trim().toLowerCase());
       if (role.data !== null) {
         setUserType(role.data[0].role);
         router.replace('/intervention');

@@ -3,11 +3,11 @@ import { useRouter } from 'expo-router';
 import { Box, Fab, HStack, Heading, Icon, Pressable, VStack } from 'native-base';
 import { SwipeListView } from 'react-native-swipe-list-view';
 
+import Intervention from './Intervention';
 import Colors from '../../constants/colors';
 import { useAppStore } from '../../stores/store';
 import { InterventionListData } from '../../types/intervention-types';
 import { deleteIntervention, markAsCompleted } from '../../utils/intervention';
-import Intervention from './Intervention';
 
 type InterventionListProps = {
   interventions: InterventionListData[];
@@ -69,7 +69,7 @@ export default function InterventionList({ interventions }: InterventionListProp
       <SwipeListView
         data={orderInterventions(interventions)}
         renderItem={renderIntervention}
-        renderHiddenItem={renderHiddenIntervention}
+        renderHiddenItem={isCodis ? renderHiddenIntervention : undefined}
         ItemSeparatorComponent={() => <Box w="100%" h="1px" backgroundColor="gray.300" />}
         keyExtractor={(intervention) => String(intervention.id)}
         ListEmptyComponent={() => (

@@ -69,7 +69,7 @@ function DroneMapPage({
         renderInPortal={false}
         placement="bottom-right"
         right="216px"
-        disabled={draw}
+        isDisabled={draw}
         backgroundColor={isStopped ? '#19837C' : 'white'}
         icon={
           isStopped ? (
@@ -102,7 +102,7 @@ function DroneMapPage({
       />
       <Fab
         renderInPortal={false}
-        disabled={!isStopped || draw}
+        isDisabled={!isStopped || draw}
         right="80px"
         placement="bottom-right"
         backgroundColor={trajectType === 'CLOSED_CIRCUIT' ? '#19837C' : 'white'}
@@ -123,7 +123,7 @@ function DroneMapPage({
       />
       <Fab
         icon={<Icon as={FontAwesome5} name="trash" size={5} color="white" />}
-        disabled={!isStopped || draw}
+        isDisabled={!isStopped || draw}
         backgroundColor="#19837C"
         renderInPortal={false}
         onPress={() => {

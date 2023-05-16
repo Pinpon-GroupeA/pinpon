@@ -16,7 +16,9 @@ export default function Video() {
       <Heading pt={3} pb={5} size="xl" color={Colors.TURQUOISE}>
         Video
       </Heading>
-      <DroneVideo interventionId={id as string} />
+      <Box alignSelf="center" flex={1}>
+        <DroneVideo interventionId={id as string} />
+      </Box>
     </Box>
   );
 }

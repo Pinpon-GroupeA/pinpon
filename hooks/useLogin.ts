@@ -9,7 +9,7 @@ type LoginParams = {
 
 const login = async ({ email, password }: LoginParams) => {
   const { data, error } = await supabase.auth.signInWithPassword({
-    email,
+    email: email.trim().toLowerCase(),
     password,
   });
 

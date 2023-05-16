@@ -10,7 +10,7 @@ type SelectedSymbol = {
 };
 
 type AppStoreType = {
-  role: UserType;
+  role?: UserType;
   setRole: (role: UserType) => void;
   selectedSymbol?: SelectedSymbol;
   setSelectedSymbol: (selectedSymbol?: SelectedSymbol) => void;
@@ -22,7 +22,7 @@ type AppStoreType = {
 };
 
 export const useAppStore = create<AppStoreType>((set) => ({
-  role: 'COS',
+  role: undefined,
   setRole: (role) => set({ role }),
   selectedSymbol: undefined,
   setSelectedSymbol: (selectedSymbol) => set({ selectedSymbol }),
