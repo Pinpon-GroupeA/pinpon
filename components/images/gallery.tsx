@@ -48,7 +48,10 @@ export default function Gallery({ longitude, latitude }: GalleryProps) {
 
         if (!data) return;
 
-        return { name: file.name.slice(0, -4), file: data.signedUrl };
+        return {
+          name: file.name.slice(0, -4),
+          file: data.signedUrl,
+        };
       })
     );
 
@@ -64,11 +67,15 @@ export default function Gallery({ longitude, latitude }: GalleryProps) {
   if (!images || !images.length) {
     return (
       <>
-        <HStack height="100%" alignItems="center">
-          <VStack width="100%" alignItems="center">
+        <VStack flex="1" alignItems="center">
+          <Text fontSize="3xl">Coordonnées :</Text>
+          <Text fontSize="xl">
+            {latitude}, {longitude}
+          </Text>
+          <HStack flex="1" alignItems="center">
             <Text fontSize="3xl">Pas d'images disponibles</Text>
-          </VStack>
-        </HStack>
+          </HStack>
+        </VStack>
         <Fab
           placement="top-left"
           bgColor="#19837C"
@@ -83,9 +90,15 @@ export default function Gallery({ longitude, latitude }: GalleryProps) {
   return (
     <>
       <ScrollView>
+        <VStack alignItems="center" mb="5">
+          <Text fontSize="3xl">Coordonnées :</Text>
+          <Text fontSize="xl">
+            {latitude}, {longitude}
+          </Text>
+        </VStack>
         {images?.map((image: { file: string; name: string }, i: number) => (
-          <VStack key={`${i}`} alignItems="center" mb="5">
-            <Image source={{ uri: image.file }} alt={`Photo n°${i}`} w="650" h="300" mb="3" />
+          <VStack key={`${i}`} alignItems="center" mb="7">
+            <Image source={{ uri: image.file }} alt={`Photo n°${i}`} w="650" h="300" />
             <Text fontSize="xl">{image.name}</Text>
           </VStack>
         ))}
