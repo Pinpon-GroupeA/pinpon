@@ -8,6 +8,7 @@ import SymbolList from './SymbolList';
 import { InterventionMean, MeanType } from '../../types/mean-types';
 import { fetchMeansTypes } from '../../utils/means-type';
 import ModalMeansRequest from '../means/mean-request/ModalMeansRequest';
+import Colors from '../../constants/colors';
 
 type SymbolsPaneProps = {
   fireFighterMeans: InterventionMean[];
@@ -33,7 +34,9 @@ const SymbolsPane = ({ fireFighterMeans }: SymbolsPaneProps) => {
           <SymbolList />
         </Box>
       </Box>
-      <Button onPress={() => () => setOpenSymbolSelection(true)}>Ajouter un symbole</Button>
+      <Button onPress={() => setOpenSymbolSelection(true)} bgColor={Colors.TURQUOISE}>
+        Ajouter un symbole
+      </Button>
       <Modal isOpen={openSymbolSelection} onClose={() => setOpenSymbolSelection(false)} size="md">
         <ModalMeansRequest
           meanTypes={meanTypes || []}
